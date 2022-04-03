@@ -3,9 +3,9 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
 import {api} from './api';
 import auth from './reducers/auth';
-import {createSecureStorage} from './createSecureStorage';
+import {secureStorage} from './secureStorage';
 
-const EncryptedStorage = createSecureStorage({});
+const EncryptedStorage = secureStorage({});
 
 const securePersistedReducer = persistReducer(
   {

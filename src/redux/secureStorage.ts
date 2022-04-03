@@ -5,7 +5,7 @@ interface Options {
   replacer?: (key: string, replaceCharacter: string) => string;
 }
 
-export function createSecureStorage(options: Options) {
+export function secureStorage(options: Options) {
   const replaceCharacter = options.replaceCharacter || '_';
   const replacer = options.replacer || defaultReplacer;
 
