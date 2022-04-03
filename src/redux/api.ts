@@ -4,7 +4,6 @@ import {getEnvironment} from '../config/environment';
 export const api = createApi({
   baseQuery: fetchBaseQuery({baseUrl: getEnvironment().apiHost}),
   endpoints: (builder) => ({
-
   })
 })
 

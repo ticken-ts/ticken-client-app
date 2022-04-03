@@ -1,11 +1,11 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
-import {persistReducer, persistStore} from 'redux-persist';
+import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
 import {api} from './api';
 import auth from './reducers/auth';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
+import {createSecureStorage} from './createSecureStorage';
+
+const EncryptedStorage = createSecureStorage({});
 
 const securePersistedReducer = persistReducer(
   {
@@ -13,25 +13,25 @@ const securePersistedReducer = persistReducer(
     storage: EncryptedStorage,
   },
   combineReducers({
-    auth,
+    auth: auth,
   })
 )
 
-const persistedReducer = persistReducer(
-  {
-    key: 'root',
-    storage: AsyncStorage,
-  },
-  combineReducers({
-
-  })
-)
+// const persistedReducer = persistReducer(
+//   {
+//     key: 'root',
+//     storage: AsyncStorage,
+//   },
+//   combineReducers({
+//
+//   })
+// )
 
 const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     securePersisted: securePersistedReducer,
-    persisted: persistedReducer,
+    // persisted: persistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
