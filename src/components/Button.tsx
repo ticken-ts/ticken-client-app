@@ -1,11 +1,10 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ButtonProps, Text, View, Button as DefaultButton} from 'react-native';
+import {colors} from '../styles/colors';
 
-const Button = () => {
+const Button = (props: ButtonProps) => {
   return (
-    <View>
-      <Text>Button</Text>
-    </View>
+    <DefaultButton {...props} color={colors.primary} />
   );
 };
 
