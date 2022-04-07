@@ -6,7 +6,7 @@ const Typography = (props: TextProps) => {
     <Text
       {...props}
       style={[
-        {fontFamily: 'main', fontWeight: 'bold'},
+        {fontFamily: 'main'},
         props.style,
       ]}>
     </Text>
