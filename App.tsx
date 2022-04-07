@@ -4,16 +4,19 @@ import {Provider} from 'react-redux';
 import store, {persistor} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {useLocalization} from './src/locale/useLocalization';
+import SplashLoader from './src/components/SplashLoader';
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor} loading={null}>
-        <NavigationContainer>
-          <MainApp/>
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <SplashLoader>
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={null}>
+          <NavigationContainer>
+            <MainApp/>
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+    </SplashLoader>
   )
 }
 
