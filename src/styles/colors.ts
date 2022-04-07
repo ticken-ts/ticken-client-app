@@ -1,7 +1,8 @@
-const palette = ["#9f00ff","#f2ff49","#ff4242","#b3fffc","#2a2b2a"]
+const palette = ['#251351', '#30c5ff', '#5c946e', '#80c2af', '#a0dde6']
 
 export const colors = {
   primary: palette[0],
   secondary: palette[1],
-  text: palette[4],
+  tertiary: palette[2],
+  text: '#2a2b2a',
 }
