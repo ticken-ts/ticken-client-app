@@ -4,8 +4,10 @@ import {ScreenId} from './ScreenIDs';
 import LoginScreen from '../screens/LoginScreen';
 import {useSelector} from 'react-redux';
 import {isLoggedIn} from '../redux/selectors/auth';
+import {RootStackParamList} from './types';
+import RegisterScreen from '../screens/RegisterScreen';
 
-const {Navigator, Screen} = createNativeStackNavigator();
+const {Navigator, Screen} = createNativeStackNavigator<RootStackParamList>();
 
 const Stack = () => {
   const loggedIn = useSelector(isLoggedIn)
@@ -15,6 +17,10 @@ const Stack = () => {
       <Screen
         name={ScreenId.Login}
         component={LoginScreen}
+      />
+      <Screen
+        name={ScreenId.Register}
+        component={RegisterScreen}
       />
     </Navigator>
   );

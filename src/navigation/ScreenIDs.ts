@@ -1,3 +1,4 @@
-export const ScreenId = {
-  Login: "LoginScreen",
+export enum ScreenId {
+  Login = "Login",
+  Register = "Register",
 }
