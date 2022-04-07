@@ -52,17 +52,13 @@ const styles = StyleSheet.create({
     // borderWidth: 10,
     // borderColor: 'black'
   },
-  text: {
-    fontSize: squares(2),
-    fontWeight: 'normal'
-  },
   logo: {
     width: '50%',
     aspectRatio: 1,
     // backgroundColor: '#48ff82',
   },
   input: {
-    width: '50%',
+    width: '60%',
     paddingVertical: squares(1),
     paddingHorizontal: squares(2)
   },
@@ -70,7 +66,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   signUpText: {
-
   },
   signUpBtn: {
     color: colors.primary
