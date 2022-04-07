@@ -18,6 +18,10 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
     headerShown: false,
   }), [])
 
+  const logIn = () => {
+    navigation.navigate(ScreenId.Home)
+  };
+
   return (
     <KeyboardAvoid style={styles.container}>
       <Image
@@ -25,13 +29,12 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
         style={styles.logo}
         resizeMode={'contain'}
       />
-      <Spacing v={squares(4)} />
-      {/*<Typography style={styles.text}>{t('welcome')}</Typography>*/}
+      <Spacing v={squares(8)} />
       <Input style={styles.input} autoCapitalize={'none'} placeholder={t('email')} autoCorrect={false} keyboardType={'email-address'} />
       <Spacing v={squares(2)} />
       <Input style={styles.input} placeholder={t('password')} secureTextEntry />
       <Spacing v={squares(4)} />
-      <Button title={t('login')} onPress={() => {}}/>
+      <Button title={t('login')} onPress={logIn}/>
       <Spacing v={squares(4)} />
       <View style={styles.signUpContainer}>
         <Typography style={styles.signUpText}>{t('signuptext')} </Typography>

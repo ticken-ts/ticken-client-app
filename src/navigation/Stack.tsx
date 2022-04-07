@@ -7,6 +7,7 @@ import {isLoggedIn} from '../redux/selectors/auth';
 import {RootStackParamList} from './types';
 import RegisterScreen from '../screens/RegisterScreen';
 import {StatusBar} from 'react-native';
+import Home from '../screens/Home';
 
 const {Navigator, Screen} = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,6 +25,10 @@ const Stack = () => {
       <Screen
         name={ScreenId.Register}
         component={RegisterScreen}
+      />
+      <Screen
+        name={ScreenId.Home}
+        component={Home}
       />
     </Navigator>
     </>
