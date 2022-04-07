@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
 import {View} from 'react-native';
+import loadFonts from '../fonts/loadFonts';
 
 type Props = {}
 
@@ -13,11 +13,7 @@ const SplashLoader: React.FC<Props> = ({children}) => {
     async function prepare() {
       try {
         await SplashScreen.preventAutoHideAsync();
-
-        await Font.loadAsync({
-          'italic': require('../../assets/fonts/italic.ttf'),
-          'main': require('../../assets/fonts/main.ttf'),
-        });
+        await loadFonts();
       } catch (e) {
         console.warn(e);
       } finally {
