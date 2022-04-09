@@ -11,12 +11,9 @@ import KeyboardAvoid from '../components/KeyboardAvoid';
 import Button from '../components/Button';
 import {squares} from '../styles/grid';
 import {colors} from '../styles/colors';
+import {getHiddenHeader} from '../navigation/headers';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
-
-  useEffect(() => navigation.setOptions({
-    headerShown: false,
-  }), [])
 
   const logIn = () => {
     navigation.navigate(ScreenId.Home)
@@ -44,7 +41,10 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
   );
 };
 
-export default LoginScreen;
+export default {
+  component: LoginScreen,
+  options: getHiddenHeader()
+};
 
 const styles = StyleSheet.create({
   container: {

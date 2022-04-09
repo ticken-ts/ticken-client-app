@@ -15,6 +15,15 @@ const Typography = (props: TextProps) => {
   );
 };
 
+export const H1 = (props: TextProps) =>
+  <Typography
+    {...props}
+    style={[
+      {fontSize: squares(2.5), fontFamily: 'main-semibold'},
+      props.style,
+    ]}
+  />
+
 export default Typography;
 
 export const typographyStyles = StyleSheet.create({

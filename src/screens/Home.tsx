@@ -1,14 +1,24 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {ScreenProps} from '../navigation/types';
 import {ScreenId} from '../navigation/ScreenIDs';
+import {getCustomHeader} from '../navigation/headers';
+import {colors} from '../styles/colors';
+import Typography, {H1} from '../components/Typography';
+import {t} from 'i18n-js';
 
 const Home = ({}: ScreenProps<ScreenId.Home>) => {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <SafeAreaView >
+      <Typography>Home</Typography>
+    </SafeAreaView>
   );
 };
 
-export default Home;
+export default {
+  component: Home,
+  options: getCustomHeader({
+    mid: () => <H1 style={{color: colors.white}}>Upcoming Events</H1>,
+    backgroundColor: colors.secondary
+  })
+};

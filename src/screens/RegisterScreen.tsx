@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {getHiddenHeader} from '../navigation/headers';
 
 const RegisterScreen = () => {
   return (
@@ -9,4 +10,7 @@ const RegisterScreen = () => {
   );
 };
 
-export default RegisterScreen;
+export default {
+  component: RegisterScreen,
+  options: getHiddenHeader()
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ScreenId} from './ScreenIDs';
 import LoginScreen from '../screens/LoginScreen';
 import {useSelector} from 'react-redux';
@@ -17,18 +17,19 @@ const Stack = () => {
   return (
     <>
     <StatusBar barStyle={'dark-content'} translucent backgroundColor={'#00000000'} />
-    <Navigator>
+    <Navigator screenOptions={{headerShown: false}}>
       <Screen
         name={ScreenId.Login}
-        component={LoginScreen}
+        {...LoginScreen}
       />
       <Screen
         name={ScreenId.Register}
-        component={RegisterScreen}
+        {...RegisterScreen}
+
       />
       <Screen
         name={ScreenId.Home}
-        component={Home}
+        {...Home}
       />
     </Navigator>
     </>

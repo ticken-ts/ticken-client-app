@@ -5,4 +5,6 @@ export const colors = {
   secondary: palette[1],
   tertiary: palette[2],
   text: '#2a2b2a',
+  transparent: '#ffffff00',
+  white: '#fff'
 }
