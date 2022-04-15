@@ -12,6 +12,7 @@ import Button from '../components/Button';
 import {squares} from '../styles/grid';
 import {colors} from '../styles/colors';
 import {getHiddenHeader} from '../navigation/headers';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
@@ -21,6 +22,7 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
   return (
     <KeyboardAvoid style={styles.container}>
+      <FocusAwareStatusBar style={'dark'} />
       <Image
         source={require('../../assets/icon.png')}
         style={styles.logo}

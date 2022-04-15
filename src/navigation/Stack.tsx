@@ -6,7 +6,6 @@ import {useSelector} from 'react-redux';
 import {isLoggedIn} from '../redux/selectors/auth';
 import {RootStackParamList} from './types';
 import RegisterScreen from '../screens/RegisterScreen';
-import {StatusBar} from 'react-native';
 import Home from '../screens/Home';
 
 const {Navigator, Screen} = createNativeStackNavigator<RootStackParamList>();
@@ -16,7 +15,6 @@ const Stack = () => {
 
   return (
     <>
-    <StatusBar barStyle={'dark-content'} translucent backgroundColor={'#00000000'} />
     <Navigator screenOptions={{headerShown: false}}>
       <Screen
         name={ScreenId.Login}

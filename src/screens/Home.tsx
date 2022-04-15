@@ -5,11 +5,10 @@ import {ScreenId} from '../navigation/ScreenIDs';
 import {getCustomHeader} from '../navigation/headers';
 import {colors} from '../styles/colors';
 import Typography, {H1} from '../components/Typography';
-import {t} from 'i18n-js';
 
 const Home = ({}: ScreenProps<ScreenId.Home>) => {
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <Typography>Home</Typography>
     </SafeAreaView>
   );
@@ -19,6 +18,6 @@ export default {
   component: Home,
   options: getCustomHeader({
     mid: () => <H1 style={{color: colors.white}}>Upcoming Events</H1>,
-    backgroundColor: colors.secondary
+    backgroundColor: colors.primary
   })
 };
