@@ -4,7 +4,7 @@ import {colors} from '../styles/colors';
 
 const Button = (props: ButtonProps) => {
   return (
-    <DefaultButton {...props} color={colors.primary} />
+    <DefaultButton color={colors.primary} {...props}/>
   );
 };
 
