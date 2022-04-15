@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationOptions, NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from './types';
 import {OpaqueColorValue, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {colors} from '../styles/colors';
+import {RootStackParamList} from './ScreenIDs';
 
 export function getHiddenHeader(): NativeStackNavigationOptions {
 
@@ -14,9 +14,9 @@ export function getHiddenHeader(): NativeStackNavigationOptions {
 }
 
 type HeaderOptions = {
-  left?: () => React.ReactNode,
-  mid?: () => React.ReactNode,
-  right?: () => React.ReactNode,
+  left?: NativeStackNavigationOptions['headerLeft'],
+  mid?: NativeStackNavigationOptions['headerTitle'],
+  right?: NativeStackNavigationOptions['headerRight'],
   backgroundColor?: string
 }
 

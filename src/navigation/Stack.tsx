@@ -1,10 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {ScreenId} from './ScreenIDs';
+import {RootStackParamList, ScreenId} from './ScreenIDs';
 import LoginScreen from '../screens/LoginScreen';
 import {useSelector} from 'react-redux';
 import {isLoggedIn} from '../redux/selectors/auth';
-import {RootStackParamList} from './types';
 import RegisterScreen from '../screens/RegisterScreen';
 import Home from '../screens/Home';
 

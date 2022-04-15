@@ -1,4 +1,4 @@
-import {ScreenId} from './ScreenIDs';
+import {RootStackParamList, ScreenId} from './ScreenIDs';
 import {NativeStackNavigationOptions, NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 
@@ -10,12 +10,6 @@ export type ScreenComponent = {
 export type StackScreenProps = {
   name: ScreenId,
   component: ScreenComponent,
-}
-
-export type RootStackParamList = {
-  [ScreenId.Login]: undefined;
-  [ScreenId.Register]: undefined;
-  [ScreenId.Home]: undefined;
 }
 
 export type ScreenProps<T extends ScreenId> = NativeStackScreenProps<RootStackParamList, T>
