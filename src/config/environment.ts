@@ -12,7 +12,7 @@ const environments: Environments = {
     apiHost: ''
   },
   DEV: {
-    apiHost: ''
+    apiHost: 'http://localhost:7010/api/'
   }
 }
 
