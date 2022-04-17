@@ -4,11 +4,10 @@ import {ScreenProps} from '../navigation/types';
 import {ScreenId} from '../navigation/ScreenIDs';
 import {getCustomHeader} from '../navigation/headers';
 import {colors} from '../styles/colors';
-import Typography, {H1} from '../components/Typography';
+import {H1} from '../components/Typography';
 import {useGetEventsQuery} from '../redux/api';
-import {squares} from '../styles/grid';
-import {shadowStyles} from '../styles/shadow';
 import {EventModel} from '../model/Event';
+import {HomeListItem} from '../components/HomeListItem';
 
 const pageSize = 4;
 
@@ -48,13 +47,7 @@ const Home = ({}: ScreenProps<ScreenId.Home>) => {
         onEndReached={goToNextPage}
         onEndReachedThreshold={0.2}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => {
-          return (
-            <View style={styles.card}>
-              <Typography>{item.id}</Typography>
-            </View>
-          )
-        }}
+        renderItem={HomeListItem}
       />
     </View>
   );
@@ -76,11 +69,5 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: colors.secondary
   },
-  card: {
-    backgroundColor: colors.white,
-    borderRadius: squares(1),
-    height: squares(25),
-    margin: squares(2),
-    ...shadowStyles.normal
-  },
 });
+

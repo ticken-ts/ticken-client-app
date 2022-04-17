@@ -3,4 +3,5 @@ export interface EventModel {
   startDate: string,
   description: string,
   name: string,
+  cover?: string,
 }

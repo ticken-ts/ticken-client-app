@@ -24,6 +24,24 @@ export const H1 = (props: TextProps) =>
     ]}
   />
 
+export const H2 = (props: TextProps) =>
+  <Typography
+    {...props}
+    style={[
+      {fontSize: squares(1.85), fontFamily: 'main-semibold'},
+      props.style,
+    ]}
+  />
+
+export const H3 = (props: TextProps) =>
+  <Typography
+    {...props}
+    style={[
+      {fontSize: squares(1.7), fontFamily: 'main-semibold'},
+      props.style,
+    ]}
+  />
+
 export default Typography;
 
 export const typographyStyles = StyleSheet.create({
