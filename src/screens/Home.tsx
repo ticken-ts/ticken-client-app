@@ -47,7 +47,7 @@ const Home = ({}: ScreenProps<ScreenId.Home>) => {
         onEndReached={goToNextPage}
         onEndReachedThreshold={0.2}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={HomeListItem}
+        renderItem={({item}) => <HomeListItem item={item} />}
       />
     </View>
   );

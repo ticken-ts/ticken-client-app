@@ -1,10 +1,10 @@
 import {RootStackParamList, ScreenId} from './ScreenIDs';
-import {NativeStackNavigationOptions, NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackNavigationOptions, StackScreenProps as ScrnProps} from '@react-navigation/stack';
 import React from 'react';
 
 export type ScreenComponent = {
   component: React.ComponentType<any>,
-  options: NativeStackNavigationOptions,
+  options:StackNavigationOptions,
 }
 
 export type StackScreenProps = {
@@ -12,4 +12,4 @@ export type StackScreenProps = {
   component: ScreenComponent,
 }
 
-export type ScreenProps<T extends ScreenId> = NativeStackScreenProps<RootStackParamList, T>
+export type ScreenProps<T extends ScreenId> = ScrnProps<RootStackParamList, T>

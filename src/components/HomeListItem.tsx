@@ -1,15 +1,27 @@
-import {ListRenderItem, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {colors} from '../styles/colors';
 import {squares} from '../styles/grid';
 import {shadowStyles} from '../styles/shadow';
 import {EventModel} from '../model/Event';
 import Image from './Image';
 import React from 'react';
+import {SharedElement} from 'react-navigation-shared-element';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationTyping, ScreenId} from '../navigation/ScreenIDs';
 
-export const HomeListItem: ListRenderItem<EventModel> = ({item}) => {
+export const HomeListItem = ({item}: {item: EventModel}) => {
+
+  const navigation = useNavigation<NavigationTyping>()
+
+  const goToDetails = () => {
+    navigation.navigate(ScreenId.EventDetails, {event: item})
+  };
+
   return (
-    <TouchableOpacity style={itemStyles.card}>
-      <Image source={{uri: item.cover}} style={itemStyles.cover} resizeMode={'stretch'} />
+    <TouchableOpacity style={itemStyles.card} onPress={goToDetails}>
+      <SharedElement id={`item.${item.id}.cover`}>
+        <Image source={{uri: item.cover}} style={itemStyles.cover} resizeMode={'stretch'} />
+      </SharedElement>
       {/*<H2 style={itemStyles.title}>{item.name}</H2>*/}
     </TouchableOpacity>
   );

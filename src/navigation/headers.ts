@@ -1,11 +1,6 @@
-import React, {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationOptions, NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {OpaqueColorValue, StyleProp, StyleSheet, ViewStyle} from 'react-native';
-import {colors} from '../styles/colors';
-import {RootStackParamList} from './ScreenIDs';
+import {StackNavigationOptions} from '@react-navigation/stack';
 
-export function getHiddenHeader(): NativeStackNavigationOptions {
+export function getHiddenHeader(): StackNavigationOptions {
 
    return ({
      headerShown: false,
@@ -14,27 +9,24 @@ export function getHiddenHeader(): NativeStackNavigationOptions {
 }
 
 type HeaderOptions = {
-  left?: NativeStackNavigationOptions['headerLeft'],
-  mid?: NativeStackNavigationOptions['headerTitle'],
-  right?: NativeStackNavigationOptions['headerRight'],
+  left?: StackNavigationOptions['headerLeft'],
+  mid?: StackNavigationOptions['headerTitle'],
+  right?: StackNavigationOptions['headerRight'],
   backgroundColor?: string
 }
 
-export function getCustomHeader(options: HeaderOptions): NativeStackNavigationOptions {
+export function getCustomHeader(options: HeaderOptions): StackNavigationOptions {
 
   return ({
     headerShown: true,
-    headerLeft: options.left,
+    headerLeft: options.left || (() => null),
     headerTitle: options.mid ? options.mid : () => null,
     headerTitleAlign: 'center',
     headerRight: options.right,
-    headerBackVisible: false,
+    headerBackTitleVisible: false,
     // headerTintColor: options.backgroundColor,
     headerStyle: {
       backgroundColor: options.backgroundColor
     }
   })
 }
-
-const styles = StyleSheet.create({
-});
