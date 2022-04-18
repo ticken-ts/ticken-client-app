@@ -8,6 +8,7 @@ import {H1} from '../components/Typography';
 import {useGetEventsQuery} from '../redux/api';
 import {EventModel} from '../model/Event';
 import {HomeListItem} from '../components/HomeListItem';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const pageSize = 4;
 
@@ -40,6 +41,7 @@ const Home = ({}: ScreenProps<ScreenId.Home>) => {
 
   return (
     <View style={styles.container}>
+      <FocusAwareStatusBar translucent style={'light'} />
       <FlatList
         style={styles.scroll}
         refreshControl={<RefreshControl refreshing={isLoading || isFetching} onRefresh={refresh} /> }
