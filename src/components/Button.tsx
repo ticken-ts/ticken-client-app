@@ -1,18 +1,22 @@
 import React from 'react';
-import {ButtonProps, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle} from 'react-native';
+import {ButtonProps, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle, TextProps} from 'react-native';
 import {colors} from '../styles/colors';
 import { squares } from '../styles/grid';
 import {H3} from './Typography';
 
 interface Props extends ButtonProps {
-  style: StyleProp<ViewStyle>,
-  textStyle: StyleProp<TextStyle>
+  style?: StyleProp<ViewStyle>,
+  textStyle?: StyleProp<TextStyle>,
+  TextComponent?: React.FC<TextProps>
 }
 
 const Button = (props: Props) => {
+
+  const TextComponent = props.TextComponent || H3
+
   return (
     <TouchableOpacity {...props} style={[styles.button, props.style]}>
-      <H3 style={[styles.text, props.textStyle]}>{props.title}</H3>
+      <TextComponent style={[styles.text, props.textStyle]}>{props.title}</TextComponent>
     </TouchableOpacity>
   );
 };
@@ -22,10 +26,11 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
-    borderRadius: squares(2),
+    borderRadius: squares(1),
   },
   text: {
     color: colors.white,
-    margin: squares(2)
+    margin: squares(2),
+    textAlign: "center",
   }
 });
