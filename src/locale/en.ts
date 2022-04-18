@@ -5,4 +5,5 @@ export const en = {
   login: 'Sign In',
   signuptext: "Don't have an account?",
   signupbtn: "Sign up",
+  buyTickets: "Buy Tickets"
 }
