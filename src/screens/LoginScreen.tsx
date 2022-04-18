@@ -33,7 +33,7 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
       <Spacing v={squares(2)} />
       <Input style={styles.input} placeholder={t('password')} secureTextEntry />
       <Spacing v={squares(4)} />
-      <Button title={t('login')} onPress={logIn}/>
+      <Button style={styles.loginButton} title={t('login')} onPress={logIn} TextComponent={Typography}/>
       <Spacing v={squares(4)} />
       <View style={styles.signUpContainer}>
         <Typography style={styles.signUpText}>{t('signuptext')} </Typography>
@@ -74,5 +74,9 @@ const styles = StyleSheet.create({
   },
   signUpBtn: {
     color: colors.primary
-  }
+  },
+  loginButton: {
+    width: '60%'
+  },
+
 })
