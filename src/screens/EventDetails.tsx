@@ -12,6 +12,7 @@ import {t} from 'i18n-js';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
+import DraggableSlider from '../components/DraggableSlider';
 
 const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) => {
 
@@ -35,6 +36,21 @@ const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) =
       <View style={styles.buttonContainer}>
         <Button title={t('buyTickets')} onPress={buyTickets} />
       </View>
+      <DraggableSlider
+        startCollapsed={true}
+        expandedOffset={500}
+        collapsedOffset={700}
+        // CollapsedVisibleComponent={
+        //   <View style={{height: 100, backgroundColor: 'green'}}>
+        //
+        //   </View>
+        // }
+        // ExpandedVisibleComponent={
+        //   <View style={{height: 200, backgroundColor: 'red'}}>
+        //
+        //   </View>
+        // }
+      />
     </View>
   );
 };

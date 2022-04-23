@@ -1,17 +1,27 @@
-import React, {PropsWithChildren, useRef} from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import React, {PropsWithChildren, useEffect, useRef, useState} from 'react';
+import {Animated, LayoutChangeEvent, PanResponderInstance, StyleSheet, ViewProps} from 'react-native';
 import {PanResponder, View} from 'react-native';
-import {colors} from '../styles/colors';
-import {shadowStyles} from '../styles/shadow';
+
+type RequiredComponentProps = {
+  onLayout: ViewProps['onLayout'],
+}
 
 type ComponentProps = {
-  expandedY: number,
-  collapsedY: number,
   startCollapsed: boolean,
   animationDuration?: number,
   onCollapsed?: VoidFunction,
   onExpanded?: VoidFunction,
-}
+} & ({
+  expandedOffset: number,
+  collapsedOffset: number,
+  CollapsedVisibleComponent?: never,
+  ExpandedVisibleComponent?: never,
+} | {
+  expandedOffset?: never,
+  collapsedOffset?: never,
+  CollapsedVisibleComponent: React.ReactElement<RequiredComponentProps>,
+  ExpandedVisibleComponent: React.ReactElement<RequiredComponentProps>,
+})
 
 type RefProps = {
   collapse: VoidFunction,
@@ -23,26 +33,23 @@ type Props = PropsWithChildren<ComponentProps>
 const DraggableSlider = React.forwardRef<RefProps, Props>((
   {
     children,
-    expandedY,
-    collapsedY,
+    expandedOffset,
+    collapsedOffset,
     startCollapsed,
     animationDuration= 100,
     onCollapsed,
-    onExpanded
+    onExpanded,
+    CollapsedVisibleComponent,
+    ExpandedVisibleComponent,
   },
   ref
 ) => {
 
-  const dragY = useRef(new Animated.Value(0)).current
-  const positionY = useRef(new Animated.Value(startCollapsed ? collapsedY : expandedY)).current
+  const collapsedY = collapsedOffset || 0
+  const expandedY = expandedOffset || 0
 
-  const getAnimation = (to: number) => {
-    return Animated.timing(positionY, {
-      useNativeDriver: true,
-      toValue: to,
-      duration: animationDuration,
-    })
-  };
+  const dragY = useRef(new Animated.Value(0)).current
+  const positionY = useRef(new Animated.Value(0)).current
 
   const collapse = () => {
     getAnimation(collapsedY).start()
@@ -59,8 +66,18 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
     expand,
   }))
 
+  const getAnimation = (to: number) => {
+    return Animated.timing(positionY, {
+      useNativeDriver: true,
+      toValue: to,
+      duration: animationDuration,
+    })
+  };
+
   const snapToClosest = (value: number) => {
+    console.log('Snapping to closest of', collapsedY, expandedY)
     const val = getClosestValue(value, [collapsedY, expandedY])
+    console.log('Snapping to', val)
     val === collapsedY ? collapse() : expand()
   };
 
@@ -77,7 +94,7 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
       // gestureState.d{x,y} will be set to zero now
     },
     onPanResponderMove: Animated.event([null, {
-        dy: dragY,
+      dy: dragY,
     }], {
       useNativeDriver: false,
     }),
@@ -87,6 +104,7 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
       // responder. This typically means a gesture has succeeded
       const releaseLocation = evt.nativeEvent.pageY - evt.nativeEvent.locationY
       dragY.setValue(0)
+      console.log('Release location', releaseLocation)
       positionY.setValue(releaseLocation)
       snapToClosest(releaseLocation)
     },
@@ -99,26 +117,46 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
       // Returns whether this component should block native components from becoming the JS
       // responder. Returns true by default. Is currently only supported on android.
       return true;
-    },  })).current
+    },
+  }))
 
   return (
     <Animated.View
+      // onLayout={e => {
+      //   const h = e.nativeEvent.layout.height
+      //   setTotalHeight(h)
+      // }}
       style={[
         styles.container,
         {
-          // backgroundColor: color,
           transform: [
-            {translateY: Animated.add(positionY, dragY).interpolate({
+            {
+              translateY: Animated.add(positionY, dragY).interpolate({
                 extrapolate: 'clamp',
                 inputRange: [expandedY, collapsedY],
                 outputRange: [expandedY, collapsedY],
-              })}
+              })
+            }
           ]
         },
       ]}
-      {...panResponder.panHandlers}>
-      <View>
-      </View>
+      {...panResponder.current?.panHandlers}>
+      {/*{ExpandedVisibleComponent && CollapsedVisibleComponent &&*/}
+      {/*  <>*/}
+      {/*    {React.cloneElement(CollapsedVisibleComponent, {*/}
+      {/*      onLayout: (e: LayoutChangeEvent) => {*/}
+      {/*        const h = e.nativeEvent.layout.height*/}
+      {/*        setCollapsedVisibleHeight(h)*/}
+      {/*      }*/}
+      {/*    })}*/}
+      {/*    {React.cloneElement(ExpandedVisibleComponent, {*/}
+      {/*      onLayout: (e: LayoutChangeEvent) => {*/}
+      {/*        const h = e.nativeEvent.layout.height*/}
+      {/*        setExpandedVisibleHeight( h)*/}
+      {/*      }*/}
+      {/*    })}*/}
+      {/*  </>*/}
+      {/*}*/}
       {children}
     </Animated.View>
   );
@@ -132,8 +170,15 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     flex: 1,
-    backgroundColor: colors.white,
-    ...shadowStyles.normal
+    backgroundColor: '#fff',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   }
 });
 
