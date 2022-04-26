@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ScreenId} from '../navigation/ScreenIDs';
 import {ScreenProps} from '../navigation/types';
 import Typography from '../components/Typography';
@@ -20,6 +20,10 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
     navigation.navigate(ScreenId.Home)
   };
 
+  const goToRegister = () => {
+    navigation.navigate(ScreenId.Register)
+  }
+
   return (
     <KeyboardAvoid style={styles.container}>
       <FocusAwareStatusBar style={'dark'} />
@@ -37,7 +41,9 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
       <Spacing v={squares(4)} />
       <View style={styles.signUpContainer}>
         <Typography style={styles.signUpText}>{t('signuptext')} </Typography>
-        <Typography style={styles.signUpBtn}>{t('signupbtn')}</Typography>
+        <TouchableOpacity onPress={goToRegister}>
+          <Typography style={styles.signUpBtn}>{t('signupbtn')}</Typography>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoid>
   );
@@ -64,8 +70,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '60%',
-    paddingVertical: squares(1),
-    paddingHorizontal: squares(2)
   },
   signUpContainer: {
     flexDirection: 'row'
