@@ -1,6 +1,7 @@
 import React, {PropsWithChildren, useRef, useState} from 'react';
-import {Animated, LayoutChangeEvent, StyleSheet, ViewProps} from 'react-native';
+import {Animated, LayoutChangeEvent, StyleProp, StyleSheet, ViewProps, ViewStyle} from 'react-native';
 import {PanResponder, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type RequiredComponentProps = {
   onLayout: ViewProps['onLayout'],
@@ -11,6 +12,7 @@ type ComponentProps = {
   animationDuration?: number,
   onCollapsed?: VoidFunction,
   onExpanded?: VoidFunction,
+  containerStyle?: StyleProp<ViewStyle>
 } & ({
   expandedOffset: number,
   collapsedOffset: number,
@@ -21,6 +23,7 @@ type ComponentProps = {
   collapsedOffset?: never,
   CollapsedVisibleComponent: React.ReactElement<RequiredComponentProps>,
   ExpandedVisibleComponent: React.ReactElement<RequiredComponentProps>,
+  useSafeAreaSeparator?: boolean,
 })
 
 type RefProps = {
@@ -36,9 +39,11 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((props, ref) => {
   const [expandedVisibleHeight, setExpandedVisibleHeight] = useState(0);
   const [totalHeight, setTotalHeight] = useState(0);
 
+  const {bottom} = useSafeAreaInsets()
+
   if (props.ExpandedVisibleComponent && props.CollapsedVisibleComponent && collapsedVisibleHeight > 0 && expandedVisibleHeight > 0 && totalHeight > 0) {
     const collapsedOffset = totalHeight - collapsedVisibleHeight;
-    const expandedOffset = totalHeight - collapsedVisibleHeight - expandedVisibleHeight;
+    const expandedOffset = totalHeight - collapsedVisibleHeight - expandedVisibleHeight - (props.useSafeAreaSeparator ? bottom : 0);
 
     return (
       <DraggableSliderComponent
@@ -50,6 +55,7 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((props, ref) => {
         expandedOffset={expandedOffset}>
 
         {props.CollapsedVisibleComponent}
+        {props.useSafeAreaSeparator && <View style={{marginBottom: bottom}} />}
         {props.ExpandedVisibleComponent}
 
       </DraggableSliderComponent>
@@ -101,6 +107,7 @@ const DraggableSliderComponent = React.forwardRef<RefProps, Props>((
     animationDuration= 100,
     onCollapsed,
     onExpanded,
+    containerStyle
   },
   ref
 ) => {
@@ -184,6 +191,7 @@ const DraggableSliderComponent = React.forwardRef<RefProps, Props>((
     <Animated.View
       style={[
         styles.container,
+        containerStyle,
         {
           transform: [
             {
@@ -210,15 +218,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     flex: 1,
-    backgroundColor: '#fff',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   }
 });
 

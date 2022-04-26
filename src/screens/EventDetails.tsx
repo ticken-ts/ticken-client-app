@@ -13,6 +13,9 @@ import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
 import DraggableSlider from '../components/DraggableSlider';
+import Ionicons from '@expo/vector-icons/Ionicons'
+import {colors} from '../styles/colors';
+import {shadowStyles} from '../styles/shadow';
 
 const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
 
@@ -37,16 +40,21 @@ const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
         <Button title={t('buyTickets')} onPress={buyTickets} />
       </View>
       <DraggableSlider
-        startCollapsed={true}
-        // expandedOffset={500}
-        // collapsedOffset={700}
+        useSafeAreaSeparator
+        startCollapsed
+        containerStyle={{
+          backgroundColor: colors.white,
+          borderTopRightRadius: squares(2),
+          borderTopLeftRadius: squares(2),
+          ...shadowStyles.normal,
+        }}
         CollapsedVisibleComponent={
-          <View style={{height: 200, backgroundColor: 'green'}}>
-
+          <View style={{alignItems: 'center'}}>
+            <Ionicons name="chevron-up" size={squares(3)} />
           </View>
         }
         ExpandedVisibleComponent={
-          <View style={{height: 200, backgroundColor: 'red'}}>
+          <View style={{height: 200}}>
 
           </View>
         }
