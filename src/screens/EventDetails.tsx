@@ -12,7 +12,7 @@ import {t} from 'i18n-js';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
-import DraggableSlider from '../components/DraggableSlider';
+import DraggableSlider from '../components/DraggableSlider/DraggableSlider';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import {colors} from '../styles/colors';
 import {shadowStyles} from '../styles/shadow';
@@ -39,26 +39,6 @@ const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
       <View style={styles.buttonContainer}>
         <Button title={t('buyTickets')} onPress={buyTickets} />
       </View>
-      <DraggableSlider
-        useSafeAreaSeparator
-        startCollapsed
-        containerStyle={{
-          backgroundColor: colors.white,
-          borderTopRightRadius: squares(2),
-          borderTopLeftRadius: squares(2),
-          ...shadowStyles.normal,
-        }}
-        CollapsedVisibleComponent={
-          <View style={{alignItems: 'center'}}>
-            <Ionicons name="chevron-up" size={squares(3)} />
-          </View>
-        }
-        ExpandedVisibleComponent={
-          <View style={{height: 200}}>
-
-          </View>
-        }
-      />
     </View>
   );
 };
