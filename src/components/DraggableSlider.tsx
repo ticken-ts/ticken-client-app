@@ -1,5 +1,5 @@
-import React, {PropsWithChildren, useEffect, useRef, useState} from 'react';
-import {Animated, LayoutChangeEvent, PanResponderInstance, StyleSheet, ViewProps} from 'react-native';
+import React, {PropsWithChildren, useRef, useState} from 'react';
+import {Animated, LayoutChangeEvent, StyleSheet, ViewProps} from 'react-native';
 import {PanResponder, View} from 'react-native';
 
 type RequiredComponentProps = {
@@ -30,7 +30,69 @@ type RefProps = {
 
 type Props = PropsWithChildren<ComponentProps>
 
-const DraggableSlider = React.forwardRef<RefProps, Props>((
+const DraggableSlider = React.forwardRef<RefProps, Props>((props, ref) => {
+
+  const [collapsedVisibleHeight, setCollapsedVisibleHeight] = useState(0);
+  const [expandedVisibleHeight, setExpandedVisibleHeight] = useState(0);
+  const [totalHeight, setTotalHeight] = useState(0);
+
+  if (props.ExpandedVisibleComponent && props.CollapsedVisibleComponent && collapsedVisibleHeight > 0 && expandedVisibleHeight > 0 && totalHeight > 0) {
+    const collapsedOffset = totalHeight - collapsedVisibleHeight;
+    const expandedOffset = totalHeight - collapsedVisibleHeight - expandedVisibleHeight;
+
+    return (
+      <DraggableSliderComponent
+        {...props}
+        ExpandedVisibleComponent={undefined}
+        CollapsedVisibleComponent={undefined}
+        ref={ref}
+        collapsedOffset={collapsedOffset}
+        expandedOffset={expandedOffset}>
+
+        {props.CollapsedVisibleComponent}
+        {props.ExpandedVisibleComponent}
+
+      </DraggableSliderComponent>
+    )
+  }
+
+  if (props.expandedOffset && props.collapsedOffset) {
+    return (
+      <DraggableSliderComponent {...props} ref={ref} />
+    )
+  }
+
+  return <View
+    onLayout={(e: LayoutChangeEvent) => {
+      const h = e.nativeEvent.layout.height
+      setTotalHeight(h)
+    }}
+    style={{
+      opacity: 0,
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+    }}>
+    {props.ExpandedVisibleComponent && props.CollapsedVisibleComponent &&
+      <>
+        {React.cloneElement(props.CollapsedVisibleComponent, {
+          onLayout: (e: LayoutChangeEvent) => {
+            const h = e.nativeEvent.layout.height
+            setCollapsedVisibleHeight(h)
+          }
+        })}
+        {React.cloneElement(props.ExpandedVisibleComponent, {
+          onLayout: (e: LayoutChangeEvent) => {
+            const h = e.nativeEvent.layout.height
+            setExpandedVisibleHeight( h)
+          }
+        })}
+      </>
+    }
+  </View>
+})
+
+const DraggableSliderComponent = React.forwardRef<RefProps, Props>((
   {
     children,
     expandedOffset,
@@ -39,8 +101,6 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
     animationDuration= 100,
     onCollapsed,
     onExpanded,
-    CollapsedVisibleComponent,
-    ExpandedVisibleComponent,
   },
   ref
 ) => {
@@ -49,7 +109,7 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
   const expandedY = expandedOffset || 0
 
   const dragY = useRef(new Animated.Value(0)).current
-  const positionY = useRef(new Animated.Value(0)).current
+  const positionY = useRef(new Animated.Value(startCollapsed? collapsedY : expandedY)).current
 
   const collapse = () => {
     getAnimation(collapsedY).start()
@@ -83,12 +143,12 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
 
   const panResponder = useRef(PanResponder.create({
     // Ask to be the responder:
-    onStartShouldSetPanResponder: (evt, gestureState) => true,
-    onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-    onMoveShouldSetPanResponder: (evt, gestureState) => true,
-    onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+    onStartShouldSetPanResponder: () => true,
+    onStartShouldSetPanResponderCapture: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponderCapture: () => true,
 
-    onPanResponderGrant: (evt, gestureState) => {
+    onPanResponderGrant: () => {
       // The gesture has started. Show visual feedback so the user knows
       // what is happening!
       // gestureState.d{x,y} will be set to zero now
@@ -98,8 +158,8 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
     }], {
       useNativeDriver: false,
     }),
-    onPanResponderTerminationRequest: (evt, gestureState) => true,
-    onPanResponderRelease: (evt, gestureState) => {
+    onPanResponderTerminationRequest: () => true,
+    onPanResponderRelease: (evt) => {
       // The user has released all touches while this view is the
       // responder. This typically means a gesture has succeeded
       const releaseLocation = evt.nativeEvent.pageY - evt.nativeEvent.locationY
@@ -108,12 +168,12 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
       positionY.setValue(releaseLocation)
       snapToClosest(releaseLocation)
     },
-    onPanResponderTerminate: (evt, gestureState) => {
+    onPanResponderTerminate: () => {
       // Another component has become the responder, so this gesture
       // should be cancelled
       dragY.setValue(0)
     },
-    onShouldBlockNativeResponder: (evt, gestureState) => {
+    onShouldBlockNativeResponder: () => {
       // Returns whether this component should block native components from becoming the JS
       // responder. Returns true by default. Is currently only supported on android.
       return true;
@@ -122,10 +182,6 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
 
   return (
     <Animated.View
-      // onLayout={e => {
-      //   const h = e.nativeEvent.layout.height
-      //   setTotalHeight(h)
-      // }}
       style={[
         styles.container,
         {
@@ -141,22 +197,6 @@ const DraggableSlider = React.forwardRef<RefProps, Props>((
         },
       ]}
       {...panResponder.current?.panHandlers}>
-      {/*{ExpandedVisibleComponent && CollapsedVisibleComponent &&*/}
-      {/*  <>*/}
-      {/*    {React.cloneElement(CollapsedVisibleComponent, {*/}
-      {/*      onLayout: (e: LayoutChangeEvent) => {*/}
-      {/*        const h = e.nativeEvent.layout.height*/}
-      {/*        setCollapsedVisibleHeight(h)*/}
-      {/*      }*/}
-      {/*    })}*/}
-      {/*    {React.cloneElement(ExpandedVisibleComponent, {*/}
-      {/*      onLayout: (e: LayoutChangeEvent) => {*/}
-      {/*        const h = e.nativeEvent.layout.height*/}
-      {/*        setExpandedVisibleHeight( h)*/}
-      {/*      }*/}
-      {/*    })}*/}
-      {/*  </>*/}
-      {/*}*/}
       {children}
     </Animated.View>
   );

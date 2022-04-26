@@ -14,7 +14,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
 import DraggableSlider from '../components/DraggableSlider';
 
-const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) => {
+const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
 
   const {bottom} = useSafeAreaInsets()
 
@@ -38,18 +38,18 @@ const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) =
       </View>
       <DraggableSlider
         startCollapsed={true}
-        expandedOffset={500}
-        collapsedOffset={700}
-        // CollapsedVisibleComponent={
-        //   <View style={{height: 100, backgroundColor: 'green'}}>
-        //
-        //   </View>
-        // }
-        // ExpandedVisibleComponent={
-        //   <View style={{height: 200, backgroundColor: 'red'}}>
-        //
-        //   </View>
-        // }
+        // expandedOffset={500}
+        // collapsedOffset={700}
+        CollapsedVisibleComponent={
+          <View style={{height: 200, backgroundColor: 'green'}}>
+
+          </View>
+        }
+        ExpandedVisibleComponent={
+          <View style={{height: 200, backgroundColor: 'red'}}>
+
+          </View>
+        }
       />
     </View>
   );
