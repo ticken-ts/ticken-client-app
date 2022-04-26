@@ -12,8 +12,12 @@ import {t} from 'i18n-js';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
+import DraggableSlider from '../components/DraggableSlider/DraggableSlider';
+import Ionicons from '@expo/vector-icons/Ionicons'
+import {colors} from '../styles/colors';
+import {shadowStyles} from '../styles/shadow';
 
-const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) => {
+const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
 
   const {bottom} = useSafeAreaInsets()
 
