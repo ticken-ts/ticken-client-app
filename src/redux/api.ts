@@ -1,11 +1,22 @@
-import {fetchBaseQuery} from '@reduxjs/toolkit/query';
+import {BaseQueryFn, fetchBaseQuery} from '@reduxjs/toolkit/query';
 import {getEnvironment} from '../config/environment';
 import {EventModel} from '../model/Event';
 import {createApi} from '@reduxjs/toolkit/dist/query/react';
+import {RootState} from './store';
+
+export const API_REDUCER_PATH = 'api';
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({baseUrl: getEnvironment().apiHost}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: getEnvironment().apiHost,
+    prepareHeaders: (headers, {getState}) => {
+      const token = (getState() as RootState).securePersisted.auth.token;
+      if (token) headers.set('Authorization', `Bearer ${token}`)
+      return headers
+    }
+  }),
   tagTypes: ['events'],
+  reducerPath: API_REDUCER_PATH,
   endpoints: (builder) => ({
     getEvents: builder.query<EventModel[], {page: number, pageSize: number}>({
       query: (params) => ({

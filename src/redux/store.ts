@@ -1,15 +1,16 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
-import {api} from './api';
+import {api, API_REDUCER_PATH} from './api';
 import auth from './reducers/auth';
 import {secureStorage} from './secureStorage';
+import {AUTH_REDUCER_PATH, authApi} from './authApi';
 
 const EncryptedStorage = secureStorage({});
 
 const securePersistedReducer = persistReducer(
   {
-    key: 'secure',
+    key: 'securePersisted',
     storage: EncryptedStorage,
   },
   combineReducers({
@@ -29,7 +30,8 @@ const securePersistedReducer = persistReducer(
 
 const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer,
+    [API_REDUCER_PATH]: api.reducer,
+    [AUTH_REDUCER_PATH]: authApi.reducer,
     securePersisted: securePersistedReducer,
     // persisted: persistedReducer,
   },
@@ -38,7 +40,10 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(api.middleware),
+    }).concat([
+      api.middleware,
+      authApi.middleware,
+    ]),
 })
 
 setupListeners(store.dispatch)

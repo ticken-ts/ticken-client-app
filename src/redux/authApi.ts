@@ -5,11 +5,14 @@ import {LoginForm, LoginResponse} from '../model/Auth';
 import auth from './reducers/auth';
 import {env} from '../config/loadEnvironment';
 
+export const AUTH_REDUCER_PATH = 'authApi';
+
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: getEnvironment().authApiHost,
   }),
   tagTypes: ['auth'],
+  reducerPath: AUTH_REDUCER_PATH,
   endpoints: (builder) => ({
     signIn: builder.mutation<LoginResponse, LoginForm>({
       query: (params) => ({
