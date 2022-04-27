@@ -3,6 +3,7 @@ import {fetchBaseQuery} from '@reduxjs/toolkit/query';
 import {getEnvironment} from '../config/environment';
 import {LoginForm, LoginResponse} from '../model/Auth';
 import auth from './reducers/auth';
+import {env} from '../config/loadEnvironment';
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -17,7 +18,7 @@ export const authApi = createApi({
         body: (new URLSearchParams({
           grant_type: 'password',
           client_id: 'ticken.client.app',
-          client_secret: '49C1A7E1-0C79-4A89-A3D6-A37998FB86B0',
+          client_secret: env.API_SECRET,
           username: params.email,
           password: params.password,
           scope: 'ticken.events.api.read openid profile email',
