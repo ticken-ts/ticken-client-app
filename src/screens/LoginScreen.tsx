@@ -13,11 +13,20 @@ import {squares} from '../styles/grid';
 import {colors} from '../styles/colors';
 import {getHiddenHeader} from '../navigation/headers';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import {useSignInMutation} from '../redux/authApi';
+import {useForm} from '../hooks/useForm';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
+  const [form, setForm] = useForm({
+    email: '',
+    password: '',
+  })
+
+  const [trigger, response] = useSignInMutation({fixedCacheKey: 'signIn'})
+
   const logIn = () => {
-    navigation.navigate(ScreenId.Home)
+    trigger(form)
   };
 
   const goToRegister = () => {
@@ -33,9 +42,24 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
         resizeMode={'contain'}
       />
       <Spacing v={squares(8)} />
-      <Input style={styles.input} autoCapitalize={'none'} placeholder={t('email')} autoCorrect={false} keyboardType={'email-address'} />
+      <Input
+        onChangeText={email => setForm({email})}
+        style={styles.input}
+        textContentType={'emailAddress'}
+        autoCapitalize={'none'}
+        autoCorrect={false}
+        autoCompleteType={'email'}
+        keyboardType={'email-address'}
+        placeholder={t('email')}
+      />
       <Spacing v={squares(2)} />
-      <Input style={styles.input} placeholder={t('password')} secureTextEntry />
+      <Input
+        onChangeText={password => setForm({password})}
+        style={styles.input}
+        placeholder={t('password')}
+        textContentType={'password'}
+        secureTextEntry
+      />
       <Spacing v={squares(4)} />
       <Button style={styles.loginButton} title={t('login')} onPress={logIn} TextComponent={Typography}/>
       <Spacing v={squares(4)} />

@@ -10,6 +10,7 @@ import {squares} from '../styles/grid';
 import KeyboardAvoid from '../components/KeyboardAvoid';
 import Button from '../components/Button';
 import Typography from '../components/Typography';
+import {t} from '../locale/useLocalization';
 
 const initialForm = {
   email: '',
@@ -35,26 +36,28 @@ const RegisterScreen = () => {
           autoCorrect={false}
           autoCompleteType={'email'}
           keyboardType={'email-address'}
-          placeholder={'Email'}
+          placeholder={t('email')}
           onChangeText={email => setForm({email})}
-          value={form.email} />
+          value={form.email}
+        />
         <Spacing v={squares(2)} />
         <Input
           textContentType={'password'}
           secureTextEntry
-          placeholder={'Password'}
+          placeholder={t('password')}
           onChangeText={password => setForm({password})}
-          value={form.password} />
+          value={form.password}
+        />
         <Spacing v={squares(2)} />
         <Input
           textContentType={'password'}
           secureTextEntry
-          placeholder={'Repeat Password'}
+          placeholder={t('repeatPassword')}
           onChangeText={repeatedPassword => setForm({repeatedPassword})}
           value={form.repeatedPassword}
         />
         <Spacing v={squares(4)} />
-        <Button title={'Sign Up'} onPress={signUp} TextComponent={Typography} />
+        <Button title={t('signupbtn')} onPress={signUp} TextComponent={Typography} />
       </KeyboardAvoid>
     </View>
   );

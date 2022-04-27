@@ -1,5 +1,6 @@
 interface Environment {
   apiHost: string,
+  authApiHost: string,
 }
 
 interface Environments {
@@ -9,10 +10,12 @@ interface Environments {
 
 const environments: Environments = {
   PROD: {
-    apiHost: ''
+    apiHost: '',
+    authApiHost: '',
   },
   DEV: {
-    apiHost: 'http://192.168.0.4:7010/api'
+    apiHost: 'http://192.168.0.4:8000/api',
+    authApiHost: 'http://192.168.0.4:7000/connect',
   }
 }
 

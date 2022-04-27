@@ -22,7 +22,7 @@ export const api = createApi({
           cover: getRandomCover()
         }))
       }
-    })
+    }),
   })
 })
 
