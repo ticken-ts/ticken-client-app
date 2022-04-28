@@ -15,14 +15,13 @@ const authSlice = createSlice({
   initialState,
   name: 'auth',
   reducers: {},
-  extraReducers: builder => {
-    builder.addMatcher(
+  extraReducers: builder => builder
+    .addMatcher(
       authApi.endpoints.signIn.matchFulfilled,
       (state, {payload}) => {
         state.token = payload.access_token;
       }
     )
-  }
 })
 
 
