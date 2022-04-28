@@ -14,7 +14,11 @@ const initialState: InitialState = {
 const authSlice = createSlice({
   initialState,
   name: 'auth',
-  reducers: {},
+  reducers: {
+    signOutApp: state => {
+      state.token = ''
+    }
+  },
   extraReducers: builder => builder
     .addMatcher(
       authApi.endpoints.signIn.matchFulfilled,
@@ -25,6 +29,6 @@ const authSlice = createSlice({
 })
 
 
-export const {} = authSlice.actions
+export const {signOutApp} = authSlice.actions
 
 export default authSlice.reducer

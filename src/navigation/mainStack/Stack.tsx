@@ -7,6 +7,7 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import EventDetails from '../../screens/EventDetails';
 import {useSelector} from 'react-redux';
 import {isLoggedIn} from '../../redux/selectors/auth';
+import UserProfile from '../../screens/UserProfile';
 
 const {Navigator, Screen} = createSharedElementStackNavigator<RootStackParamList>();
 
@@ -15,7 +16,7 @@ const Stack = () => {
 
   return (
     <Navigator screenOptions={{headerShown: false}}>
-      {!loggedIn && <>
+      {!loggedIn ? <>
         <Screen
           name={ScreenId.Login}
           {...LoginScreen}
@@ -24,8 +25,8 @@ const Stack = () => {
           name={ScreenId.Register}
           {...RegisterScreen}
         />
-      </>}
-      {<>
+      </>
+      :<>
         <Screen
           name={ScreenId.Home}
           {...Home}
@@ -36,6 +37,10 @@ const Stack = () => {
           sharedElements={(route) => {
             return [`item.${route.params.event.id}.cover`];
           }}
+        />
+        <Screen
+          name={ScreenId.UserProfile}
+          {...UserProfile}
         />
       </>}
     </Navigator>

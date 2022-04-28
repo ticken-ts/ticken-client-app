@@ -5,7 +5,8 @@ export enum ScreenId {
   Login = "Login",
   Register = "Register",
   Home = "Home",
-  EventDetails = "EventDetails"
+  EventDetails = "EventDetails",
+  UserProfile = "UserProfile",
 }
 
 export type RootStackParamList = {
@@ -15,6 +16,9 @@ export type RootStackParamList = {
   [ScreenId.EventDetails]: {
     event: EventModel,
   };
+  [ScreenId.UserProfile]: {
+    userId?: string,
+  }
 }
 
 export type NavigationTyping = StackNavigationProp<RootStackParamList>

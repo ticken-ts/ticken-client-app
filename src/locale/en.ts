@@ -7,7 +7,9 @@ export const en = {
   signuptext: "Don't have an account?",
   signupbtn: "Sign Up",
 
+  homeTitle: "Upcoming Events",
 
+  buyTickets: "Buy Tickets",
 
-  buyTickets: "Buy Tickets"
+  logOut: "Sign Out"
 }

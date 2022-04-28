@@ -9,10 +9,34 @@ import {useGetEventsQuery} from '../redux/api';
 import {EventModel} from '../model/Event';
 import {HomeListItem} from '../components/HomeListItem';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import {t} from '../locale/useLocalization';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {squares} from '../styles/grid';
 
 const pageSize = 4;
 
-const Home = ({}: ScreenProps<ScreenId.Home>) => {
+const Home = ({navigation}: ScreenProps<ScreenId.Home>) => {
+
+  const goToProfile = () => {
+    navigation.navigate(ScreenId.UserProfile)
+  };
+
+  useEffect(
+    () => navigation.setOptions(getCustomHeader({
+      mid: () => <H1 style={{color: colors.white}}>{t('homeTitle')}</H1>,
+      right: () => (
+        <Ionicons
+          name={'person-circle'}
+          color={colors.white}
+          style={styles.profileIcon}
+          onPress={goToProfile}
+          size={squares(3)}
+        />
+      ),
+      backgroundColor: colors.primary
+    })),
+    []
+  )
 
   const [data, setData] = useState<EventModel[]>([]);
   const [page, setPage] = useState(0)
@@ -57,10 +81,6 @@ const Home = ({}: ScreenProps<ScreenId.Home>) => {
 
 export default {
   component: Home,
-  options: getCustomHeader({
-    mid: () => <H1 style={{color: colors.white}}>Upcoming Events</H1>,
-    backgroundColor: colors.primary
-  }),
 };
 
 const styles = StyleSheet.create({
@@ -71,5 +91,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: colors.secondary
   },
+  profileIcon: {
+    marginRight: squares(1)
+  }
 });
 
