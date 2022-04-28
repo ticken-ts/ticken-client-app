@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ScreenId} from '../navigation/ScreenIDs';
-import {ScreenProps} from '../navigation/types';
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScreenId} from '../navigation/mainStack/ScreenIDs';
+import {ScreenProps} from '../navigation/mainStack/types';
 import Typography from '../components/Typography';
-import Image from '../components/Image'
+import Image from '../components/Image';
 import {t} from '../locale/useLocalization';
 import Spacing from '../components/Spacing';
 import Input from '../components/Input';
@@ -11,7 +11,7 @@ import KeyboardAvoid from '../components/KeyboardAvoid';
 import Button from '../components/Button';
 import {squares} from '../styles/grid';
 import {colors} from '../styles/colors';
-import {getHiddenHeader} from '../navigation/headers';
+import {getHiddenHeader} from '../navigation/mainStack/headers';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useSignInMutation} from '../redux/authApi';
 import {useForm} from '../hooks/useForm';
@@ -23,7 +23,7 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
     password: '',
   })
 
-  const [trigger, response] = useSignInMutation({fixedCacheKey: 'signIn'})
+  const [trigger] = useSignInMutation({fixedCacheKey: 'signIn'})
 
   const logIn = () => {
     trigger(form)

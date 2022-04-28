@@ -1,4 +1,4 @@
-import {EventModel} from '../model/Event';
+import {EventModel} from '../../model/Event';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export enum ScreenId {

@@ -1,12 +1,12 @@
 import React from 'react';
 import {RootStackParamList, ScreenId} from './ScreenIDs';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import Home from '../screens/Home';
+import LoginScreen from '../../screens/LoginScreen';
+import RegisterScreen from '../../screens/RegisterScreen';
+import Home from '../../screens/Home';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
-import EventDetails from '../screens/EventDetails';
+import EventDetails from '../../screens/EventDetails';
 import {useSelector} from 'react-redux';
-import {isLoggedIn} from '../redux/selectors/auth';
+import {isLoggedIn} from '../../redux/selectors/auth';
 
 const {Navigator, Screen} = createSharedElementStackNavigator<RootStackParamList>();
 

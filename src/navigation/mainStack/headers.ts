@@ -1,5 +1,5 @@
 import {StackNavigationOptions} from '@react-navigation/stack';
-import {colors} from '../styles/colors';
+import {colors} from '../../styles/colors';
 
 export function getHiddenHeader(): StackNavigationOptions {
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
-import {ScreenProps} from '../navigation/types';
-import {ScreenId} from '../navigation/ScreenIDs';
-import {getCustomHeader} from '../navigation/headers';
+import {ScreenProps} from '../navigation/mainStack/types';
+import {ScreenId} from '../navigation/mainStack/ScreenIDs';
+import {getCustomHeader} from '../navigation/mainStack/headers';
 import {colors} from '../styles/colors';
 import {H1} from '../components/Typography';
 import {useGetEventsQuery} from '../redux/api';

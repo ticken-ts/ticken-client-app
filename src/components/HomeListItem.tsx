@@ -7,7 +7,7 @@ import Image from './Image';
 import React from 'react';
 import {SharedElement} from 'react-navigation-shared-element';
 import {useNavigation} from '@react-navigation/native';
-import {NavigationTyping, ScreenId} from '../navigation/ScreenIDs';
+import {NavigationTyping, ScreenId} from '../navigation/mainStack/ScreenIDs';
 
 export const HomeListItem = ({item}: {item: EventModel}) => {
 

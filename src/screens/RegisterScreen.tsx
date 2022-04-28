@@ -1,6 +1,6 @@
-import React, {useReducer} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {getCustomHeader, getHiddenHeader, getTranslucentHeader} from '../navigation/headers';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {getCustomHeader} from '../navigation/mainStack/headers';
 import BackButton from '../components/BackButton';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useForm} from '../hooks/useForm';

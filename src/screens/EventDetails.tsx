@@ -1,11 +1,11 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ScreenId} from '../navigation/ScreenIDs';
-import {ScreenProps} from '../navigation/types';
+import {ScreenId} from '../navigation/mainStack/ScreenIDs';
+import {ScreenProps} from '../navigation/mainStack/types';
 import {SharedElement} from 'react-navigation-shared-element';
 import Image from '../components/Image';
 import {squares} from '../styles/grid';
-import {getTranslucentHeader} from '../navigation/headers';
+import {getTranslucentHeader} from '../navigation/mainStack/headers';
 import Typography from '../components/Typography';
 import Button from '../components/Button';
 import {t} from 'i18n-js';

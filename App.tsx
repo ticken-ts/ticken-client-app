@@ -1,5 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
-import Stack from './src/navigation/Stack';
+import Stack from './src/navigation/mainStack/Stack';
 import {Provider} from 'react-redux';
 import store, {persistor} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
