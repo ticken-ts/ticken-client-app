@@ -4,7 +4,7 @@ import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, RE
 import {api, API_REDUCER_PATH} from './api';
 import auth from './reducers/auth';
 import {secureStorage} from './secureStorage';
-import {AUTH_REDUCER_PATH, authApi} from './authApi';
+import refreshTokenMiddleware from './middlewares/refreshTokenMiddleware';
 
 const EncryptedStorage = secureStorage({});
 
@@ -31,7 +31,7 @@ const securePersistedReducer = persistReducer(
 const store = configureStore({
   reducer: {
     [API_REDUCER_PATH]: api.reducer,
-    [AUTH_REDUCER_PATH]: authApi.reducer,
+    // [AUTH_REDUCER_PATH]: authApi.reducer,
     securePersisted: securePersistedReducer,
     // persisted: persistedReducer,
   },
@@ -42,7 +42,8 @@ const store = configureStore({
       },
     }).concat([
       api.middleware,
-      authApi.middleware,
+      refreshTokenMiddleware,
+      // authApi.middleware,
     ]),
 })
 

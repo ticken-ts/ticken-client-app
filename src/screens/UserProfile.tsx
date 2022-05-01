@@ -7,7 +7,7 @@ import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Button from '../components/Button';
 import {t} from '../locale/useLocalization';
 import useAppDispatch from '../hooks/useDispatch';
-import {signOutApp} from '../redux/reducers/auth';
+import {invalidateToken, signOutApp} from '../redux/reducers/auth';
 import {useSelector} from 'react-redux';
 import {isLoggedIn, selectToken} from '../redux/selectors/auth';
 import Typography from '../components/Typography';
@@ -30,6 +30,10 @@ const UserProfile = () => {
       <Button
         onPress={logout}
         title={t('logOut')}
+      />
+      <Button
+        onPress={() => dispatch(invalidateToken())}
+        title={'Invalidate token'}
       />
     </View>
   );

@@ -1,5 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {authApi} from '../authApi';
+import {createAsyncThunk, createSlice, isAnyOf} from '@reduxjs/toolkit';
+import {LoginBody, LoginForm, LoginResponse, RefreshTokenBody} from '../../model/Auth';
+import {getEnvironment} from '../../config/environment';
+import {env} from '../../config/loadEnvironment';
+import axios from 'axios';
 
 interface InitialState {
   token?: string,
@@ -11,24 +14,71 @@ const initialState: InitialState = {
   refreshToken: undefined
 }
 
+const baseAPI = axios.create({
+  baseURL: getEnvironment().authApiHost,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  transformRequest: [(data: any) => {
+    return new URLSearchParams(data).toString()
+  }].concat(axios.defaults.transformRequest?? [])
+})
+
+export const signIn = createAsyncThunk(
+  'auth/signIn',
+  async (params: LoginForm, thunkAPI) => {
+    const res = await baseAPI.post<LoginResponse>('/token', {
+      grant_type: 'password',
+      client_id: 'ticken.client.app',
+      client_secret: env.API_SECRET,
+      username: params.email,
+      password: params.password,
+      scope: 'ticken.events.api.read openid profile email offline_access',
+    })
+    return res.data
+  })
+
+export const refreshToken = createAsyncThunk(
+  'auth/refreshToken',
+  async (params: never, {getState}) => {
+    return (await baseAPI.post<LoginResponse>('/token', {
+      grant_type: 'refresh_token',
+      refresh_token: (getState() as any).securePersisted.auth.refreshToken,
+      client_secret: env.API_SECRET,
+      client_id: 'ticken.client.app',
+    })).data
+  }
+)
+
 const authSlice = createSlice({
   initialState,
   name: 'auth',
   reducers: {
     signOutApp: state => {
-      state.token = ''
+      state.token = undefined
+    },
+    invalidateToken: state => {
+      state.token = 'InvalidTokenTest'
     }
   },
-  extraReducers: builder => builder
+  extraReducers: (builder) => builder
     .addMatcher(
-      authApi.endpoints.signIn.matchFulfilled,
+      isAnyOf(refreshToken.rejected),
+      (state, {payload}) => {
+        state.token = undefined;
+        state.refreshToken = undefined;
+      }
+    )
+    .addMatcher(
+      isAnyOf(signIn.fulfilled, refreshToken.fulfilled),
       (state, {payload}) => {
         state.token = payload.access_token;
+        state.refreshToken = payload.refresh_token;
       }
     )
 })
 
 
-export const {signOutApp} = authSlice.actions
+export const {signOutApp, invalidateToken} = authSlice.actions
 
 export default authSlice.reducer

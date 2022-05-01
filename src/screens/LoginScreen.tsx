@@ -15,18 +15,20 @@ import {getHiddenHeader} from '../navigation/mainStack/headers';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {useSignInMutation} from '../redux/authApi';
 import {useForm} from '../hooks/useForm';
+import useAppDispatch from '../hooks/useDispatch';
+import {signIn} from '../redux/reducers/auth';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
+
+  const dispatch = useAppDispatch()
 
   const [form, setForm] = useForm({
     email: '',
     password: '',
   })
 
-  const [trigger] = useSignInMutation({fixedCacheKey: 'signIn'})
-
   const logIn = () => {
-    trigger(form)
+    dispatch(signIn(form))
   };
 
   const goToRegister = () => {
