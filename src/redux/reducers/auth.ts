@@ -6,13 +6,12 @@ import axios from 'axios';
 
 interface InitialState {
   token?: string,
-  refreshToken?: string
+  refreshToken?: string,
+  tokenDurationMs?: number,
+  tokenIssueDate?: number,
 }
 
-const initialState: InitialState = {
-  token: undefined,
-  refreshToken: undefined
-}
+const initialState: InitialState = {}
 
 const baseAPI = axios.create({
   baseURL: getEnvironment().authApiHost,
@@ -40,7 +39,7 @@ export const signIn = createAsyncThunk(
 
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
-  async (params: never, {getState}) => {
+  async (params: never, {getState, dispatch}) => {
     return (await baseAPI.post<LoginResponse>('/token', {
       grant_type: 'refresh_token',
       refresh_token: (getState() as any).securePersisted.auth.refreshToken,
@@ -74,6 +73,8 @@ const authSlice = createSlice({
       (state, {payload}) => {
         state.token = payload.access_token;
         state.refreshToken = payload.refresh_token;
+        state.tokenDurationMs = payload.expires_in * 1000;
+        state.tokenIssueDate = Date.now()
       }
     )
 })

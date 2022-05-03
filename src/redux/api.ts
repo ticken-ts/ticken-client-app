@@ -9,8 +9,9 @@ export const API_REDUCER_PATH = 'api';
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: getEnvironment().apiHost,
-    prepareHeaders: (headers, {getState}) => {
+    prepareHeaders: async (headers, {getState}) => {
       const token = (getState() as RootState).securePersisted.auth.token;
+
       if (token) headers.set('Authorization', `Bearer ${token}`)
       return headers
     }
@@ -27,12 +28,12 @@ export const api = createApi({
         }
       }),
       providesTags: ['events'],
-      transformResponse: (res: EventModel[]) => {
+      transformResponse (res: EventModel[]) {
         return res.map(event => ({
           ...event,
           cover: getRandomCover()
         }))
-      }
+      },
     }),
   })
 })
