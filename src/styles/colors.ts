@@ -6,5 +6,6 @@ export const colors = {
   tertiary: palette[2],
   text: '#2a2b2a',
   transparent: '#ffffff00',
-  white: '#fff'
+  white: '#fff',
+  red: '#ff0000'
 }

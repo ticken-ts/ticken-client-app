@@ -2,10 +2,15 @@ import React from 'react';
 import {StyleSheet, TextInput, TextInputProps, View} from 'react-native';
 import {colors} from '../styles/colors';
 import {squares} from '../styles/grid';
-import {typographyStyles} from './Typography';
+import Typography, {typographyStyles} from './Typography';
 
-const Input = (props: TextInputProps) => {
+interface Props extends TextInputProps {
+  error?: string,
+}
+
+const Input = (props: Props) => {
   return (
+    <>
       <TextInput
         {...props}
         style={[
@@ -14,6 +19,8 @@ const Input = (props: TextInputProps) => {
           props.style
         ]}
       />
+      {!!props.error && <Typography style={styles.error}>{props.error}</Typography>}
+    </>
   );
 };
 
@@ -27,5 +34,8 @@ const styles = StyleSheet.create({
     paddingVertical: squares(1),
     paddingHorizontal: squares(2),
     backgroundColor: colors.white,
+  },
+  error: {
+    color: colors.red
   }
 });

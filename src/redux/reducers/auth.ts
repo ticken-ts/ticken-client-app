@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, isAnyOf} from '@reduxjs/toolkit';
-import {LoginBody, LoginForm, LoginResponse, RefreshTokenBody} from '../../model/Auth';
+import {LoginBody, LoginForm, LoginResponse, RefreshTokenBody, RegisterBody, RegisterResponse} from '../../model/Auth';
 import {getEnvironment} from '../../config/environment';
 import {env} from '../../config/loadEnvironment';
 import axios from 'axios';
@@ -13,20 +13,26 @@ interface InitialState {
 
 const initialState: InitialState = {}
 
-const baseAPI = axios.create({
+const urlEncoded = (data: any) => {
+  return new URLSearchParams(data).toString()
+}
+
+const urlEncodedAPI = axios.create({
   baseURL: getEnvironment().authApiHost,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   },
-  transformRequest: [(data: any) => {
-    return new URLSearchParams(data).toString()
-  }].concat(axios.defaults.transformRequest?? [])
+  transformRequest: [urlEncoded].concat(axios.defaults.transformRequest?? [])
+})
+
+const baseAPI = axios.create({
+  baseURL: getEnvironment().authApiHost,
 })
 
 export const signIn = createAsyncThunk(
   'auth/signIn',
   async (params: LoginForm, thunkAPI) => {
-    const res = await baseAPI.post<LoginResponse>('/token', {
+    const res = await urlEncodedAPI.post<LoginResponse>('/connect/token', {
       grant_type: 'password',
       client_id: 'ticken.client.app',
       client_secret: env.API_SECRET,
@@ -37,10 +43,17 @@ export const signIn = createAsyncThunk(
     return res.data
   })
 
+export const signUp = createAsyncThunk(
+  'auth/signUp',
+  async (params: RegisterBody, thunkAPI) => {
+    const res = await baseAPI.post<RegisterResponse>('/accounts', params)
+    return res.data
+  })
+
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
   async (params: never, {getState, dispatch}) => {
-    return (await baseAPI.post<LoginResponse>('/token', {
+    return (await urlEncodedAPI.post<LoginResponse>('/connect/token', {
       grant_type: 'refresh_token',
       refresh_token: (getState() as any).securePersisted.auth.refreshToken,
       client_secret: env.API_SECRET,

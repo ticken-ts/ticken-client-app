@@ -19,6 +19,18 @@ export interface LoginResponse {
   expires_in: number;
 }
 
+export interface RegisterBody {
+  username: string,
+  email: string,
+  password: string,
+}
+
+export interface RegisterResponse {
+  userName: string,
+  email: string,
+  id: string,
+}
+
 export interface RefreshTokenBody {
   grant_type: 'refresh_token',
   client_id: string,
