@@ -1,21 +1,46 @@
-import {BaseQueryFn, fetchBaseQuery} from '@reduxjs/toolkit/query';
+import {BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError, FetchBaseQueryMeta} from '@reduxjs/toolkit/query';
 import {getEnvironment} from '../config/environment';
 import {EventModel} from '../model/Event';
 import {createApi} from '@reduxjs/toolkit/dist/query/react';
 import {RootState} from './store';
+import {refreshToken, signOutApp} from './reducers/auth';
+import {isFulfilled} from '@reduxjs/toolkit';
 
 export const API_REDUCER_PATH = 'api';
 
-export const api = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: getEnvironment().apiHost,
-    prepareHeaders: async (headers, {getState}) => {
-      const token = (getState() as RootState).securePersisted.auth.token;
+const baseQuery = fetchBaseQuery({
+  baseUrl: getEnvironment().apiHost,
+  prepareHeaders: async (headers, {getState}) => {
+    const token = (getState() as RootState).securePersisted.auth.token;
 
-      if (token) headers.set('Authorization', `Bearer ${token}`)
-      return headers
+    if (token) headers.set('Authorization', `Bearer ${token}`)
+    return headers
+  }
+})
+
+const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs> =
+async (args, api, extraOptions) => {
+  console.log('Making query')
+  const res = await baseQuery(args, api, extraOptions);
+  if (res.error?.status === 401 || res.error?.originalStatus === 401) {
+    console.log('Request errored, refreshing token')
+    const refreshResult = await api.dispatch(refreshToken())
+    if (isFulfilled(refreshResult)) {
+      console.log('Token refreshed')
+      const res = await baseQuery(args, api, extraOptions);
+      console.log('Retried request with res', res.meta?.response?.status)
+      if (!!res.error) {
+        api.dispatch(signOutApp());
+      }
+    } else {
+      api.dispatch(signOutApp());
     }
-  }),
+  }
+  return res;
+}
+
+export const api = createApi({
+  baseQuery: baseQueryWithRefresh,
   tagTypes: ['events'],
   reducerPath: API_REDUCER_PATH,
   endpoints: (builder) => ({
