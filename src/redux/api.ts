@@ -1,4 +1,4 @@
-import {BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError, FetchBaseQueryMeta} from '@reduxjs/toolkit/query';
+import {BaseQueryFn, FetchArgs, fetchBaseQuery} from '@reduxjs/toolkit/query';
 import {getEnvironment} from '../config/environment';
 import {EventModel} from '../model/Event';
 import {createApi} from '@reduxjs/toolkit/dist/query/react';
@@ -22,7 +22,7 @@ const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs> =
 async (args, api, extraOptions) => {
   console.log('Making query')
   const res = await baseQuery(args, api, extraOptions);
-  if (res.error?.status === 401 || res.error?.originalStatus === 401) {
+  if (res.error && (res.error.status === 401 || (res.error.status === 'PARSING_ERROR' && res.error.originalStatus === 401))) {
     console.log('Request errored, refreshing token')
     const refreshResult = await api.dispatch(refreshToken())
     if (isFulfilled(refreshResult)) {
