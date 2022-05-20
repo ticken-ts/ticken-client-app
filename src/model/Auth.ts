@@ -19,6 +19,11 @@ export interface LoginResponse {
   expires_in: number;
 }
 
+export interface LoginError {
+  error: string,
+  error_description: string,
+}
+
 export interface RegisterBody {
   username: string,
   email: string,

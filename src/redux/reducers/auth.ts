@@ -1,5 +1,13 @@
 import {createAsyncThunk, createSlice, isAnyOf} from '@reduxjs/toolkit';
-import {LoginBody, LoginForm, LoginResponse, RefreshTokenBody, RegisterBody, RegisterResponse} from '../../model/Auth';
+import {
+  LoginBody,
+  LoginError,
+  LoginForm,
+  LoginResponse,
+  RefreshTokenBody,
+  RegisterBody,
+  RegisterResponse,
+} from '../../model/Auth';
 import {getEnvironment} from '../../config/environment';
 import {env} from '../../config/loadEnvironment';
 import axios from 'axios';
@@ -32,7 +40,7 @@ const baseAPI = axios.create({
 export const signIn = createAsyncThunk(
   'auth/signIn',
   async (params: LoginForm, thunkAPI) => {
-    const res = await urlEncodedAPI.post<LoginResponse>('/connect/token', {
+    return await urlEncodedAPI.post<LoginError, LoginResponse, LoginBody>('/connect/token', {
       grant_type: 'password',
       client_id: 'ticken.client.app',
       client_secret: env.API_SECRET,
@@ -40,7 +48,6 @@ export const signIn = createAsyncThunk(
       password: params.password,
       scope: 'ticken.events.api.read openid profile email offline_access',
     })
-    return res.data
   })
 
 export const signUp = createAsyncThunk(

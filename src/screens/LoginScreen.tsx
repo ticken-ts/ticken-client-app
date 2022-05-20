@@ -17,6 +17,7 @@ import {useSignInMutation} from '../redux/authApi';
 import {useForm} from '../hooks/useForm';
 import useAppDispatch from '../hooks/useDispatch';
 import {signIn} from '../redux/reducers/auth';
+import {isFulfilled} from '@reduxjs/toolkit';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
@@ -27,8 +28,16 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
     password: '',
   })
 
-  const logIn = () => {
-    dispatch(signIn(form))
+  const [errors, setErrors] = useForm({
+    email: '',
+    password: '',
+  })
+
+  const logIn = async () => {
+    const res = await dispatch(signIn(form))
+    if (!isFulfilled(res)) {
+      setErrors({email: 'Error logging in: ' + res.error.message})
+    }
   };
 
   const goToRegister = () => {
@@ -56,6 +65,7 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
       />
       <Spacing v={squares(2)} />
       <Input
+        error={errors.email}
         onChangeText={password => setForm({password})}
         style={styles.input}
         placeholder={t('password')}
