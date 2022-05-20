@@ -12,6 +12,7 @@ const Input = (props: Props) => {
   return (
     <>
       <TextInput
+        placeholderTextColor={colors.text}
         {...props}
         style={[
           typographyStyles.mainText,
