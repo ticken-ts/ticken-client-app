@@ -15,7 +15,7 @@ const environments: Environments = {
   },
   DEV: {
     apiHost: 'http://192.168.0.4:8000/api',
-    authApiHost: 'http://192.168.0.4:7000',
+    authApiHost: 'http://192.168.0.4:7050',
   }
 }
 
