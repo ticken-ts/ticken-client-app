@@ -1,13 +1,5 @@
 import {createAsyncThunk, createSlice, isAnyOf} from '@reduxjs/toolkit';
-import {
-  LoginBody,
-  LoginError,
-  LoginForm,
-  LoginResponse,
-  RefreshTokenBody,
-  RegisterBody,
-  RegisterResponse,
-} from '../../model/Auth';
+import {LoginForm, LoginResponse, RegisterBody, RegisterResponse} from '../../model/Auth';
 import {getEnvironment} from '../../config/environment';
 import {env} from '../../config/loadEnvironment';
 import axios from 'axios';
@@ -39,33 +31,48 @@ const baseAPI = axios.create({
 
 export const signIn = createAsyncThunk(
   'auth/signIn',
-  async (params: LoginForm, thunkAPI) => {
-    return await urlEncodedAPI.post<LoginError, LoginResponse, LoginBody>('/connect/token', {
+  async (params: LoginForm, _thunkAPI) => {
+    const res = await urlEncodedAPI.post<LoginResponse>('/connect/token', {
       grant_type: 'password',
       client_id: 'ticken.client.app',
       client_secret: env.API_SECRET,
       username: params.email,
       password: params.password,
-      scope: 'ticken.events.api.read openid profile email offline_access',
+      // scope: 'ticken.events.api.read openid profile email offline_access',
     })
+    console.log('signed in:', res.data)
+    return res.data
+  })
+
+export const signInClientCredentials = createAsyncThunk(
+  'auth/signInClientCredentials',
+  async (_params: never, _thunkAPI) => {
+    const res = await urlEncodedAPI.post<LoginResponse>('/connect/token', {
+      grant_type: 'client_credentials',
+      client_id: 'ticken.client.app',
+      client_secret: env.API_SECRET,
+      // scope: 'ticken.events.api.read ticken.api.gateway',
+    })
+    return res.data
   })
 
 export const signUp = createAsyncThunk(
   'auth/signUp',
-  async (params: RegisterBody, thunkAPI) => {
+  async (params: RegisterBody, _thunkAPI) => {
     const res = await baseAPI.post<RegisterResponse>('/accounts', params)
     return res.data
   })
 
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
-  async (params: never, {getState, dispatch}) => {
-    return (await urlEncodedAPI.post<LoginResponse>('/connect/token', {
+  async (params: never, {getState}) => {
+    const res = await urlEncodedAPI.post<LoginResponse>('/connect/token', {
       grant_type: 'refresh_token',
       refresh_token: (getState() as any).securePersisted.auth.refreshToken,
       client_secret: env.API_SECRET,
       client_id: 'ticken.client.app',
-    })).data
+    })
+    return res.data
   }
 )
 
@@ -75,6 +82,7 @@ const authSlice = createSlice({
   reducers: {
     signOutApp: state => {
       state.token = undefined
+      state.refreshToken = undefined
     },
     invalidateToken: state => {
       state.token = 'InvalidTokenTest'
@@ -83,13 +91,13 @@ const authSlice = createSlice({
   extraReducers: (builder) => builder
     .addMatcher(
       isAnyOf(refreshToken.rejected),
-      (state, {payload}) => {
+      (state) => {
         state.token = undefined;
         state.refreshToken = undefined;
       }
     )
     .addMatcher(
-      isAnyOf(signIn.fulfilled, refreshToken.fulfilled),
+      isAnyOf(signIn.fulfilled, refreshToken.fulfilled, signInClientCredentials.fulfilled),
       (state, {payload}) => {
         state.token = payload.access_token;
         state.refreshToken = payload.refresh_token;

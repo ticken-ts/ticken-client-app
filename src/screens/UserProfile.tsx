@@ -11,8 +11,10 @@ import {invalidateToken, signOutApp} from '../redux/reducers/auth';
 import {useSelector} from 'react-redux';
 import {isLoggedIn, selectToken} from '../redux/selectors/auth';
 import Typography from '../components/Typography';
+import {ScreenProps} from '../navigation/mainStack/types';
+import {ScreenId} from '../navigation/mainStack/ScreenIDs';
 
-const UserProfile = () => {
+const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
   const dispatch = useAppDispatch()
   const loggedIn = useSelector(isLoggedIn)
@@ -22,14 +24,22 @@ const UserProfile = () => {
     dispatch(signOutApp())
   };
 
+  const login = () => {
+    navigation.navigate(ScreenId.Login)
+  }
+
   return (
     <View style={styles.container}>
       <FocusAwareStatusBar style={'dark'} />
       <Typography>{loggedIn ? 'You are logged in' : 'You are not logged in'}</Typography>
-      <Typography>{token}</Typography>
+      <Typography>{token?.slice(0, 10)}...</Typography>
       <Button
         onPress={logout}
         title={t('logOut')}
+      />
+      <Button
+        onPress={login}
+        title={t('login')}
       />
       <Button
         onPress={() => dispatch(invalidateToken())}

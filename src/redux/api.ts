@@ -3,7 +3,7 @@ import {getEnvironment} from '../config/environment';
 import {EventModel} from '../model/Event';
 import {createApi} from '@reduxjs/toolkit/dist/query/react';
 import {RootState} from './store';
-import {refreshToken, signOutApp} from './reducers/auth';
+import {refreshToken, signInClientCredentials, signOutApp} from './reducers/auth';
 import {isFulfilled} from '@reduxjs/toolkit';
 
 export const API_REDUCER_PATH = 'api';
@@ -21,19 +21,22 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs> =
 async (args, api, extraOptions) => {
   console.log('Making query')
-  const res = await baseQuery(args, api, extraOptions);
+  let res = await baseQuery(args, api, extraOptions);
   if (res.error && (res.error.status === 401 || (res.error.status === 'PARSING_ERROR' && res.error.originalStatus === 401))) {
     console.log('Request errored, refreshing token')
     const refreshResult = await api.dispatch(refreshToken())
     if (isFulfilled(refreshResult)) {
       console.log('Token refreshed')
-      const res = await baseQuery(args, api, extraOptions);
+      res = await baseQuery(args, api, extraOptions);
       console.log('Retried request with res', res.meta?.response?.status)
       if (!!res.error) {
         api.dispatch(signOutApp());
       }
     } else {
+      console.log('Refreshing token failed, using client credentials')
       api.dispatch(signOutApp());
+      await api.dispatch(signInClientCredentials())
+      res = await baseQuery(args, api, extraOptions);
     }
   }
   return res;

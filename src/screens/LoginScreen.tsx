@@ -11,13 +11,14 @@ import KeyboardAvoid from '../components/KeyboardAvoid';
 import Button from '../components/Button';
 import {squares} from '../styles/grid';
 import {colors} from '../styles/colors';
-import {getHiddenHeader} from '../navigation/mainStack/headers';
+import {getTranslucentHeader} from '../navigation/mainStack/headers';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import {useSignInMutation} from '../redux/authApi';
 import {useForm} from '../hooks/useForm';
 import useAppDispatch from '../hooks/useDispatch';
 import {signIn} from '../redux/reducers/auth';
 import {isFulfilled} from '@reduxjs/toolkit';
+import {AxiosError} from 'axios';
+import BackButton from '../components/BackButton';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
@@ -36,7 +37,12 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
   const logIn = async () => {
     const res = await dispatch(signIn(form))
     if (!isFulfilled(res)) {
-      setErrors({email: 'Error logging in: ' + res.error.message})
+      if (res.error.code === AxiosError.ERR_BAD_REQUEST)
+        setErrors({email: 'Invalid username or password'+ JSON.stringify(res.error)})
+      else
+        setErrors({email: 'There was an unknown error: ' + res.error.code})
+    } else {
+      navigation.pop(1)
     }
   };
 
@@ -87,7 +93,9 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
 export default {
   component: LoginScreen,
-  options: getHiddenHeader()
+  options: getTranslucentHeader({
+    left: () => <BackButton />
+  })
 };
 
 const styles = StyleSheet.create({

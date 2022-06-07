@@ -5,17 +5,17 @@ export interface LoginForm {
 }
 
 export interface LoginBody {
-  grant_type: 'password',
+  grant_type: 'password' | 'client_credentials',
   client_id: string,
   client_secret: string,
-  username: string,
-  password: string,
+  username?: string,
+  password?: string,
   scope: string,
 }
 
 export interface LoginResponse {
   access_token: string;
-  refresh_token: string;
+  refresh_token?: string;
   expires_in: number;
 }
 

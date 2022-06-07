@@ -13,8 +13,10 @@ import Typography from '../components/Typography';
 import {t} from '../locale/useLocalization';
 import {colors} from '../styles/colors';
 import useAppDispatch from '../hooks/useDispatch';
-import {signIn, signUp} from '../redux/reducers/auth';
+import {signUp} from '../redux/reducers/auth';
 import {isFulfilled, isRejected} from '@reduxjs/toolkit';
+import {ScreenProps} from '../navigation/mainStack/types';
+import {ScreenId} from '../navigation/mainStack/ScreenIDs';
 
 const initialForm = {
   email: '',
@@ -23,7 +25,7 @@ const initialForm = {
   username: '',
 }
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation}: ScreenProps<ScreenId.Register>) => {
 
   const dispatch = useAppDispatch()
 
@@ -51,10 +53,7 @@ const RegisterScreen = () => {
       console.log(registerRes.payload)
       if (isFulfilled(registerRes)) {
         console.log('signed up successfully')
-        await dispatch(signIn({
-          email: form.username,
-          password: form.password
-        }))
+        navigation.navigate(ScreenId.Login)
       } else if (isRejected(registerRes)) {
         console.log('registration failed', registerRes.error)
       }
