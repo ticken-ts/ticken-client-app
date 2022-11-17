@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {PropsWithChildren, useCallback, useEffect, useState} from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import {View} from 'react-native';
 import loadFonts from '../fonts/loadFonts';
 
 type Props = {}
 
-const SplashLoader: React.FC<Props> = ({children}) => {
+const SplashLoader: React.FC<PropsWithChildren<Props>> = ({children}) => {
 
   const [appIsReady, setAppIsReady] = useState(false);
 
