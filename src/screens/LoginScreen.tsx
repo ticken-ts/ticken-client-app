@@ -65,7 +65,7 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
         textContentType={'emailAddress'}
         autoCapitalize={'none'}
         autoCorrect={false}
-        autoCompleteType={'email'}
+        autoComplete={'email'}
         keyboardType={'email-address'}
         placeholder={t('email')}
       />
