@@ -1,4 +1,4 @@
-const palette = ['#251351', '#30c5ff', '#5c946e', '#80c2af', '#a0dde6']
+const palette = ['#4c44c4', '#8F82B6', '#F6EBFF', '#68BAA5']
 
 export const colors = {
   primary: palette[0],
@@ -7,5 +7,5 @@ export const colors = {
   text: '#2a2b2a',
   transparent: '#ffffff00',
   white: '#fff',
-  red: '#ff0000'
+  red: '#B8001A',
 }
