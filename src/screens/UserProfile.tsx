@@ -28,25 +28,34 @@ const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
     navigation.navigate(ScreenId.Login)
   }
 
-  return (
-    <View style={styles.container}>
-      <FocusAwareStatusBar style={'dark'} />
-      <Typography>{loggedIn ? 'You are logged in' : 'You are not logged in'}</Typography>
-      <Typography>{token?.slice(0, 10)}...</Typography>
-      <Button
-        onPress={logout}
-        title={t('logOut')}
-      />
-      <Button
-        onPress={login}
-        title={t('login')}
-      />
-      <Button
-        onPress={() => dispatch(invalidateToken())}
-        title={'Invalidate token'}
-      />
-    </View>
-  );
+  if (loggedIn) {
+    return (
+      <View style={styles.container}>
+        <Typography>You are logged in</Typography>
+        <Typography>{token?.slice(0, 10)}...</Typography>
+        <Button
+          onPress={logout}
+          title={t('logOut')}
+        />
+        <Button
+          onPress={() => dispatch(invalidateToken())}
+          title={'Invalidate token'}
+        />
+      </View>
+    )
+  } else {
+    return (
+      <View style={styles.container}>
+        <FocusAwareStatusBar style={'dark'} />
+        <Typography>You are not logged in</Typography>
+        <Button
+          onPress={login}
+          title={t('login')}
+        />
+      </View>
+    );
+  }
+
 };
 
 export default {
