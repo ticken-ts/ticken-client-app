@@ -22,7 +22,11 @@ const urlEncodedAPI = axios.create({
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   },
-  transformRequest: [urlEncoded].concat(axios.defaults.transformRequest?? [])
+  transformRequest: Array.isArray(axios.defaults.transformRequest)
+    ? [urlEncoded, ...axios.defaults.transformRequest]
+    : axios.defaults.transformRequest
+      ? [axios.defaults.transformRequest, urlEncoded]
+      : [urlEncoded]
 })
 
 const baseAPI = axios.create({
