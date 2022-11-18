@@ -1,18 +1,18 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {getTranslucentHeader} from '../navigation/mainStack/headers';
-import BackButton from '../components/BackButton';
-import {colors} from '../styles/colors';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import Button from '../components/Button';
-import {t} from '../locale/useLocalization';
-import useAppDispatch from '../hooks/useDispatch';
-import {invalidateToken, signOutApp} from '../redux/reducers/auth';
+import {getTranslucentHeader} from '@app/navigation/mainStack/headers';
+import BackButton from '@app/components/BackButton';
+import {colors} from '@app/styles/colors';
+import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
+import Button from '@app/components/Button';
+import {t} from '@app/locale/useLocalization';
+import useAppDispatch from '@app/hooks/useDispatch';
+import {invalidateToken, signOutApp} from '@app/redux/reducers/auth';
 import {useSelector} from 'react-redux';
-import {isLoggedIn, selectToken} from '../redux/selectors/auth';
-import Typography from '../components/Typography';
-import {ScreenProps} from '../navigation/mainStack/types';
-import {ScreenId} from '../navigation/mainStack/ScreenIDs';
+import {isLoggedIn, selectToken} from '@app/redux/selectors/auth';
+import Typography from '@app/components/Typography';
+import {ScreenProps} from '@app/navigation/mainStack/types';
+import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 

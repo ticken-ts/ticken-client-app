@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
-import {ScreenProps} from '../navigation/mainStack/types';
-import {ScreenId} from '../navigation/mainStack/ScreenIDs';
-import {getCustomHeader} from '../navigation/mainStack/headers';
-import {colors} from '../styles/colors';
-import {H1} from '../components/Typography';
-import {useGetEventsQuery} from '../redux/api';
-import {EventModel} from '../model/Event';
-import {HomeListItem} from '../components/HomeListItem';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import {t} from '../locale/useLocalization';
+import {ScreenProps} from '@app/navigation/mainStack/types';
+import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
+import {getCustomHeader} from '@app/navigation/mainStack/headers';
+import {colors} from '@app/styles/colors';
+import {H1} from '@app/components/Typography';
+import {useGetEventsQuery} from '@app/redux/api';
+import {EventModel} from '@app/model/Event';
+import {HomeListItem} from '@app/components/HomeListItem';
+import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
+import {t} from '@app/locale/useLocalization';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {squares} from '../styles/grid';
+import {squares} from '@app/styles/grid';
 
 const pageSize = 4;
 
 const Home = ({navigation}: ScreenProps<ScreenId.Home>) => {
 
   const goToProfile = () => {
-    navigation.navigate(ScreenId.UserProfile)
+    navigation.navigate(ScreenId.UserProfile, {})
   };
 
   useEffect(

@@ -5,7 +5,15 @@ module.exports = function(api) {
     "plugins": [
       ["module:react-native-dotenv", {
         "moduleName": "react-native-dotenv"
-      }]
+      }],
+      [
+        'module-resolver',
+        {
+          alias: {
+            '@app': './src',
+          },
+        },
+      ],
     ]
   };
 };

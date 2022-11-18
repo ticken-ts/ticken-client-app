@@ -1,7 +1,7 @@
 import React, {PropsWithChildren, useCallback, useEffect, useState} from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import {View} from 'react-native';
-import loadFonts from '../fonts/loadFonts';
+import loadFonts from '@app/fonts/loadFonts';
 
 type Props = {}
 

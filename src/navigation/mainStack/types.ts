@@ -1,4 +1,4 @@
-import {RootStackParamList, ScreenId} from './ScreenIDs';
+import {RootStackParamList, ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {StackNavigationOptions, StackScreenProps as ScrnProps} from '@react-navigation/stack';
 import React from 'react';
 

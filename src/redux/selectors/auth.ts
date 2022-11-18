@@ -1,5 +1,5 @@
 import {createDraftSafeSelector} from '@reduxjs/toolkit';
-import {RootState} from '../store';
+import {RootState} from '@app/redux/store';
 
 const selectAuth = (st: RootState) => st.securePersisted.auth;
 

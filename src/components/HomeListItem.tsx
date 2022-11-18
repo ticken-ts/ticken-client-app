@@ -1,13 +1,13 @@
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {colors} from '../styles/colors';
-import {squares} from '../styles/grid';
-import {shadowStyles} from '../styles/shadow';
-import {EventModel} from '../model/Event';
-import Image from './Image';
+import {colors} from '@app/styles/colors';
+import {squares} from '@app/styles/grid';
+import {shadowStyles} from '@app/styles/shadow';
+import {EventModel} from '@app/model/Event';
+import Image from '@app/components/Image';
 import React from 'react';
 import {SharedElement} from 'react-navigation-shared-element';
 import {useNavigation} from '@react-navigation/native';
-import {NavigationTyping, ScreenId} from '../navigation/mainStack/ScreenIDs';
+import {NavigationTyping, ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 
 export const HomeListItem = ({item}: {item: EventModel}) => {
 

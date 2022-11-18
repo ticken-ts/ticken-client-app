@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {getCustomHeader} from '../navigation/mainStack/headers';
-import BackButton from '../components/BackButton';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import {useForm} from '../hooks/useForm';
-import Input from '../components/Input';
-import Spacing from '../components/Spacing';
-import {squares} from '../styles/grid';
-import KeyboardAvoid from '../components/KeyboardAvoid';
-import Button from '../components/Button';
-import Typography from '../components/Typography';
-import {t} from '../locale/useLocalization';
-import {colors} from '../styles/colors';
-import useAppDispatch from '../hooks/useDispatch';
-import {signUp} from '../redux/reducers/auth';
+import {getCustomHeader} from '@app/navigation/mainStack/headers';
+import BackButton from '@app/components/BackButton';
+import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
+import {useForm} from '@app/hooks/useForm';
+import Input from '@app/components/Input';
+import Spacing from '@app/components/Spacing';
+import {squares} from '@app/styles/grid';
+import KeyboardAvoid from '@app/components/KeyboardAvoid';
+import Button from '@app/components/Button';
+import Typography from '@app/components/Typography';
+import {t} from '@app/locale/useLocalization';
+import {colors} from '@app/styles/colors';
+import useAppDispatch from '@app/hooks/useDispatch';
+import {signUp} from '@app/redux/reducers/auth';
 import {isFulfilled, isRejected} from '@reduxjs/toolkit';
-import {ScreenProps} from '../navigation/mainStack/types';
-import {ScreenId} from '../navigation/mainStack/ScreenIDs';
+import {ScreenProps} from '@app/navigation/mainStack/types';
+import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 
 const initialForm = {
   email: '',
@@ -71,7 +71,7 @@ const RegisterScreen = ({navigation}: ScreenProps<ScreenId.Register>) => {
           textContentType={'nickname'}
           autoCapitalize={'none'}
           autoCorrect={false}
-          autoCompleteType={'username'}
+          autoComplete={'username'}
           keyboardType={'default'}
           placeholder={t('username')}
           onChangeText={username => setForm({username})}
@@ -83,7 +83,7 @@ const RegisterScreen = ({navigation}: ScreenProps<ScreenId.Register>) => {
           textContentType={'emailAddress'}
           autoCapitalize={'none'}
           autoCorrect={false}
-          autoCompleteType={'email'}
+          autoComplete={'email'}
           keyboardType={'email-address'}
           placeholder={t('email')}
           onChangeText={email => setForm({email})}

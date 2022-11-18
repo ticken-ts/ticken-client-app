@@ -1,24 +1,24 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ScreenId} from '../navigation/mainStack/ScreenIDs';
-import {ScreenProps} from '../navigation/mainStack/types';
-import Typography from '../components/Typography';
-import Image from '../components/Image';
-import {t} from '../locale/useLocalization';
-import Spacing from '../components/Spacing';
-import Input from '../components/Input';
-import KeyboardAvoid from '../components/KeyboardAvoid';
-import Button from '../components/Button';
-import {squares} from '../styles/grid';
-import {colors} from '../styles/colors';
-import {getTranslucentHeader} from '../navigation/mainStack/headers';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import {useForm} from '../hooks/useForm';
-import useAppDispatch from '../hooks/useDispatch';
-import {signIn} from '../redux/reducers/auth';
+import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
+import {ScreenProps} from '@app/navigation/mainStack/types';
+import Typography from '@app/components/Typography';
+import Image from '@app/components/Image';
+import {t} from '@app/locale/useLocalization';
+import Spacing from '@app/components/Spacing';
+import Input from '@app/components/Input';
+import KeyboardAvoid from '@app/components/KeyboardAvoid';
+import Button from '@app/components/Button';
+import {squares} from '@app/styles/grid';
+import {colors} from '@app/styles/colors';
+import {getTranslucentHeader} from '@app/navigation/mainStack/headers';
+import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
+import {useForm} from '@app/hooks/useForm';
+import useAppDispatch from '@app/hooks/useDispatch';
+import {signIn} from '@app/redux/reducers/auth';
 import {isFulfilled} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
-import BackButton from '../components/BackButton';
+import BackButton from '@app/components/BackButton';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 

@@ -1,7 +1,7 @@
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
-import {en} from './en';
-import {es} from './es';
+import {en} from '@app/locale/en';
+import {es} from '@app/locale/es';
 import {AppState} from 'react-native';
 import {useEffect} from 'react';
 

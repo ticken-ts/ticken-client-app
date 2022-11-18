@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, TextProps, StyleSheet} from 'react-native';
-import {squares} from '../styles/grid';
-import {colors} from '../styles/colors';
+import {squares} from '@app/styles/grid';
+import {colors} from '@app/styles/colors';
 
 const Typography = (props: TextProps) => {
   return (

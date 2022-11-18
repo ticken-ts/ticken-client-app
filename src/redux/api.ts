@@ -1,9 +1,9 @@
 import {BaseQueryFn, FetchArgs, fetchBaseQuery} from '@reduxjs/toolkit/query';
-import {getEnvironment} from '../config/environment';
-import {EventModel} from '../model/Event';
+import {getEnvironment} from '@app/config/environment';
+import {EventModel} from '@app/model/Event';
 import {createApi} from '@reduxjs/toolkit/dist/query/react';
-import {RootState} from './store';
-import {refreshToken, signInClientCredentials, signOutApp} from './reducers/auth';
+import {RootState} from '@app/redux/store';
+import {refreshToken, signInClientCredentials, signOutApp} from '@app/redux/reducers/auth';
 import {isFulfilled} from '@reduxjs/toolkit';
 
 export const API_REDUCER_PATH = 'api';

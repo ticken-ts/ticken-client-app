@@ -1,8 +1,8 @@
 import React from 'react';
 import {ButtonProps, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle, TextProps} from 'react-native';
-import {colors} from '../styles/colors';
-import { squares } from '../styles/grid';
-import {H3} from './Typography';
+import {colors} from '@app/styles/colors';
+import { squares } from '@app/styles/grid';
+import {H3} from '@app/components/Typography';
 
 interface Props extends ButtonProps {
   style?: StyleProp<ViewStyle>,

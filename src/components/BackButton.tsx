@@ -1,9 +1,9 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'
-import {colors} from '../styles/colors';
-import {shadowStyles} from '../styles/shadow';
-import {squares} from '../styles/grid';
+import {colors} from '@app/styles/colors';
+import {shadowStyles} from '@app/styles/shadow';
+import {squares} from '@app/styles/grid';
 import {useNavigation} from '@react-navigation/native';
 
 const BackButton = () => {

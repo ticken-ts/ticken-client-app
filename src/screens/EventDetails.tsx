@@ -1,17 +1,17 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ScreenId} from '../navigation/mainStack/ScreenIDs';
-import {ScreenProps} from '../navigation/mainStack/types';
+import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
+import {ScreenProps} from '@app/navigation/mainStack/types';
 import {SharedElement} from 'react-navigation-shared-element';
-import Image from '../components/Image';
-import {squares} from '../styles/grid';
-import {getTranslucentHeader} from '../navigation/mainStack/headers';
-import Typography from '../components/Typography';
-import Button from '../components/Button';
+import Image from '@app/components/Image';
+import {squares} from '@app/styles/grid';
+import {getTranslucentHeader} from '@app/navigation/mainStack/headers';
+import Typography from '@app/components/Typography';
+import Button from '@app/components/Button';
 import {t} from 'i18n-js';
-import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import BackButton from '../components/BackButton';
+import BackButton from '@app/components/BackButton';
 
 const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
 

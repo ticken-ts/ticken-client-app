@@ -1,11 +1,11 @@
 import React from 'react';
 import {RootStackParamList, ScreenId} from './ScreenIDs';
-import LoginScreen from '../../screens/LoginScreen';
-import RegisterScreen from '../../screens/RegisterScreen';
-import Home from '../../screens/Home';
+import LoginScreen from '@app/screens/LoginScreen';
+import RegisterScreen from '@app/screens/RegisterScreen';
+import Home from '@app/screens/Home';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
-import EventDetails from '../../screens/EventDetails';
-import UserProfile from '../../screens/UserProfile';
+import EventDetails from '@app/screens/EventDetails';
+import UserProfile from '@app/screens/UserProfile';
 
 const {Navigator, Screen} = createSharedElementStackNavigator<RootStackParamList>();
 
