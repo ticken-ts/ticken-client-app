@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {ScreenProps} from '@app/navigation/mainStack/types';
-import Typography from '@app/components/Typography';
+import Typography, {H1, Title} from '@app/components/Typography';
 import Image from '@app/components/Image';
 import {t} from '@app/locale/useLocalization';
 import Spacing from '@app/components/Spacing';
@@ -19,6 +19,7 @@ import {signIn} from '@app/redux/reducers/auth';
 import {isFulfilled} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
 import BackButton from '@app/components/BackButton';
+import Logo from '@app/assets/logo.svg';
 
 const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
 
@@ -53,12 +54,10 @@ const LoginScreen = ({navigation}: ScreenProps<ScreenId.Login>) => {
   return (
     <KeyboardAvoid style={styles.container}>
       <FocusAwareStatusBar style={'dark'} />
-      <Image
-        source={require('../../assets/icon.png')}
-        style={styles.logo}
-        resizeMode={'contain'}
-      />
-      <Spacing v={squares(8)} />
+      <Logo width={squares(25)} height={squares(25)} />
+      <Spacing v={squares(4)} />
+      <Title style={styles.title}>{t('loginTitle')}</Title>
+      <Spacing v={squares(4)} />
       <Input
         onChangeText={email => setForm({email})}
         style={styles.input}
@@ -107,11 +106,6 @@ const styles = StyleSheet.create({
     // borderWidth: 10,
     // borderColor: 'black'
   },
-  logo: {
-    width: '50%',
-    aspectRatio: 1,
-    // backgroundColor: '#48ff82',
-  },
   input: {
     width: '60%',
   },
@@ -126,5 +120,7 @@ const styles = StyleSheet.create({
   loginButton: {
     width: '60%'
   },
-
+  title: {
+    color: colors.primary,
+  }
 })

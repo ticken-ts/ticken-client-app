@@ -11,6 +11,7 @@ export const en = {
   repeatPassword: 'Repeat Password',
   username: "Username",
   login: 'Sign In',
+  loginTitle: 'Welcome',
 
   //Login / Register errors
   passwordsDontMatch: "Passwords don't match",

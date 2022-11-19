@@ -15,6 +15,18 @@ const Typography = (props: TextProps) => {
   );
 };
 
+export const Title = (props: TextProps) => {
+  return (
+    <Typography
+      {...props}
+      style={[
+        {fontSize: squares(4), fontFamily: 'main-semibold'},
+        props.style,
+      ]}
+    />
+  );
+}
+
 export const H1 = (props: TextProps) =>
   <Typography
     {...props}
