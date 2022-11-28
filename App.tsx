@@ -5,15 +5,18 @@ import store, {persistor} from '@app/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {useLocalization} from '@app/locale/useLocalization';
 import SplashLoader from '@app/components/SplashLoader';
+import {AuthContextProvider} from '@app/context/AuthContext';
 
 export default function App() {
   return (
     <SplashLoader>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <NavigationContainer>
-            <MainApp/>
-          </NavigationContainer>
+          <AuthContextProvider>
+            <NavigationContainer>
+              <MainApp/>
+            </NavigationContainer>
+          </AuthContextProvider>
         </PersistGate>
       </Provider>
     </SplashLoader>

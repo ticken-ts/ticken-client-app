@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {getTranslucentHeader} from '@app/navigation/mainStack/headers';
 import BackButton from '@app/components/BackButton';
@@ -13,20 +13,15 @@ import {isLoggedIn, selectToken} from '@app/redux/selectors/auth';
 import Typography from '@app/components/Typography';
 import {ScreenProps} from '@app/navigation/mainStack/types';
 import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
+import {useAuthRequest} from 'expo-auth-session';
+import {AuthContext} from '@app/context/AuthContext';
 
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
   const dispatch = useAppDispatch()
   const loggedIn = useSelector(isLoggedIn)
-  const token = useSelector(selectToken)
 
-  const logout = () => {
-    dispatch(signOutApp())
-  };
-
-  const login = () => {
-    navigation.navigate(ScreenId.Login)
-  }
+  const {logout, login, ready, token} = useContext(AuthContext);
 
   if (loggedIn) {
     return (
