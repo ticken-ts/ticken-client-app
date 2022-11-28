@@ -4,6 +4,7 @@ import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, RE
 import {api, API_REDUCER_PATH} from '@app/redux/api';
 import auth from '@app/redux/reducers/auth';
 import {secureStorage} from '@app/redux/secureStorage';
+import {openIDSlice} from '@app/redux/reducers/openID';
 
 const EncryptedStorage = secureStorage({});
 
@@ -14,6 +15,7 @@ const securePersistedReducer = persistReducer(
   },
   combineReducers({
     auth: auth,
+    openID: openIDSlice.reducer,
   })
 )
 

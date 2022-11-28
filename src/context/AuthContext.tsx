@@ -11,6 +11,8 @@ import {selectToken} from '@app/redux/selectors/auth';
 import {useSelector} from 'react-redux';
 import useAppDispatch from '@app/hooks/useDispatch';
 import {env} from '@app/config/loadEnvironment';
+import {selectCredentials} from '@app/redux/selectors/openID';
+import {setCredentials, wipe} from '@app/redux/reducers/openID';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -43,9 +45,8 @@ const redirectUri = makeRedirectUri({
 })
 
 export const AuthContextProvider = ({children}: any) => {
-  const [token, setToken] = useState('');
-  const [refreshToken, setRefreshToken] = useState('');
-  const [idToken, setIdToken] = useState('');
+  const dispatch = useAppDispatch();
+  const {token, refreshToken, idToken} = useSelector(selectCredentials);
 
   const discovery = useAutoDiscovery(`${env.KEYCLOAK_URL}/realms/attendants`)
 
@@ -61,14 +62,6 @@ export const AuthContextProvider = ({children}: any) => {
     if (request) {
       promptAsync().then(res => {
         WebBrowser.maybeCompleteAuthSession()
-        // if (res.type === 'success' && res.authentication?.accessToken && res.authentication.refreshToken) {
-        //   dispatch({type: 'setToken', payload: {
-        //     token: res.authentication.accessToken,
-        //     refreshToken: res.authentication.refreshToken,
-        //   }});
-        // } else {
-        //   console.log("Error logging in:", res);
-        // }
       })
     }
   };
@@ -82,9 +75,7 @@ export const AuthContextProvider = ({children}: any) => {
         redirectUri
       ).then(res => {
         if (res.type === 'success') {
-          setToken('');
-          setRefreshToken('');
-          setIdToken('');
+          dispatch(wipe())
         } else {
           console.log("Error logging out:", res);
         }
@@ -108,9 +99,11 @@ export const AuthContextProvider = ({children}: any) => {
       }, discovery).then(res => {
         console.log("Exchanged code:", res)
         if (res.accessToken && res.refreshToken && res.idToken) {
-          setToken(res.accessToken);
-          setRefreshToken(res.refreshToken);
-          setIdToken(res.idToken);
+          dispatch(setCredentials({
+            token: res.accessToken,
+            refreshToken: res.refreshToken,
+            idToken: res.idToken,
+          }));
         } else {
           console.log("Error exchanging code: access token or refresh token not returned");
         }
@@ -119,9 +112,11 @@ export const AuthContextProvider = ({children}: any) => {
       })
     }
     if (result?.type === 'success' && result.authentication?.accessToken && result.authentication?.refreshToken && result.authentication?.idToken) {
-      setToken(result.authentication.accessToken);
-      setRefreshToken(result.authentication.refreshToken);
-      setIdToken(result.authentication.idToken);
+      dispatch(setCredentials({
+        token: result.authentication.accessToken,
+        refreshToken: result.authentication.refreshToken,
+        idToken: result.authentication.idToken,
+      }));
     }
   }, [result]);
 
