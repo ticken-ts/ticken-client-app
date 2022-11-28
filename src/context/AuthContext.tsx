@@ -72,12 +72,6 @@ export const AuthContextProvider = ({children}: any) => {
 
   const logout = () => {
     if (state.token && discovery) {
-      revokeAsync({token: state.token, clientId: 'postman-attendant-app'}, discovery).then(res => {
-        if (res) {
-          dispatch({type: 'revokeToken'});
-        }
-      });
-
     }
   };
 
