@@ -2,7 +2,6 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
 import {api, API_REDUCER_PATH} from '@app/redux/api';
-import auth from '@app/redux/reducers/auth';
 import {secureStorage} from '@app/redux/secureStorage';
 import {openIDSlice} from '@app/redux/reducers/openID';
 
@@ -14,7 +13,6 @@ const securePersistedReducer = persistReducer(
     storage: EncryptedStorage,
   },
   combineReducers({
-    auth: auth,
     openID: openIDSlice.reducer,
   })
 )

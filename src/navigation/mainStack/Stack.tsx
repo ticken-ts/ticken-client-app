@@ -1,7 +1,5 @@
 import React from 'react';
 import {RootStackParamList, ScreenId} from './ScreenIDs';
-import LoginScreen from '@app/screens/LoginScreen';
-import RegisterScreen from '@app/screens/RegisterScreen';
 import Home from '@app/screens/Home';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import EventDetails from '@app/screens/EventDetails';
@@ -16,14 +14,6 @@ const Stack = () => {
       <Screen
         name={ScreenId.Home}
         {...Home}
-      />
-      <Screen
-        name={ScreenId.Login}
-        {...LoginScreen}
-      />
-      <Screen
-        name={ScreenId.Register}
-        {...RegisterScreen}
       />
       <Screen
         name={ScreenId.EventDetails}

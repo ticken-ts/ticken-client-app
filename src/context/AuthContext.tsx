@@ -46,7 +46,7 @@ const redirectUri = makeRedirectUri({
 
 export const AuthContextProvider = ({children}: any) => {
   const dispatch = useAppDispatch();
-  const {token, refreshToken, idToken} = useSelector(selectCredentials);
+  const {token, refreshToken, idToken, expiresAt} = useSelector(selectCredentials);
 
   const discovery = useAutoDiscovery(`${env.KEYCLOAK_URL}/realms/attendants`)
 
@@ -83,6 +83,42 @@ export const AuthContextProvider = ({children}: any) => {
     }
   };
 
+
+  useEffect(() => {
+    const attemptGetNewToken = async () => {
+      const expiresAtMillis = expiresAt * 1000;
+      const needsRefresh = expiresAtMillis - Date.now() < 60 * 1000;
+      console.log('needsRefresh', needsRefresh)
+      if (discovery && refreshToken && needsRefresh) {
+        const res = await refreshAsync(
+          {
+            refreshToken,
+            clientId: env.KEYCLOAK_CLIENT_ID,
+            clientSecret: env.KEYCLOAK_CLIENT_SECRET,
+            scopes: ['openid', 'profile', 'email', 'offline_access'],
+          },
+          discovery
+        );
+        if (res.accessToken && res.refreshToken && res.idToken) {
+          console.log("Got new token:", res);
+          dispatch(setCredentials({
+            token: res.accessToken,
+            refreshToken: res.refreshToken,
+            idToken: res.idToken,
+            expiresAt: res.issuedAt + (res.expiresIn || 300),
+          }))
+        }
+      }
+    }
+
+    attemptGetNewToken();
+    const interval = setInterval(attemptGetNewToken, 1000 * 30);
+
+    return () => clearInterval(interval);
+
+  }, [discovery, refreshToken, expiresAt]);
+
+
   useEffect(() => {
     console.log("Result:", result)
     if (!discovery) {
@@ -98,11 +134,12 @@ export const AuthContextProvider = ({children}: any) => {
         scopes: ['openid', 'profile', 'email', 'offline_access'],
       }, discovery).then(res => {
         console.log("Exchanged code:", res)
-        if (res.accessToken && res.refreshToken && res.idToken) {
+        if (res.accessToken && res.refreshToken && res.idToken && res.issuedAt && res.expiresIn) {
           dispatch(setCredentials({
             token: res.accessToken,
             refreshToken: res.refreshToken,
             idToken: res.idToken,
+            expiresAt: res.issuedAt + (res.expiresIn || 300),
           }));
         } else {
           console.log("Error exchanging code: access token or refresh token not returned");
@@ -111,11 +148,12 @@ export const AuthContextProvider = ({children}: any) => {
         console.log("Error exchanging code: ", err);
       })
     }
-    if (result?.type === 'success' && result.authentication?.accessToken && result.authentication?.refreshToken && result.authentication?.idToken) {
+    if (result?.type === 'success' && result.authentication?.accessToken && result.authentication?.refreshToken && result.authentication?.idToken && result.authentication?.issuedAt && result.authentication?.expiresIn) {
       dispatch(setCredentials({
-        token: result.authentication.accessToken,
-        refreshToken: result.authentication.refreshToken,
-        idToken: result.authentication.idToken,
+        token: result.authentication?.accessToken,
+        refreshToken: result.authentication?.refreshToken,
+        idToken: result.authentication?.idToken,
+        expiresAt: result.authentication?.issuedAt + (result.authentication?.expiresIn || 300),
       }));
     }
   }, [result]);

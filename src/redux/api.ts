@@ -3,7 +3,6 @@ import {getEnvironment} from '@app/config/environment';
 import {EventModel} from '@app/model/Event';
 import {createApi} from '@reduxjs/toolkit/dist/query/react';
 import {RootState} from '@app/redux/store';
-import {refreshToken, signInClientCredentials, signOutApp} from '@app/redux/reducers/auth';
 import {isFulfilled} from '@reduxjs/toolkit';
 
 export const API_REDUCER_PATH = 'api';
@@ -11,39 +10,39 @@ export const API_REDUCER_PATH = 'api';
 const baseQuery = fetchBaseQuery({
   baseUrl: getEnvironment().apiHost,
   prepareHeaders: async (headers, {getState}) => {
-    const token = (getState() as RootState).securePersisted.auth.token;
+    const token = (getState() as RootState).securePersisted.openID.token;
 
     if (token) headers.set('Authorization', `Bearer ${token}`)
     return headers
   }
 })
 
-const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs> =
-async (args, api, extraOptions) => {
-  console.log('Making query')
-  let res = await baseQuery(args, api, extraOptions);
-  if (res.error && (res.error.status === 401 || (res.error.status === 'PARSING_ERROR' && res.error.originalStatus === 401))) {
-    console.log('Request errored, refreshing token')
-    const refreshResult = await api.dispatch(refreshToken())
-    if (isFulfilled(refreshResult)) {
-      console.log('Token refreshed')
-      res = await baseQuery(args, api, extraOptions);
-      console.log('Retried request with res', res.meta?.response?.status)
-      if (!!res.error) {
-        api.dispatch(signOutApp());
-      }
-    } else {
-      console.log('Refreshing token failed, using client credentials')
-      api.dispatch(signOutApp());
-      await api.dispatch(signInClientCredentials())
-      res = await baseQuery(args, api, extraOptions);
-    }
-  }
-  return res;
-}
+// const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs> =
+// async (args, api, extraOptions) => {
+//   console.log('Making query')
+//   let res = await baseQuery(args, api, extraOptions);
+//   if (res.error && (res.error.status === 401 || (res.error.status === 'PARSING_ERROR' && res.error.originalStatus === 401))) {
+//     console.log('Request errored, refreshing token')
+//     const refreshResult = await api.dispatch(refreshToken())
+//     if (isFulfilled(refreshResult)) {
+//       console.log('Token refreshed')
+//       res = await baseQuery(args, api, extraOptions);
+//       console.log('Retried request with res', res.meta?.response?.status)
+//       if (!!res.error) {
+//         api.dispatch(signOutApp());
+//       }
+//     } else {
+//       console.log('Refreshing token failed, using client credentials')
+//       api.dispatch(signOutApp());
+//       await api.dispatch(signInClientCredentials())
+//       res = await baseQuery(args, api, extraOptions);
+//     }
+//   }
+//   return res;
+// }
 
 export const api = createApi({
-  baseQuery: baseQueryWithRefresh,
+  baseQuery: baseQuery,
   tagTypes: ['events'],
   reducerPath: API_REDUCER_PATH,
   endpoints: (builder) => ({

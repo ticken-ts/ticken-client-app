@@ -7,13 +7,9 @@ import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import Button from '@app/components/Button';
 import {t} from '@app/locale/useLocalization';
 import useAppDispatch from '@app/hooks/useDispatch';
-import {invalidateToken, signOutApp} from '@app/redux/reducers/auth';
-import {useSelector} from 'react-redux';
-import {isLoggedIn, selectToken} from '@app/redux/selectors/auth';
 import Typography from '@app/components/Typography';
 import {ScreenProps} from '@app/navigation/mainStack/types';
 import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
-import {useAuthRequest} from 'expo-auth-session';
 import {AuthContext} from '@app/context/AuthContext';
 
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
@@ -30,10 +26,6 @@ const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
         <Button
           onPress={logout}
           title={t('logOut')}
-        />
-        <Button
-          onPress={() => dispatch(invalidateToken())}
-          title={'Invalidate token'}
         />
       </View>
     )
