@@ -1,4 +1,4 @@
-import {TEST_API_SECRET} from 'react-native-dotenv'
+import {TEST_API_SECRET, KEYCLOAK_CLIENT_ID, KEYCLOAK_CLIENT_SECRET} from 'react-native-dotenv'
 
 export const env = (() => {
 
@@ -7,5 +7,7 @@ export const env = (() => {
 
   return {
     API_SECRET,
+    KEYCLOAK_CLIENT_SECRET,
+    KEYCLOAK_CLIENT_ID,
   }
 })()

@@ -10,6 +10,7 @@ import * as WebBrowser from 'expo-web-browser';
 import {selectToken} from '@app/redux/selectors/auth';
 import {useSelector} from 'react-redux';
 import useAppDispatch from '@app/hooks/useDispatch';
+import {env} from '@app/config/loadEnvironment';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -47,10 +48,10 @@ export const AuthContextProvider = ({children}: any) => {
   const discovery = useAutoDiscovery('http://192.168.0.4:8080/realms/attendants')
 
   const [request, result, promptAsync] = useAuthRequest({
-    clientId: 'postman-attendant-app',
+    clientId: env.KEYCLOAK_CLIENT_ID,
     usePKCE: false,
     redirectUri,
-    clientSecret: 'e2b0c4b0-4b0c-4b0c-4b0c-e2b0c4b0c4b0',
+    clientSecret: env.KEYCLOAK_CLIENT_SECRET,
     scopes: ['openid', 'profile', 'email', 'offline_access'],
   }, discovery);
 
@@ -72,6 +73,7 @@ export const AuthContextProvider = ({children}: any) => {
 
   const logout = () => {
     if (state.token && discovery) {
+
     }
   };
 
@@ -85,8 +87,8 @@ export const AuthContextProvider = ({children}: any) => {
       exchangeCodeAsync({
         code: result.params['code'],
         redirectUri,
-        clientId: 'postman-attendant-app',
-        clientSecret: "CAsorT8w5oPk7EMKfdiQ7tKea7gD4zxS",
+        clientId: env.KEYCLOAK_CLIENT_ID,
+        clientSecret: env.KEYCLOAK_CLIENT_SECRET,
         scopes: ['openid', 'profile', 'email', 'offline_access'],
       }, discovery).then(res => {
         console.log("Exchanged code:", res)
