@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useReducer} from 'react';
+import React, {createContext, useEffect, useReducer, useState} from 'react';
 import {
   DiscoveryDocument, exchangeCodeAsync,
   makeRedirectUri, refreshAsync,
@@ -43,9 +43,11 @@ const redirectUri = makeRedirectUri({
 })
 
 export const AuthContextProvider = ({children}: any) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [token, setToken] = useState('');
+  const [refreshToken, setRefreshToken] = useState('');
+  const [idToken, setIdToken] = useState('');
 
-  const discovery = useAutoDiscovery('http://192.168.0.4:8080/realms/attendants')
+  const discovery = useAutoDiscovery(`${env.KEYCLOAK_URL}/realms/attendants`)
 
   const [request, result, promptAsync] = useAuthRequest({
     clientId: env.KEYCLOAK_CLIENT_ID,
@@ -72,8 +74,21 @@ export const AuthContextProvider = ({children}: any) => {
   };
 
   const logout = () => {
-    if (state.token && discovery) {
-
+    if (idToken && discovery) {
+      WebBrowser.openAuthSessionAsync(
+        `${env.KEYCLOAK_URL}/realms/attendants/protocol/openid-connect/logout` +
+        `?post_logout_redirect_uri=${redirectUri}` +
+        `&id_token_hint=${idToken}`,
+        redirectUri
+      ).then(res => {
+        if (res.type === 'success') {
+          setToken('');
+          setRefreshToken('');
+          setIdToken('');
+        } else {
+          console.log("Error logging out:", res);
+        }
+      });
     }
   };
 
@@ -92,13 +107,10 @@ export const AuthContextProvider = ({children}: any) => {
         scopes: ['openid', 'profile', 'email', 'offline_access'],
       }, discovery).then(res => {
         console.log("Exchanged code:", res)
-        if (res.accessToken && res.refreshToken) {
-          dispatch({
-            type: 'setToken', payload: {
-              token: res.accessToken,
-              refreshToken: res.refreshToken,
-            },
-          });
+        if (res.accessToken && res.refreshToken && res.idToken) {
+          setToken(res.accessToken);
+          setRefreshToken(res.refreshToken);
+          setIdToken(res.idToken);
         } else {
           console.log("Error exchanging code: access token or refresh token not returned");
         }
@@ -106,11 +118,10 @@ export const AuthContextProvider = ({children}: any) => {
         console.log("Error exchanging code: ", err);
       })
     }
-    if (result?.type === 'success' && result.authentication?.accessToken && result.authentication?.refreshToken) {
-      dispatch({type: 'setToken', payload: {
-        token: result.authentication.accessToken,
-        refreshToken: result.authentication.refreshToken,
-      }});
+    if (result?.type === 'success' && result.authentication?.accessToken && result.authentication?.refreshToken && result.authentication?.idToken) {
+      setToken(result.authentication.accessToken);
+      setRefreshToken(result.authentication.refreshToken);
+      setIdToken(result.authentication.idToken);
     }
   }, [result]);
 
@@ -125,36 +136,11 @@ export const AuthContextProvider = ({children}: any) => {
           login,
           logout,
           ready: !!request,
-          token: state.token,
-          isLoggedIn: !!state.token,
+          token,
+          isLoggedIn: !!token,
         }
       }>
       {children}
     </AuthContext.Provider>
   );
-};
-
-//Action Types
-type Action =
-  |{type: 'setToken'; payload: {
-    token: string,
-    refreshToken: string,
-  }}
-  |{type: 'revokeToken'}
-
-const reducer = (state: InternalState, action: Action): InternalState => {
-  switch (action.type) {
-    //Switch action types
-    case 'setToken':
-      return {
-        ...state,
-        token: action.payload.token,
-        refreshToken: action.payload.refreshToken,
-      }
-    case 'revokeToken':
-      return {
-        ...state,
-        token: null,
-      }
-  }
 };
