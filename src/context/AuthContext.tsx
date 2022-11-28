@@ -1,13 +1,17 @@
 import React, {createContext, useEffect, useReducer} from 'react';
 import {
-  DiscoveryDocument,
-  makeRedirectUri,
-  refreshAsync,
+  DiscoveryDocument, exchangeCodeAsync,
+  makeRedirectUri, refreshAsync,
   revokeAsync, TokenResponse,
   useAuthRequest,
   useAutoDiscovery,
 } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
+import {selectToken} from '@app/redux/selectors/auth';
+import {useSelector} from 'react-redux';
+import useAppDispatch from '@app/hooks/useDispatch';
+
+WebBrowser.maybeCompleteAuthSession();
 
 // Exposed interface for consumers
 type AuthContextProps = {
@@ -16,6 +20,7 @@ type AuthContextProps = {
   logout: () => void;
   ready: boolean;
   token: string | null;
+  isLoggedIn: boolean;
 };
 
 // Internal State type
@@ -32,6 +37,10 @@ const initialState: InternalState = {
 
 export const AuthContext = createContext({} as AuthContextProps);
 
+const redirectUri = makeRedirectUri({
+  scheme: "ticken-app",
+})
+
 export const AuthContextProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -39,23 +48,24 @@ export const AuthContextProvider = ({children}: any) => {
 
   const [request, result, promptAsync] = useAuthRequest({
     clientId: 'postman-attendant-app',
-    redirectUri: makeRedirectUri({
-      scheme: "ticken-app"
-    }),
+    usePKCE: false,
+    redirectUri,
+    clientSecret: 'e2b0c4b0-4b0c-4b0c-4b0c-e2b0c4b0c4b0',
+    scopes: ['openid', 'profile', 'email', 'offline_access'],
   }, discovery);
 
   const login = () => {
     if (request) {
       promptAsync().then(res => {
         WebBrowser.maybeCompleteAuthSession()
-        if (res.type === 'success' && res.authentication?.accessToken && res.authentication.refreshToken) {
-          dispatch({type: 'setToken', payload: {
-            token: res.authentication.accessToken,
-            refreshToken: res.authentication.refreshToken,
-          }});
-        } else {
-          console.log("Error logging in:", res);
-        }
+        // if (res.type === 'success' && res.authentication?.accessToken && res.authentication.refreshToken) {
+        //   dispatch({type: 'setToken', payload: {
+        //     token: res.authentication.accessToken,
+        //     refreshToken: res.authentication.refreshToken,
+        //   }});
+        // } else {
+        //   console.log("Error logging in:", res);
+        // }
       })
     }
   };
@@ -72,31 +82,40 @@ export const AuthContextProvider = ({children}: any) => {
   };
 
   useEffect(() => {
-    if (discovery && state.refreshToken) {
-      refreshAsync({
-        refreshToken: state.refreshToken,
-        clientId: 'postman-attendant-app',
-      }, discovery)
-        .then(res => {
-          if (res.refreshToken) {
-            dispatch({
-              type: 'setToken', payload: {
-                token: res.accessToken,
-                refreshToken: res.refreshToken,
-              },
-            });
-          } else {
-            console.log("Error refreshing token: refresh token not returned");
-          }
-        })
-        .catch(err => {
-          console.log("Error refreshing token: ", err);
-        })
-    }
-  }, [discovery])
-
-  useEffect(() => {
     console.log("Result:", result)
+    if (!discovery) {
+      console.log("Discovery not ready");
+      return;
+    }
+    if (result?.type === 'success' && result.authentication == null) {
+      exchangeCodeAsync({
+        code: result.params['code'],
+        redirectUri,
+        clientId: 'postman-attendant-app',
+        clientSecret: "CAsorT8w5oPk7EMKfdiQ7tKea7gD4zxS",
+        scopes: ['openid', 'profile', 'email', 'offline_access'],
+      }, discovery).then(res => {
+        console.log("Exchanged code:", res)
+        if (res.accessToken && res.refreshToken) {
+          dispatch({
+            type: 'setToken', payload: {
+              token: res.accessToken,
+              refreshToken: res.refreshToken,
+            },
+          });
+        } else {
+          console.log("Error exchanging code: access token or refresh token not returned");
+        }
+      }).catch(err => {
+        console.log("Error exchanging code: ", err);
+      })
+    }
+    if (result?.type === 'success' && result.authentication?.accessToken && result.authentication?.refreshToken) {
+      dispatch({type: 'setToken', payload: {
+        token: result.authentication.accessToken,
+        refreshToken: result.authentication.refreshToken,
+      }});
+    }
   }, [result]);
 
 
@@ -111,6 +130,7 @@ export const AuthContextProvider = ({children}: any) => {
           logout,
           ready: !!request,
           token: state.token,
+          isLoggedIn: !!state.token,
         }
       }>
       {children}

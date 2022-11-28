@@ -19,11 +19,10 @@ import {AuthContext} from '@app/context/AuthContext';
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
   const dispatch = useAppDispatch()
-  const loggedIn = useSelector(isLoggedIn)
 
-  const {logout, login, ready, token} = useContext(AuthContext);
+  const {logout, login, ready, token, isLoggedIn} = useContext(AuthContext);
 
-  if (loggedIn) {
+  if (isLoggedIn) {
     return (
       <View style={styles.container}>
         <Typography>You are logged in</Typography>
