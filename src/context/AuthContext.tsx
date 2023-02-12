@@ -7,7 +7,6 @@ import {
   useAutoDiscovery,
 } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
-import {selectToken} from '@app/redux/selectors/auth';
 import {useSelector} from 'react-redux';
 import useAppDispatch from '@app/hooks/useDispatch';
 import {env} from '@app/config/loadEnvironment';
