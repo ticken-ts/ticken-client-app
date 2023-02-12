@@ -5,7 +5,6 @@ import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {getCustomHeader} from '@app/navigation/mainStack/headers';
 import {colors} from '@app/styles/colors';
 import {H1} from '@app/components/Typography';
-import {useGetEventsQuery} from '@app/redux/api';
 import {EventModel} from '@app/model/Event';
 import {HomeListItem} from '@app/components/HomeListItem';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
@@ -38,43 +37,17 @@ const Home = ({navigation}: ScreenProps<ScreenId.Home>) => {
     []
   )
 
-  const [data, setData] = useState<EventModel[]>([]);
-  const [page, setPage] = useState(0)
-  const {currentData, isLoading, isFetching, refetch} = useGetEventsQuery({page, pageSize})
-
-  const goToNextPage = () => {
-    if (currentData && currentData.length > 0) {
-      console.log('going to next page')
-      setPage(page => page + pageSize)
-    }
-  };
-
-  useEffect(() => {
-    if (page === 0) {
-      currentData && setData(currentData)
-    } else {
-      currentData && setData(data => data.concat(currentData))
-    }
-  }, [currentData]);
-
-
-  const refresh = () => {
-    if (page === 0) refetch()
-    setPage(0)
-  };
-
   return (
     <View style={styles.container}>
       <FocusAwareStatusBar translucent style={'light'} />
-      <FlatList
-        style={styles.scroll}
-        refreshControl={<RefreshControl refreshing={isLoading || isFetching} onRefresh={refresh} /> }
-        data={data}
-        onEndReached={goToNextPage}
-        onEndReachedThreshold={0.2}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => <HomeListItem item={item} />}
-      />
+      {/*<FlatList*/}
+      {/*  style={styles.scroll}*/}
+      {/*  refreshControl={<RefreshControl refreshing={isLoading || isFetching} onRefresh={refresh} /> }*/}
+      {/*  data={data}*/}
+      {/*  onEndReachedThreshold={0.2}*/}
+      {/*  keyExtractor={(item) => item.id.toString()}*/}
+      {/*  renderItem={({item}) => <HomeListItem item={item} />}*/}
+      {/*/>*/}
     </View>
   );
 };

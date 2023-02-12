@@ -1,7 +1,6 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
-import {api, API_REDUCER_PATH} from '@app/redux/api';
 import {secureStorage} from '@app/redux/secureStorage';
 import {openIDSlice} from '@app/redux/reducers/openID';
 
@@ -29,7 +28,6 @@ const securePersistedReducer = persistReducer(
 
 const store = configureStore({
   reducer: {
-    [API_REDUCER_PATH]: api.reducer,
     // [AUTH_REDUCER_PATH]: authApi.reducer,
     securePersisted: securePersistedReducer,
     // persisted: persistedReducer,
@@ -39,9 +37,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([
-      api.middleware,
-    ]),
+    }),
 })
 
 setupListeners(store.dispatch)
