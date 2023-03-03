@@ -11,6 +11,8 @@ import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import {t} from '@app/locale/useLocalization';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {squares} from '@app/styles/grid';
+import {useQuery} from 'react-query';
+import {fetchEvents} from '@app/api/api';
 
 const pageSize = 4;
 
@@ -37,17 +39,19 @@ const Home = ({navigation}: ScreenProps<ScreenId.Home>) => {
     []
   )
 
+  const {isLoading, isError, data, error, isFetching, refetch} = useQuery<EventModel[]>('events', fetchEvents)
+
   return (
     <View style={styles.container}>
       <FocusAwareStatusBar translucent style={'light'} />
-      {/*<FlatList*/}
-      {/*  style={styles.scroll}*/}
-      {/*  refreshControl={<RefreshControl refreshing={isLoading || isFetching} onRefresh={refresh} /> }*/}
-      {/*  data={data}*/}
-      {/*  onEndReachedThreshold={0.2}*/}
-      {/*  keyExtractor={(item) => item.id.toString()}*/}
-      {/*  renderItem={({item}) => <HomeListItem item={item} />}*/}
-      {/*/>*/}
+      <FlatList
+        style={styles.scroll}
+        refreshControl={<RefreshControl refreshing={isLoading || isFetching} onRefresh={refetch} /> }
+        data={data}
+        onEndReachedThreshold={0.2}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({item}) => <HomeListItem item={item} />}
+      />
     </View>
   );
 };

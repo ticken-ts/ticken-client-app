@@ -6,6 +6,9 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {useLocalization} from '@app/locale/useLocalization';
 import SplashLoader from '@app/components/SplashLoader';
 import {AuthContextProvider} from '@app/context/AuthContext';
+import {QueryClient, QueryClientProvider} from 'react-query';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
@@ -13,9 +16,11 @@ export default function App() {
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
           <AuthContextProvider>
-            <NavigationContainer>
-              <MainApp/>
-            </NavigationContainer>
+            <QueryClientProvider client={queryClient}>
+              <NavigationContainer>
+                <MainApp/>
+              </NavigationContainer>
+            </QueryClientProvider>
           </AuthContextProvider>
         </PersistGate>
       </Provider>
