@@ -89,23 +89,28 @@ export const AuthContextProvider = ({children}: any) => {
       const needsRefresh = expiresAtMillis - Date.now() < 60 * 1000;
       console.log('needsRefresh', needsRefresh)
       if (discovery && refreshToken && needsRefresh) {
-        const res = await refreshAsync(
-          {
-            refreshToken,
-            clientId: env.KEYCLOAK_CLIENT_ID,
-            clientSecret: env.KEYCLOAK_CLIENT_SECRET,
-            scopes: ['openid', 'profile', 'email', 'offline_access'],
-          },
-          discovery
-        );
-        if (res.accessToken && res.refreshToken && res.idToken) {
-          console.log("Got new token:", res);
-          dispatch(setCredentials({
-            token: res.accessToken,
-            refreshToken: res.refreshToken,
-            idToken: res.idToken,
-            expiresAt: res.issuedAt + (res.expiresIn || 300),
-          }))
+        try {
+          const res = await refreshAsync(
+            {
+              refreshToken,
+              clientId: env.KEYCLOAK_CLIENT_ID,
+              clientSecret: env.KEYCLOAK_CLIENT_SECRET,
+              scopes: ['openid', 'profile', 'email', 'offline_access'],
+            },
+            discovery
+          );
+          if (res.accessToken && res.refreshToken && res.idToken) {
+            console.log("Got new token:", res);
+            dispatch(setCredentials({
+              token: res.accessToken,
+              refreshToken: res.refreshToken,
+              idToken: res.idToken,
+              expiresAt: res.issuedAt + (res.expiresIn || 300),
+            }))
+          }
+        } catch (e) {
+          console.log("Error refreshing token:", (e as Error).message)
+          dispatch(wipe())
         }
       }
     }
