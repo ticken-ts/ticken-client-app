@@ -27,7 +27,7 @@ const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
     <View style={[styles.container, {marginBottom: bottom || squares(2)}]} >
       <FocusAwareStatusBar translucent style={'light'} />
       <SharedElement id={`item.${event.id}.cover`}>
-        <Image source={{uri: event.cover}} style={[styles.image]} resizeMode={'stretch'} />
+        <Image source={{uri: event.cover}} style={[styles.image]} resizeMode={'cover'} />
       </SharedElement>
       <View style={styles.descriptionContainer}>
         <Typography>{event.description}</Typography>

@@ -12,6 +12,13 @@ const ticketsApi = axios.create({
   baseURL: env.TICKETS_URL
 });
 
+export const getPosterUri = (poster?: string): string | undefined => {
+  if (poster) {
+    return `${env.EVENTS_URL}/assets/${poster}`;
+  }
+  return undefined;
+}
+
 export const fetchEvents = async (): Promise<EventModel[]> => {
   const events = await eventsApi.get<ApiResponse<ApiEvent[]>>('/public/events');
   return toEventList(events.data.data)
