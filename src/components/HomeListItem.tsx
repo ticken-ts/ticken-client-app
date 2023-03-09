@@ -9,6 +9,7 @@ import {SharedElement} from 'react-navigation-shared-element';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationTyping, ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {H2} from '@app/components/Typography';
+import EventPoster from '@app/components/EventPoster';
 
 export const HomeListItem = ({item}: {item: EventModel}) => {
 
@@ -21,7 +22,7 @@ export const HomeListItem = ({item}: {item: EventModel}) => {
   return (
     <TouchableOpacity style={itemStyles.card} onPress={goToDetails}>
       <SharedElement id={`item.${item.id}.cover`}>
-        <Image source={{uri: item.cover}} style={itemStyles.cover} resizeMode={'cover'} />
+        <EventPoster source={{uri: item.cover}} style={itemStyles.cover} resizeMode={'cover'} />
       </SharedElement>
       <H2 style={itemStyles.title}>{item.name}</H2>
     </TouchableOpacity>
