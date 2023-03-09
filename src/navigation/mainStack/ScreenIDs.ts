@@ -5,6 +5,7 @@ export enum ScreenId {
   Home = "Home",
   EventDetails = "EventDetails",
   UserProfile = "UserProfile",
+  BuyTickets = "BuyTickets",
 }
 
 export type RootStackParamList = {
@@ -14,6 +15,9 @@ export type RootStackParamList = {
   };
   [ScreenId.UserProfile]: {
     userId?: string,
+  };
+  [ScreenId.BuyTickets]: {
+    event: EventModel,
   }
 }
 

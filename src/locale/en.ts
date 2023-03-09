@@ -23,5 +23,9 @@ export const en = {
   buyTickets: "Buy Tickets",
 
   // User profile
-  logOut: "Sign Out"
+  logOut: "Sign Out",
+  addressPK: 'Address PK',
+  enterEthAddress: 'If you want to import your own ethereum address, please entre the private key below.',
+  leaveBlank: 'Leave blank if you want us to create one for you!',
+  completeRegistration: 'Complete Registration',
 }

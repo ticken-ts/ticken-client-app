@@ -13,45 +13,48 @@ import {AuthContext} from '@app/context/AuthContext';
 import {squares} from '@app/styles/grid';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Logo from '@app/assets/logo.svg';
+import {useQuery} from 'react-query';
+import {fetchMyUser} from '@app/api/api';
+import {User} from '@app/model/User';
+import Input from '@app/components/Input';
+import {Formik} from 'formik';
+import LoggedInProfile from '@app/components/UserProfile/LoggedIn';
+import Register from '@app/components/UserProfile/Register';
+import NotSigned from '@app/components/UserProfile/NotSigned';
 
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
+
   const {logout, login, ready, token, isLoggedIn} = useContext(AuthContext);
+
+  const {data, isLoading} = useQuery<User | undefined>(['user'],  token ? fetchMyUser(token) : () => undefined)
 
   const insets = useSafeAreaInsets()
 
   if (isLoggedIn) {
-    return (
-      <View style={styles.container}>
-        <FocusAwareStatusBar style={'dark'} />
-        <View style={styles.main}>
-          <Logo width={squares(25)} height={squares(25)} />
-          <H1>Coming soon</H1>
+    if (data) {
+      return (
+        <LoggedInProfile style={styles.container} onLogout={logout} />
+      )
+    } else if (isLoading) {
+      return (
+        <View style={styles.container}>
+          <FocusAwareStatusBar style={'dark'} />
+          <View style={styles.main}>
+            <Logo width={squares(25)} height={squares(25)} />
+            <H1>Loading...</H1>
+          </View>
+          <View style={{height: insets.bottom || squares(2)}} />
         </View>
-        <Button
-          onPress={logout}
-          title={t('logOut')}
-          style={styles.signInButton}
-        />
-        <View style={{height: insets.bottom || squares(2)}} />
-      </View>
-    )
+      )
+    } else {
+      return (
+        <Register style={styles.container} onLogout={logout} />
+      )
+    }
   } else {
     return (
-      <View style={styles.container}>
-        <FocusAwareStatusBar style={'dark'} />
-        <View style={styles.main}>
-          <Logo width={squares(25)} height={squares(25)} />
-          <H1>You are not logged in</H1>
-          <Typography>Sign In or create an account and start buying tickets!</Typography>
-        </View>
-        <Button
-          onPress={login}
-          title={t('login')}
-          style={styles.signInButton}
-        />
-        <View style={{height: insets.bottom || squares(2)}} />
-      </View>
+      <NotSigned style={styles.container} onPressLogin={login} />
     );
   }
 
@@ -79,5 +82,8 @@ const styles = StyleSheet.create({
   },
   signInButton: {
     margin: squares(2)
+  },
+  input: {
+    alignSelf: 'stretch',
   }
 });

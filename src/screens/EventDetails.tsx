@@ -13,14 +13,14 @@ import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '@app/components/BackButton';
 
-const EventDetails = ({route}: ScreenProps<ScreenId.EventDetails>) => {
+const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) => {
 
   const {bottom} = useSafeAreaInsets()
 
   const event = route.params.event
 
   const buyTickets = () => {
-
+    navigation.navigate(ScreenId.BuyTickets, {event});
   };
 
   return (
