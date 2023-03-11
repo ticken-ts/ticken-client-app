@@ -25,7 +25,7 @@ const NotSigned = ({onPressLogin, style}: PropsWithStyle) => {
       <View style={styles.main}>
         <Logo width={squares(25)} height={squares(25)} />
         <H1>You are not logged in</H1>
-        <Typography>Sign In or create an account and start buying tickets!</Typography>
+        <Typography style={styles.subtitle}>Sign In or create an account and start buying tickets!</Typography>
       </View>
       <Button
         onPress={onPressLogin}
@@ -48,7 +48,11 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingHorizontal: squares(2)
+  },
+  subtitle: {
+    textAlign: 'center'
   },
   signInButton: {
     margin: squares(2)

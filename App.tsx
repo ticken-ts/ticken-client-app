@@ -15,13 +15,13 @@ export default function App() {
     <SplashLoader>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <AuthContextProvider>
-            <QueryClientProvider client={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <AuthContextProvider>
               <NavigationContainer>
                 <MainApp/>
               </NavigationContainer>
-            </QueryClientProvider>
-          </AuthContextProvider>
+            </AuthContextProvider>
+          </QueryClientProvider>
         </PersistGate>
       </Provider>
     </SplashLoader>

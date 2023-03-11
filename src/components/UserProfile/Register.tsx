@@ -27,7 +27,9 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
 
   const {mutate} = useMutation(['user'], createAccount, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['user'])
+      queryClient.invalidateQueries(['user']).catch(() => {
+        console.log('error invalidating user')
+      })
     }
   })
 
@@ -36,6 +38,10 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
       mutate({
         token,
         addressPK: data.addressPK
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['user'])
+        }
       })
     }
   }
@@ -62,7 +68,7 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
             />
           </View>
           <Button
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             title={t('completeRegistration')}
             style={styles.signInButton}
           />

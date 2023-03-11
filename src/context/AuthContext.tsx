@@ -12,6 +12,7 @@ import useAppDispatch from '@app/hooks/useDispatch';
 import {env} from '@app/config/loadEnvironment';
 import {selectCredentials} from '@app/redux/selectors/openID';
 import {setCredentials, wipe} from '@app/redux/reducers/openID';
+import {useQueryClient} from 'react-query';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -49,6 +50,8 @@ export const AuthContextProvider = ({children}: any) => {
 
   const discovery = useAutoDiscovery(`${env.KEYCLOAK_URL}/realms/attendants`)
 
+  const query = useQueryClient();
+
   const [request, result, promptAsync] = useAuthRequest({
     clientId: env.KEYCLOAK_CLIENT_ID,
     usePKCE: false,
@@ -74,6 +77,7 @@ export const AuthContextProvider = ({children}: any) => {
         redirectUri
       ).then(res => {
         if (res.type === 'success') {
+          query.invalidateQueries('user')
           dispatch(wipe())
         } else {
           console.log("Error logging out:", res);

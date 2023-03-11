@@ -27,9 +27,16 @@ const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
   const {logout, login, ready, token, isLoggedIn} = useContext(AuthContext);
 
-  const {data, isLoading} = useQuery<User | undefined>(['user'],  token ? fetchMyUser(token) : () => undefined)
+  const {data, isLoading} = useQuery(['user', token],  ({queryKey}) => {
+    const token = queryKey[1]
+    if (token) {
+      return fetchMyUser(token)
+    }
+  })
 
   const insets = useSafeAreaInsets()
+
+  console.log("User data: ", data)
 
   if (isLoggedIn) {
     if (data) {
