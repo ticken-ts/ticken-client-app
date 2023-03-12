@@ -4,9 +4,9 @@ export interface User {
   firstName?: string;
   lastName?: string;
   walletAddress: string;
+  emailVerified?: boolean;
 }
 
 export interface CreateAccountData {
-  token: string;
   addressPK: string;
 }

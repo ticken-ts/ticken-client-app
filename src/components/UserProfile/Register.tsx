@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import Logo from '@app/assets/logo.svg';
@@ -9,9 +9,7 @@ import Input from '@app/components/Input';
 import Button from '@app/components/Button';
 import {t} from '@app/locale/useLocalization';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useMutation, useQueryClient} from 'react-query';
-import {createAccount} from '@app/api/api';
-import {AuthContext} from '@app/context/AuthContext';
+import {useCreateProfileMutation} from '@app/api/useCreateProfileMutation';
 type PropsWithStyle = {
   style?: StyleProp<ViewStyle>;
   onLogout?: () => void;
@@ -21,29 +19,12 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
 
   const insets = useSafeAreaInsets()
 
-  const {token} = useContext(AuthContext)
-
-  const queryClient = useQueryClient()
-
-  const {mutate} = useMutation(['user'], createAccount, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['user']).catch(() => {
-        console.log('error invalidating user')
-      })
-    }
-  })
+  const {createProfile} = useCreateProfileMutation();
 
   const registerUser = (data: {addressPK: string}) => {
-    if (token) {
-      mutate({
-        token,
-        addressPK: data.addressPK
-      }, {
-        onSuccess: () => {
-          queryClient.invalidateQueries(['user'])
-        }
-      })
-    }
+    createProfile({
+      addressPK: data.addressPK,
+    })
   }
 
   return (

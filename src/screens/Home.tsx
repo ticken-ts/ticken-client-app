@@ -5,14 +5,12 @@ import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {getCustomHeader} from '@app/navigation/mainStack/headers';
 import {colors} from '@app/styles/colors';
 import {H1} from '@app/components/Typography';
-import {EventModel} from '@app/model/Event';
 import {HomeListItem} from '@app/components/HomeListItem';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import {t} from '@app/locale/useLocalization';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {squares} from '@app/styles/grid';
-import {useQuery} from 'react-query';
-import {fetchEvents} from '@app/api/api';
+import {useEventListQuery} from '@app/api/useEventListQuery';
 
 const pageSize = 4;
 
@@ -39,7 +37,7 @@ const Home = ({navigation}: ScreenProps<ScreenId.Home>) => {
     []
   )
 
-  const {isLoading, isError, data, error, isFetching, refetch} = useQuery<EventModel[]>('events', fetchEvents)
+  const {isLoading, data, isFetching, refetch} = useEventListQuery();
 
   return (
     <View style={styles.container}>

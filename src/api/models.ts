@@ -18,3 +18,14 @@ export interface ApiEvent {
   sections: ApiSection[];
   poster?: string;
 }
+
+export interface ApiUser {
+  user_id: string;
+  wallet_address: string;
+  profile?: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    email_verified: boolean;
+  }
+}

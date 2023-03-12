@@ -4,35 +4,24 @@ import {getTranslucentHeader} from '@app/navigation/mainStack/headers';
 import BackButton from '@app/components/BackButton';
 import {colors} from '@app/styles/colors';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
-import Button from '@app/components/Button';
-import {t} from '@app/locale/useLocalization';
-import Typography, {H1, H2} from '@app/components/Typography';
+import {H1, H2} from '@app/components/Typography';
 import {ScreenProps} from '@app/navigation/mainStack/types';
 import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {AuthContext} from '@app/context/AuthContext';
 import {squares} from '@app/styles/grid';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Logo from '@app/assets/logo.svg';
-import {useQuery} from 'react-query';
-import {fetchMyUser} from '@app/api/api';
-import {User} from '@app/model/User';
-import Input from '@app/components/Input';
-import {Formik} from 'formik';
 import LoggedInProfile from '@app/components/UserProfile/LoggedIn';
 import Register from '@app/components/UserProfile/Register';
 import NotSigned from '@app/components/UserProfile/NotSigned';
+import {useProfileQuery} from '@app/api/useProfileQuery';
 
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
 
   const {logout, login, ready, token, isLoggedIn} = useContext(AuthContext);
 
-  const {data, isLoading} = useQuery(['user', token],  ({queryKey}) => {
-    const token = queryKey[1]
-    if (token) {
-      return fetchMyUser(token)
-    }
-  })
+  const {data, isLoading} = useProfileQuery();
 
   const insets = useSafeAreaInsets()
 

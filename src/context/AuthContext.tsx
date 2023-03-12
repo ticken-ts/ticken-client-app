@@ -77,7 +77,6 @@ export const AuthContextProvider = ({children}: any) => {
         redirectUri
       ).then(res => {
         if (res.type === 'success') {
-          query.invalidateQueries('user')
           dispatch(wipe())
         } else {
           console.log("Error logging out:", res);
