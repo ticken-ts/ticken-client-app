@@ -28,4 +28,8 @@ export const en = {
   enterEthAddress: 'If you want to import your own ethereum address, please entre the private key below.',
   leaveBlank: 'Leave blank if you want us to create one for you!',
   completeRegistration: 'Complete Registration',
+  profileEmail: 'Email',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  walletAddress: 'Wallet Address',
 }

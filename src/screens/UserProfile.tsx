@@ -15,22 +15,21 @@ import LoggedInProfile from '@app/components/UserProfile/LoggedIn';
 import Register from '@app/components/UserProfile/Register';
 import NotSigned from '@app/components/UserProfile/NotSigned';
 import {useProfileQuery} from '@app/api/useProfileQuery';
+import {useAuth} from '@app/hooks/useAuth';
 
 const UserProfile = ({navigation}: ScreenProps<ScreenId.UserProfile>) => {
 
 
-  const {logout, login, ready, token, isLoggedIn} = useContext(AuthContext);
+  const {logout, login, isLoggedIn} = useAuth();
 
   const {data, isLoading} = useProfileQuery();
 
   const insets = useSafeAreaInsets()
 
-  console.log("User data: ", data)
-
   if (isLoggedIn) {
     if (data) {
       return (
-        <LoggedInProfile style={styles.container} onLogout={logout} />
+        <LoggedInProfile user={data} style={styles.container} onLogout={logout} />
       )
     } else if (isLoading) {
       return (
@@ -60,7 +59,6 @@ export default {
   component: UserProfile,
   options: getTranslucentHeader({
     left: () => <BackButton />,
-    mid: () => <H2 style={{color: colors.primary}}>User Profile</H2>,
     backgroundColor: colors.primary,
   })
 };

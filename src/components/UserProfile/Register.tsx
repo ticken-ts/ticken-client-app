@@ -10,6 +10,8 @@ import Button from '@app/components/Button';
 import {t} from '@app/locale/useLocalization';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useCreateProfileMutation} from '@app/api/useCreateProfileMutation';
+import KeyboardAvoid from '@app/components/KeyboardAvoid';
+import Spacing from '@app/components/Spacing';
 type PropsWithStyle = {
   style?: StyleProp<ViewStyle>;
   onLogout?: () => void;
@@ -28,7 +30,7 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
   }
 
   return (
-    <View style={style}>
+    <KeyboardAvoid behavior={"height"} style={style}>
       <FocusAwareStatusBar style={'dark'} />
       <Formik initialValues={{
         addressPK: '',
@@ -37,9 +39,11 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
           <>
           <View style={styles.main}>
             <Logo width={squares(25)} height={squares(25)} />
-            <H2>We need more data to finish creating your profile!</H2>
-            <Typography style={styles.firstText}>{t('enterEthAddress')}</Typography>
-            <Typography style={styles.secondText}>{t('leaveBlank')}</Typography>
+            <View style={styles.texts}>
+              <H2>We need more data to finish creating your profile!</H2>
+              <Typography style={styles.firstText}>{t('enterEthAddress')}</Typography>
+              <Typography style={styles.secondText}>{t('leaveBlank')}</Typography>
+            </View>
             <Input
               placeholder={t('addressPK')}
               style={styles.input}
@@ -48,11 +52,13 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
               value={values.addressPK}
             />
           </View>
+          <Spacing v={squares(1)}/>
           <Button
             onPress={() => handleSubmit()}
             title={t('completeRegistration')}
             style={styles.signInButton}
           />
+          <Spacing v={squares(1)}/>
           <Button
             onPress={onLogout}
             title={t('logOut')}
@@ -62,7 +68,7 @@ const Register = ({onLogout, style}: PropsWithStyle) => {
           </>
         )}
       </Formik>
-    </View>
+    </KeyboardAvoid>
   );
 };
 
@@ -76,13 +82,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   main: {
-    flex: 1,
-    alignItems: 'stretch',
+    flexGrow: 1,
+    alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: squares(3),
   },
+  texts: {
+    alignSelf: 'stretch',
+  },
   signInButton: {
-    margin: squares(2)
+    marginHorizontal: squares(2)
   },
   input: {
     alignSelf: 'stretch',
