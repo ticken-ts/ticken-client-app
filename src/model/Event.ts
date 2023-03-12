@@ -10,4 +10,5 @@ export interface EventModel {
 export interface SectionModel {
   name: string,
   totalTickets: number,
+  price: number,
 }

@@ -6,6 +6,7 @@ export interface ApiSection {
   event_id: string;
   name: string;
   total_tickets: number;
+  price: number;
   on_chain: boolean;
 }
 

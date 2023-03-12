@@ -17,7 +17,8 @@ export const toEvent = (event: ApiEvent): EventModel => ({
   startDate: event.date,
   sections: event.sections.map(section => ({
     name: section.name,
-    totalTickets: section.total_tickets
+    totalTickets: section.total_tickets,
+    price: section.price
   })),
   cover: toEventPoster(event.poster)
 })

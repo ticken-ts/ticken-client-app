@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {ScreenProps} from '@app/navigation/mainStack/types';
 import {SharedElement} from 'react-navigation-shared-element';
@@ -30,7 +30,9 @@ const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) =
         <Image source={{uri: event.cover}} style={[styles.image]} resizeMode={'cover'} />
       </SharedElement>
       <View style={styles.descriptionContainer}>
-        <Typography>{event.description}</Typography>
+        <ScrollView>
+          <Typography>{event.description}</Typography>
+        </ScrollView>
       </View>
       <View style={styles.buttonContainer}>
         <Button title={t('buyTickets')} onPress={buyTickets} />
