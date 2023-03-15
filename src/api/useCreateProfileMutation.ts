@@ -1,9 +1,8 @@
 import {useMutation, useQueryClient} from 'react-query';
-import {useApi} from '@app/api/api';
 import {useAuth} from '@app/hooks/useAuth';
+import {createAccount} from '@app/api/api';
 
 export const useCreateProfileMutation = () => {
-  const {createAccount} = useApi();
   const {token} = useAuth();
   const query = useQueryClient();
 

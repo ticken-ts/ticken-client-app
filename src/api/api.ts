@@ -22,52 +22,44 @@ export const getPosterUri = (poster?: string): string | undefined => {
   return undefined;
 }
 
-export const useApi = () => {
-  const fetchEvents = useCallback(async (): Promise<EventModel[]> => {
-    const events = await eventsApi.get<ApiResponse<ApiEvent[]>>('/public/events');
-    return toEventList(events.data.data)
-  }, []);
+export const fetchEvents = async (): Promise<EventModel[]> => {
+  const events = await eventsApi.get<ApiResponse<ApiEvent[]>>('/public/events');
+  return toEventList(events.data.data)
+}
 
-  const fetchMyUser = useCallback(async (token: string | null) => {
-    if (!token) {
-      return undefined;
-    }
-    try {
-      console.log("Getting user with token: ", token);
-      const user = await ticketsApi.get<ApiResponse<ApiUser>>('/users/myUser', {
-        headers: {
-          Authorization: token
-        }
-      });
-      return toUser(user.data.data);
-    } catch (e) {
-      if (isAxiosError(e)) {
-        if (e.response?.status === 404) {
-          return undefined;
-        }
-      }
-      throw e;
-    }
-  }, []);
-
-  const createAccount = useCallback(async (data: CreateAccountData, token: string|null) => {
-    if (!token) {
-      return undefined;
-    }
-    console.log('data', data);
-    const account = await ticketsApi.post<ApiResponse<User>>('/users', {
-      addressPK: data.addressPK
-    }, {
+export const fetchMyUser = async (token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  try {
+    console.log("Getting user with token: ", token);
+    const user = await ticketsApi.get<ApiResponse<ApiUser>>('/users/myUser', {
       headers: {
         Authorization: token
       }
     });
-    return account.data.data;
-  }, []);
-
-  return {
-    fetchEvents,
-    fetchMyUser,
-    createAccount,
+    return toUser(user.data.data);
+  } catch (e) {
+    if (isAxiosError(e)) {
+      if (e.response?.status === 404) {
+        return undefined;
+      }
+    }
+    throw e;
   }
+}
+
+export const createAccount = async (data: CreateAccountData, token: string|null) => {
+  if (!token) {
+    return undefined;
+  }
+  console.log('data', data);
+  const account = await ticketsApi.post<ApiResponse<User>>('/users', {
+    addressPK: data.addressPK
+  }, {
+    headers: {
+      Authorization: token
+    }
+  });
+  return account.data.data;
 }
