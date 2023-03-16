@@ -32,4 +32,7 @@ export const en = {
   firstName: 'First Name',
   lastName: 'Last Name',
   walletAddress: 'Wallet Address',
+
+  // Purchase Confirmation
+  purchaseConfirmation: 'Purchase Confirmation',
 }

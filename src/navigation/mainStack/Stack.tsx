@@ -5,6 +5,7 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import EventDetails from '@app/screens/EventDetails';
 import UserProfile from '@app/screens/UserProfile';
 import BuyTickets from '@app/screens/BuyTickets';
+import PurchaseConfirmation from '@app/screens/PurchaseConfirmation';
 
 const {Navigator, Screen} = createSharedElementStackNavigator<RootStackParamList>();
 
@@ -30,6 +31,10 @@ const Stack = () => {
       <Screen
         name={ScreenId.BuyTickets}
         {...BuyTickets}
+      />
+      <Screen
+        name={ScreenId.PurchaseConfirmation}
+        {...PurchaseConfirmation}
       />
     </Navigator>
   );

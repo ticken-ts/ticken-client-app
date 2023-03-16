@@ -1,19 +1,22 @@
 import React from 'react';
-import {FlatList, ListRenderItem, StyleSheet, View} from 'react-native';
+import {FlatList, ListRenderItem, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Typography, {H1} from '@app/components/Typography';
-import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
-import {ScreenProps} from '@app/navigation/mainStack/types';
+import {NavigationTyping, RootStackParamList, ScreenId} from '@app/navigation/mainStack/ScreenIDs';
+import {ScreenProps, StackScreenProps} from '@app/navigation/mainStack/types';
 import {getCustomHeader} from '@app/navigation/mainStack/headers';
 import BackButton from '@app/components/BackButton';
-import {SectionModel} from '@app/model/Event';
+import {EventModel, SectionModel} from '@app/model/Event';
 import {squares} from '@app/styles/grid';
 import {colors} from '@app/styles/colors';
 import {t} from '@app/locale/useLocalization';
 import Icon from '@expo/vector-icons/FontAwesome';
 import LoginWall from '@app/components/LoginWall';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
+import {useNavigation} from '@react-navigation/native';
 
 const BuyTickets = ({route, navigation}: ScreenProps<ScreenId.BuyTickets> ) => {
+
+  const event = route.params.event;
 
   const buyTicket = () => {
 
@@ -24,22 +27,34 @@ const BuyTickets = ({route, navigation}: ScreenProps<ScreenId.BuyTickets> ) => {
       {() => (
         <View style={styles.container}>
           <FocusAwareStatusBar style="dark" />
-          <FlatList data={route.params.event.sections} renderItem={renderSection} />
+          <FlatList data={route.params.event.sections} renderItem={({item}) => <Section event={event} section={item} />} />
         </View>
       )}
     </LoginWall>
   );
 };
 
-const renderSection: ListRenderItem<SectionModel> = ({item}) => {
+type SectionProps = {
+  section: SectionModel,
+  event: EventModel,
+}
+
+const Section: React.FC<SectionProps> = ({section, event}) => {
+
+  const navigation = useNavigation<NavigationTyping>();
+
+  const navigateToPurchaseConfirmation = () => {
+    navigation.navigate(ScreenId.PurchaseConfirmation, {section, event});
+  };
+
   return (
-    <View style={styles.section}>
+    <TouchableOpacity activeOpacity={0.6} onPress={navigateToPurchaseConfirmation} style={styles.section}>
       <View style={styles.texts}>
-        <H1>{item.name}</H1>
-        <Typography>${item.price}</Typography>
+        <H1>{section.name}</H1>
+        <Typography>${section.price}</Typography>
       </View>
       <Icon name={"chevron-right"} color={colors.primary} />
-    </View>
+    </TouchableOpacity>
   )
 };
 

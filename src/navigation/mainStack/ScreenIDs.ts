@@ -1,4 +1,4 @@
-import {EventModel} from '@app/model/Event';
+import {EventModel, SectionModel} from '@app/model/Event';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export enum ScreenId {
@@ -6,6 +6,7 @@ export enum ScreenId {
   EventDetails = "EventDetails",
   UserProfile = "UserProfile",
   BuyTickets = "BuyTickets",
+  PurchaseConfirmation = "PurchaseConfirmation",
 }
 
 export type RootStackParamList = {
@@ -18,6 +19,10 @@ export type RootStackParamList = {
   };
   [ScreenId.BuyTickets]: {
     event: EventModel,
+  },
+  [ScreenId.PurchaseConfirmation]: {
+    event: EventModel,
+    section: SectionModel,
   }
 }
 
