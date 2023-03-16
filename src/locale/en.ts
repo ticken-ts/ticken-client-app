@@ -35,4 +35,9 @@ export const en = {
 
   // Purchase Confirmation
   purchaseConfirmation: 'Purchase Confirmation',
+  purchaseConfirmationText: 'You are about to purchase a ticket for the event',
+  total: 'Total',
+  confirm: 'Confirm',
+  cancel: 'Cancel',
+
 }
