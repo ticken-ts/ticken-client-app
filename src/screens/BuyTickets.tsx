@@ -1,35 +1,33 @@
 import React from 'react';
-import {Text, View, StyleSheet, FlatList, ListRenderItem} from 'react-native';
-import {Formik} from 'formik';
+import {FlatList, ListRenderItem, StyleSheet, View} from 'react-native';
 import Typography, {H1} from '@app/components/Typography';
 import {ScreenId} from '@app/navigation/mainStack/ScreenIDs';
 import {ScreenProps} from '@app/navigation/mainStack/types';
-import {getCustomHeader, getTranslucentHeader} from '@app/navigation/mainStack/headers';
+import {getCustomHeader} from '@app/navigation/mainStack/headers';
 import BackButton from '@app/components/BackButton';
-import {useAuth} from '@app/hooks/useAuth';
 import {SectionModel} from '@app/model/Event';
 import {squares} from '@app/styles/grid';
 import {colors} from '@app/styles/colors';
-import {useHeaderHeight} from 'react-native-screens/native-stack';
 import {t} from '@app/locale/useLocalization';
 import Icon from '@expo/vector-icons/FontAwesome';
+import LoginWall from '@app/components/LoginWall';
+import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 
 const BuyTickets = ({route, navigation}: ScreenProps<ScreenId.BuyTickets> ) => {
-
-  const {isLoggedIn} = useAuth();
 
   const buyTicket = () => {
 
   };
 
-  // if (!isLoggedIn) {
-  //   return null
-  // }
-  //
   return (
-    <View style={styles.container}>
-      <FlatList data={route.params.event.sections} renderItem={renderSection} />
-    </View>
+    <LoginWall style={styles.container}>
+      {() => (
+        <View style={styles.container}>
+          <FocusAwareStatusBar style="dark" />
+          <FlatList data={route.params.event.sections} renderItem={renderSection} />
+        </View>
+      )}
+    </LoginWall>
   );
 };
 
@@ -48,16 +46,16 @@ const renderSection: ListRenderItem<SectionModel> = ({item}) => {
 export default {
     component: BuyTickets,
     options: getCustomHeader({
-        left: () => <BackButton />,
-        mid: () => <H1>{t("buyTickets")}</H1>,
-      backgroundColor: colors.white,
+      left: () => <BackButton />,
+      mid: () => <H1>{t("buyTickets")}</H1>,
+      backgroundColor: colors.transparent,
     }),
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.transparent,
   },
   main: {
     flex: 1,

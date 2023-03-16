@@ -22,7 +22,7 @@ export const env = (() => {
     KEYCLOAK_CLIENT_ID,
     KEYCLOAK_URL,
     EVENTS_URL,
-    TICKETS_URL
+    TICKETS_URL,
   }
 })()
 
