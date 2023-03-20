@@ -7,6 +7,7 @@ export enum ScreenId {
   UserProfile = "UserProfile",
   BuyTickets = "BuyTickets",
   PurchaseConfirmation = "PurchaseConfirmation",
+  MyTickets = "MyTickets",
 }
 
 export type RootStackParamList = {
@@ -23,7 +24,8 @@ export type RootStackParamList = {
   [ScreenId.PurchaseConfirmation]: {
     event: EventModel,
     section: SectionModel,
-  }
+  },
+  [ScreenId.MyTickets]: undefined,
 }
 
 export type NavigationTyping = StackNavigationProp<RootStackParamList>

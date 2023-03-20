@@ -31,7 +31,7 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
   };
 
   const goToMyTickets = () => {
-
+    navigation.navigate(ScreenId.MyTickets)
   };
 
   if (isSuccess) {

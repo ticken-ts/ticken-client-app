@@ -9,6 +9,8 @@ import {t} from '@app/locale/useLocalization';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {User} from '@app/model/User';
 import Field from '@app/components/UserProfile/Field';
+import {NavigationTyping, ScreenId} from '@app/navigation/mainStack/ScreenIDs';
+import {useNavigation} from '@react-navigation/native';
 
 type PropsWithStyle = {
   style?: StyleProp<ViewStyle>;
@@ -18,6 +20,12 @@ type PropsWithStyle = {
 
 const LoggedInProfile = ({style, onLogout, user}: PropsWithStyle) => {
   const insets = useSafeAreaInsets()
+
+  const navigation = useNavigation<NavigationTyping>();
+
+  const goToMyTickets = () => {
+    navigation.navigate(ScreenId.MyTickets)
+  };
 
   return (
     <View style={style}>
@@ -34,6 +42,11 @@ const LoggedInProfile = ({style, onLogout, user}: PropsWithStyle) => {
           <Field.HiddenField style={styles.profileField} content={user.walletAddress} label={t("walletAddress")} />
         </View>
       </View>
+      <Button
+        onPress={goToMyTickets}
+        title={t('viewMyTickets')}
+        style={styles.myTicketsButton}
+      />
       <Button
         onPress={onLogout}
         title={t('logOut')}
@@ -67,6 +80,10 @@ const styles = StyleSheet.create({
   },
   signInButton: {
     margin: squares(2)
+  },
+  myTicketsButton: {
+    margin: squares(2),
+    marginBottom: 0,
   },
   input: {
     alignSelf: 'stretch',
