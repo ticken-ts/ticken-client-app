@@ -2,7 +2,7 @@ import {EventModel} from '@app/model/Event';
 import axios, {isAxiosError} from 'axios';
 import {env} from '@app/config/loadEnvironment';
 import {toEventList, toUser} from '@app/api/mappers';
-import {ApiEvent, ApiResponse, ApiUser} from '@app/api/models';
+import {ApiEvent, ApiResponse, ApiTicket, ApiUser} from '@app/api/models';
 import {CreateAccountData, User} from '@app/model/User';
 import {useCallback, useContext} from 'react';
 import {AuthContext} from '@app/context/AuthContext';
@@ -62,4 +62,18 @@ export const createAccount = async (data: CreateAccountData, token: string|null)
     }
   });
   return account.data.data;
+}
+
+export const purchaseTicket = async (event: EventModel, section: string, token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  const ticket = await ticketsApi.post<ApiResponse<ApiTicket>>(`/events/${event.id}/tickets`, {
+    section,
+  }, {
+    headers: {
+      Authorization: token
+    }
+  });
+  return ticket.data.data;
 }

@@ -30,3 +30,14 @@ export interface ApiUser {
     email_verified: boolean;
   }
 }
+
+export interface ApiTicket {
+  ticket_id:   string;
+  event_id:    string;
+  status:      string;
+  section:     string;
+  pubbc_tx_id: string;
+  pvtbc_tx_id: string;
+  token_id:    string;
+}
+

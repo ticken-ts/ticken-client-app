@@ -17,12 +17,12 @@ export const env = (() => {
   if (!TICKETS_URL) throw new Error('TICKETS_URL not defined')
 
   return {
+    TICKETS_URL,
     API_SECRET,
     KEYCLOAK_CLIENT_SECRET,
     KEYCLOAK_CLIENT_ID,
     KEYCLOAK_URL,
     EVENTS_URL,
-    TICKETS_URL,
   }
 })()
 

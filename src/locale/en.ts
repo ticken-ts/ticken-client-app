@@ -39,5 +39,6 @@ export const en = {
   total: 'Total',
   confirm: 'Confirm',
   cancel: 'Cancel',
-
+  viewMyTickets: 'View My Tickets',
+  successText: "Your ticket has been purchased successfully!"
 }

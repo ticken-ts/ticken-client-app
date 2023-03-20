@@ -12,6 +12,8 @@ import {squares} from '@app/styles/grid';
 import Spacing from '@app/components/Spacing';
 import Button from '@app/components/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {usePurchaseTicketMutation} from '@app/api/usePurchaseTicketMutation';
+import { FontAwesome } from '@expo/vector-icons';
 
 const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.PurchaseConfirmation>) => {
 
@@ -19,9 +21,35 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
 
   const {bottom} = useSafeAreaInsets();
 
-  const confirmPurchase = () => {
-    
+  const {purchaseTicket, isLoading, isSuccess} = usePurchaseTicketMutation();
+
+  const confirmPurchase = async () => {
+    const res = await purchaseTicket({
+      event: event,
+      section: section.name,
+    })
   };
+
+  const goToMyTickets = () => {
+
+  };
+
+  if (isSuccess) {
+    return (
+      <View style={styles.container}>
+        <FocusAwareStatusBar style="dark" />
+        <View style={styles.successContainer}>
+          <View style={{flex: 1}}/>
+          <FontAwesome name="check-circle" size={squares(10)} color={colors.secondary} />
+          <Spacing v={squares(2)} />
+          <H1>{t("successText")}</H1>
+          <View style={{flex: 1}}/>
+          <Button style={{alignSelf: 'stretch'}} title={t('viewMyTickets')} onPress={goToMyTickets} />
+          <Spacing v={bottom || squares(2)} />
+        </View>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -72,5 +100,10 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
+  },
+  successContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
