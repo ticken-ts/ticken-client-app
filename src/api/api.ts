@@ -77,3 +77,15 @@ export const purchaseTicket = async (event: EventModel, section: string, token: 
   });
   return ticket.data.data;
 }
+
+export const getMyTickets = async (token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  const tickets = await ticketsApi.get<ApiResponse<ApiTicket[]>>('/events/tickets', {
+    headers: {
+      Authorization: token
+    }
+  });
+  return tickets.data.data;
+}

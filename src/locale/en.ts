@@ -42,4 +42,7 @@ export const en = {
   viewMyTickets: 'View My Tickets',
   successText: "Your ticket has been purchased successfully!",
   loading: 'Loading...',
+
+  // My Tickets
+  myTickets: 'My Tickets',
 }
