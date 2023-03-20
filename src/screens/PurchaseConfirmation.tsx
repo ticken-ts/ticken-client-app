@@ -71,7 +71,10 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
           </View>
         </View>
       </View>
-      <Button title={t('confirm')} onPress={confirmPurchase} />
+      {!isLoading
+        ? <Button title={t('confirm')} onPress={confirmPurchase} />
+        : <Button title={t('confirm')} onPress={() => {}} />
+      }
       <Spacing v={bottom || squares(2)} />
     </View>
   );
