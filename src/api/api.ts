@@ -89,3 +89,8 @@ export const getMyTickets = async (token: string | null) => {
   });
   return tickets.data.data;
 }
+
+export const getEvent = async (eventId: string) => {
+  const event = await eventsApi.get<ApiResponse<ApiEvent>>(`/public/events/${eventId}`);
+  return event.data.data;
+}
