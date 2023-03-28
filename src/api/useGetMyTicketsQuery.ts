@@ -5,5 +5,7 @@ import {useAuth} from '@app/hooks/useAuth';
 export const useGetMyTicketsQuery  = () => {
   const {token} = useAuth();
 
-  return useQuery(['myTickets', token], () => getMyTickets(token));
+  return useQuery(['myTickets', token], () => getMyTickets(token), {
+    keepPreviousData: true,
+  });
 };

@@ -13,6 +13,7 @@ import {env} from '@app/config/loadEnvironment';
 import {selectCredentials} from '@app/redux/selectors/openID';
 import {setCredentials, wipe} from '@app/redux/reducers/openID';
 import {useQueryClient} from 'react-query';
+import {DateTime} from 'luxon';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -88,9 +89,8 @@ export const AuthContextProvider = ({children}: any) => {
 
   useEffect(() => {
     const attemptGetNewToken = async () => {
-      const expiresAtMillis = expiresAt * 1000;
-      const needsRefresh = expiresAtMillis - Date.now() < 60 * 1000;
-      console.log('needsRefresh', needsRefresh)
+      const expireDate = DateTime.fromSeconds(expiresAt || 0);
+      const needsRefresh = expireDate.diffNow().as('seconds') < 60;
       if (discovery && refreshToken && needsRefresh) {
         try {
           const res = await refreshAsync(

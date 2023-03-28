@@ -5,5 +5,7 @@ import {fetchMyUser} from '@app/api/api';
 export const useProfileQuery = () => {
   const {token} = useAuth();
 
-  return useQuery(['user', token], () => fetchMyUser(token));
+  return useQuery(['user', token], () => fetchMyUser(token), {
+    keepPreviousData: true,
+  });
 };
