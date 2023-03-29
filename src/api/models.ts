@@ -18,6 +18,8 @@ export interface ApiEvent {
   on_chain: boolean;
   sections: ApiSection[];
   poster?: string;
+  pub_bc_address: string;
+
 }
 
 export interface ApiUser {
