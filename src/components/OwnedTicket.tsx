@@ -10,11 +10,11 @@ import {squares} from '@app/styles/grid';
 import EventPoster from '@app/components/EventPoster';
 import {getPosterUri} from '@app/api/api';
 import Button from '@app/components/Button';
-import crypto from 'crypto';
 import { useLoading } from '@app/hooks/useLoading';
-import { QRCode } from './QRCode';
+import { QRCode } from '@app/components/QRCode';
 import { t } from '@app/locale/useLocalization';
 import { usePrivateKeyQuery } from '@app/api/usePrivateKeyQuery';
+import { createTicketHash } from '@app/crypto/createTicketHash';
 
 type TicketProps = {
   ticket: ApiTicket;
@@ -30,11 +30,11 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
 
   const onRefreshCode = load(async () => {
     if (!event) return;
-    const ticketSignature = `${event.pub_bc_address}/${ticket.token_id}`;
-
-
+    if (!myPrivateKey) return;
     
-    setCode(ticketSignature);
+    const hash = await createTicketHash(ticket, event, myPrivateKey);
+    
+    setCode(hash);
   })
 
   if (!event) return (<></>);
