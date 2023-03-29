@@ -94,3 +94,15 @@ export const getEvent = async (eventId: string) => {
   const event = await eventsApi.get<ApiResponse<ApiEvent>>(`/public/events/${eventId}`);
   return event.data.data;
 }
+
+export const getMyPrivateKey = async (token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  const privateKey = await ticketsApi.get<ApiResponse<string>>('/users/myUser/privKey', {
+    headers: {
+      Authorization: token
+    }
+  });
+  return privateKey.data.data;
+}
