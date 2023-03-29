@@ -5,6 +5,7 @@ declare module 'react-native-dotenv' {
   export const KEYCLOAK_URL: string
   export const EVENTS_URL: string
   export const TICKETS_URL: string
+  export const TOTP_SECRET: string
 }
 
 declare module "*.svg" {
