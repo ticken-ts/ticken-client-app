@@ -2,8 +2,8 @@ import { ApiEvent, ApiTicket } from "@app/api/models";
 import { env } from "@app/config/loadEnvironment";
 import totp from "totp-generator";
 import * as crypto from "expo-crypto";
-import { RSA } from 'react-native-rsa-native';
 import { Buffer } from "buffer";
+import { ec } from "elliptic";
 
 const totpSecret = env.TOTP_SECRET
 
@@ -16,11 +16,19 @@ export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, priva
 
     const hash = encodeURIComponent(fingerprint)
 
-    const encrypted = await RSA.signWithAlgorithm(hash, privateKey, "SHA256withRSA")
-    
-    __DEV__ && console.log("Encrypted hash: ", encrypted)
+    __DEV__ && console.log("Hash: ", hash)
 
-    return encrypted
+    __DEV__ && console.log("Private key: ", privateKey)
+
+    const curve = new ec("secp256k1")
+    const key = curve.keyFromPrivate(Buffer.from(privateKey, "hex"), "hex")
+    const encrypted = key.sign(Buffer.from(hash, "hex"))
+
+    const signature = encrypted.r.toString("hex") + encrypted.s.toString("hex")
+
+    __DEV__ && console.log("Encrypted hash: ", signature)
+
+    return signature
 }
 
 const getTicketFingerprint = async (ticket: ApiTicket, event: ApiEvent) => {
