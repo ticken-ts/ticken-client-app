@@ -55,7 +55,7 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
           <TouchableOpacity onPress={toggleShowing} style={styles.modalBackgroundFill} />
           <View style={styles.modalContent}>
             <H2 style={styles.QRTitle}>{t('qrTitle')}</H2>
-            <QRCode code={code} />
+            <QRCode code={code} loading={loading} />
             <Button style={styles.codeButton} title={"Refresh Code"} onPress={onRefreshCode} />
           </View>
         </View>
