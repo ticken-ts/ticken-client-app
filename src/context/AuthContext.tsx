@@ -42,7 +42,7 @@ const initialState: InternalState = {
 export const AuthContext = createContext({} as AuthContextProps);
 
 const redirectUri = makeRedirectUri({
-  scheme: "ticken-app",
+  path: 'redirect',
 })
 
 export const AuthContextProvider = ({children}: any) => {
