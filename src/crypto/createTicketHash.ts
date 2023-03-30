@@ -14,32 +14,43 @@ export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, priva
 
     __DEV__ && console.log("Fingerprint: ", fingerprint)
 
-    const hash = encodeURIComponent(fingerprint)
+    const uriEncodedFingerprint = encodeURIComponent(fingerprint)
 
-    __DEV__ && console.log("Hash: ", hash)
+    __DEV__ && console.log("Encoded fingerprint: ", uriEncodedFingerprint)
 
     __DEV__ && console.log("Private key: ", privateKey)
 
-    const curve = new ec("secp256k1")
-    const key = curve.keyFromPrivate(Buffer.from(privateKey, "hex"), "hex")
-    const encrypted = key.sign(Buffer.from(hash, "hex"))
+    const encrypted = await (async () => {
+        const curve = new ec("secp256k1")
+        const key = curve.keyFromPrivate(privateKey, "hex")
+        const encrypted = key.sign(uriEncodedFingerprint, "hex")
+        return encrypted
+    })()
 
-    const signature = encrypted.r.toString("hex") + encrypted.s.toString("hex")
+    const signature = JSON.stringify({
+        r: encrypted.r.toString("hex"),
+        s: encrypted.s.toString("hex"),
+    })
 
     __DEV__ && console.log("Encrypted hash: ", signature)
 
     return signature
 }
 
+// Returns a SHA256 hash of the ticket fingerprint (event address + token ID + TOTP token)
 const getTicketFingerprint = async (ticket: ApiTicket, event: ApiEvent) => {
 
     __DEV__ && console.log("Generating TOTP token using:", totpSecret)
-
-    const totpToken = totp(totpSecret, {
+    
+    const totpToken = await (async () => totp(totpSecret, {
         digits: 8,
         algorithm: "SHA-512",
-        period: 10,
-    })
+
+        // 10 minutes
+        period: 10 * 60,
+    }))()
+
+    __DEV__ && console.log("TOTP token: ", totpToken)
     
     __DEV__ && console.log("Token ID: ", ticket.token_id)
 
