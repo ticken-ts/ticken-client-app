@@ -48,4 +48,5 @@ export const en = {
   qrTitle: 'Entrance QR Code',
   expiresIn: 'Expires in',
   refreshCode: 'Refresh Code',
+  expired: 'Expired',
 }

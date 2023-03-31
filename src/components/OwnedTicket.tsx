@@ -55,7 +55,9 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
 
   const expiresIn = qrData?.expiresAtMillis 
     ? DateTime.fromMillis(qrData.expiresAtMillis).diff(DateTime.fromMillis(now)).toFormat('mm:ss')
-    : "00:00"
+    : '00:00';
+
+  const expired = qrData?.expiresAtMillis && now > qrData.expiresAtMillis;
 
   if (!event) return (<></>);
 
@@ -77,12 +79,18 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
             <H2 style={styles.QRTitle}>{t('qrTitle')}</H2>
             <QRCode code={qrData?.data || ""} loading={loading} />
             <View style={styles.expiresInContainer}>
-              <H3 style={styles.expiresIn}>
-                {t('expiresIn')}:
-              </H3>
-              <View style={styles.expiresInNumber}>
-                <Typography>{expiresIn}</Typography>
-              </View>
+              {expired ? (
+                <H3 style={styles.expired}>{t('expired')}</H3>
+              ) : (
+                <>
+                  <H3 style={styles.expiresIn}>
+                    {t('expiresIn')}:
+                  </H3>
+                  <View style={styles.expiresInNumber}>
+                    <Typography>{expiresIn}</Typography>
+                  </View>
+                </>
+              )}
             </View>  
             <Button style={styles.codeButton} title={t("refreshCode")} onPress={onRefreshCode} />
           </View>
@@ -143,6 +151,10 @@ const styles = StyleSheet.create({
   },
   expiresIn: {
     textAlign: 'center',
+  },
+  expired: {
+    textAlign: 'center',
+    color: colors.red,
   },
   expiresInNumber: {
     marginLeft: squares(1),
