@@ -2,7 +2,7 @@ import {ApiTicket} from '@app/api/models';
 import {useEventQuery} from '@app/api/useEventQuery';
 import {useToggle} from '@app/hooks/useToggle';
 import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native';
-import Typography, {H1, H2} from '@app/components/Typography';
+import Typography, {H1, H2, H3} from '@app/components/Typography';
 import {DateTime} from 'luxon';
 import React, {useState} from 'react';
 import {colors} from '@app/styles/colors';
@@ -15,6 +15,11 @@ import { QRCode } from '@app/components/QRCode';
 import { t } from '@app/locale/useLocalization';
 import { usePrivateKeyQuery } from '@app/api/usePrivateKeyQuery';
 import { createTicketHash } from '@app/crypto/createTicketHash';
+import { useSelector } from 'react-redux';
+import { selectQRCode } from '@app/redux/selectors/qrCodes';
+import useAppDispatch from '@app/hooks/useDispatch';
+import { addQRCode } from '@app/redux/reducers/qrCodes';
+import { useTime } from '@app/hooks/useTime';
 
 type TicketProps = {
   ticket: ApiTicket;
@@ -26,16 +31,31 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
   const [showing, toggleShowing] = useToggle();
   const {load, loading} = useLoading()
 
-  const [code, setCode] = useState('');
+  const qrData = useSelector(selectQRCode(ticket.ticket_id))
+  const dispatch = useAppDispatch();
+
+  const setCode = (code: string, expirationDateMillis: number) => {
+    dispatch(addQRCode({
+      data: code,
+      id: ticket.ticket_id,
+      expiresAtMillis: expirationDateMillis,
+    }))
+  }
 
   const onRefreshCode = load(async () => {
     if (!event) return;
     if (!myPrivateKey) return;
     
-    const hash = await createTicketHash(ticket, event, myPrivateKey);
+    const {signature, expirationDateMillis} = await createTicketHash(ticket, event, myPrivateKey);
     
-    setCode(hash);
+    setCode(signature, expirationDateMillis);
   })
+
+  const now = useTime(1000);
+
+  const expiresIn = qrData?.expiresAtMillis 
+    ? DateTime.fromMillis(qrData.expiresAtMillis).diff(DateTime.fromMillis(now)).toFormat('mm:ss')
+    : "00:00"
 
   if (!event) return (<></>);
 
@@ -55,7 +75,15 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
           <TouchableOpacity onPress={toggleShowing} style={styles.modalBackgroundFill} />
           <View style={styles.modalContent}>
             <H2 style={styles.QRTitle}>{t('qrTitle')}</H2>
-            <QRCode code={code} loading={loading} />
+            <QRCode code={qrData?.data || ""} loading={loading} />
+            <View style={styles.expiresInContainer}>
+              <H3 style={styles.expiresIn}>
+                {t('expiresIn')}:
+              </H3>
+              <View style={styles.expiresInNumber}>
+                <Typography>{expiresIn}</Typography>
+              </View>
+            </View>  
             <Button style={styles.codeButton} title={"Refresh Code"} onPress={onRefreshCode} />
           </View>
         </View>
@@ -108,5 +136,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: squares(2),
   },
+  expiresInContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  expiresIn: {
+    textAlign: 'center',
+  },
+  expiresInNumber: {
+    marginLeft: squares(1),
+    width: squares(6),
+    textAlign: 'left',
+  }
 });
 

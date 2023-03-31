@@ -2,7 +2,8 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
 import {secureStorage} from '@app/redux/secureStorage';
-import {openIDSlice} from '@app/redux/reducers/openID';
+import openIDSlice from '@app/redux/reducers/openID';
+import qrSlice from '@app/redux/reducers/qrCodes';
 
 const EncryptedStorage = secureStorage({});
 
@@ -12,7 +13,8 @@ const securePersistedReducer = persistReducer(
     storage: EncryptedStorage,
   },
   combineReducers({
-    openID: openIDSlice.reducer,
+    openID: openIDSlice,
+    qrCodes: qrSlice,
   })
 )
 

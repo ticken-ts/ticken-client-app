@@ -4,17 +4,18 @@ import totp from "totp-generator";
 import * as crypto from "expo-crypto";
 import { Buffer } from "buffer";
 import { ec } from "elliptic";
+import { DateTime } from "luxon";
 
 const totpSecret = env.TOTP_SECRET
 
 export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, privateKey: string) => {
     
     
-    const fingerprint = await getTicketFingerprint(ticket, event)
+    const {fingerprintHash, expirationDateMillis} = await getTicketFingerprint(ticket, event)
 
-    __DEV__ && console.log("Fingerprint: ", fingerprint)
+    __DEV__ && console.log("Fingerprint: ", fingerprintHash)
 
-    const uriEncodedFingerprint = encodeURIComponent(fingerprint)
+    const uriEncodedFingerprint = encodeURIComponent(fingerprintHash)
 
     __DEV__ && console.log("Encoded fingerprint: ", uriEncodedFingerprint)
 
@@ -34,7 +35,7 @@ export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, priva
 
     __DEV__ && console.log("Encrypted hash: ", signature)
 
-    return signature
+    return {signature, expirationDateMillis}
 }
 
 // Returns a SHA256 hash of the ticket fingerprint (event address + token ID + TOTP token)
@@ -42,13 +43,18 @@ const getTicketFingerprint = async (ticket: ApiTicket, event: ApiEvent) => {
 
     __DEV__ && console.log("Generating TOTP token using:", totpSecret)
     
+    const periodSeconds = 10 * 60
+    const now = DateTime.now().toMillis() 
+    const expirationDateMillis = DateTime.now().plus({seconds: periodSeconds}).toMillis()
+
     const totpToken = await (async () => totp(totpSecret, {
         digits: 8,
         algorithm: "SHA-512",
-
+        timestamp: now,
         // 10 minutes
-        period: 10 * 60,
+        period: periodSeconds,
     }))()
+    
 
     __DEV__ && console.log("TOTP token: ", totpToken)
     
@@ -59,7 +65,7 @@ const getTicketFingerprint = async (ticket: ApiTicket, event: ApiEvent) => {
 
     const fingerprint = `${event.pub_bc_address}/${tokenIDHex}/${totpToken}`
 
-    const hashSha256 = await crypto.digestStringAsync(crypto.CryptoDigestAlgorithm.SHA256, fingerprint)
+    const fingerprintHash = await crypto.digestStringAsync(crypto.CryptoDigestAlgorithm.SHA256, fingerprint)
 
-    return hashSha256
+    return {fingerprintHash, expirationDateMillis}
 }

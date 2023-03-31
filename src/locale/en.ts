@@ -46,4 +46,5 @@ export const en = {
   // My Tickets
   myTickets: 'My Tickets',
   qrTitle: 'Entrance QR Code',
+  expiresIn: 'Expires in',
 }

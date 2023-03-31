@@ -32,3 +32,4 @@ export const openIDSlice = createSlice({
 })
 
 export const {wipe, setCredentials} = openIDSlice.actions;
+export default openIDSlice.reducer;
