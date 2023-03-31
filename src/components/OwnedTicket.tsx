@@ -84,7 +84,7 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
                 <Typography>{expiresIn}</Typography>
               </View>
             </View>  
-            <Button style={styles.codeButton} title={"Refresh Code"} onPress={onRefreshCode} />
+            <Button style={styles.codeButton} title={t("refreshCode")} onPress={onRefreshCode} />
           </View>
         </View>
       </Modal>
