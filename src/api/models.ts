@@ -10,6 +10,13 @@ export interface ApiSection {
   on_chain: boolean;
 }
 
+export enum EventStatus {
+  DRAFT = "draft",
+  ON_SALE = "on_sale",
+  RUNNING = "running",
+  FINISHED = "finished",
+}
+
 export interface ApiEvent {
   event_id: string;
   name: string;
@@ -19,8 +26,9 @@ export interface ApiEvent {
   sections: ApiSection[];
   poster?: string;
   pub_bc_address: string;
-
+  status: EventStatus;
 }
+
 
 export interface ApiUser {
   user_id: string;

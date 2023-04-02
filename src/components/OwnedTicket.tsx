@@ -46,9 +46,9 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
     if (!event) return;
     if (!myPrivateKey) return;
     
-    const {signature, expirationDateMillis} = await createTicketHash(ticket, event, myPrivateKey);
+    const {signature, expirationDateSeconds} = await createTicketHash(ticket, event, myPrivateKey);
     
-    setCode(signature, expirationDateMillis);
+    setCode(signature, expirationDateSeconds * 1000);
   })
 
   const now = useTime(1000);

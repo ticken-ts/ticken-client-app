@@ -24,6 +24,11 @@ const MyTickets = ({navigation}: ScreenProps<ScreenId.MyTickets>) => {
         style={'dark'}
         backgroundColor="transparent"
       />
+      {myTickets.data?.length === 0 &&
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <H1>{t("noTickets")}</H1>
+        </View>
+      }
       {myTickets.data &&
         <FlatList data={myTickets.data} renderItem={({item}) =>
           <OwnedTicket ticket={item} />

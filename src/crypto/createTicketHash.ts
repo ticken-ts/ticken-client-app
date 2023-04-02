@@ -10,8 +10,7 @@ const totpSecret = env.TOTP_SECRET
 
 export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, privateKey: string) => {
     
-    
-    const {fingerprintHash, expirationDateMillis} = await getTicketFingerprint(ticket, event)
+    const {fingerprintHash, expirationDateSeconds} = await getTicketFingerprint(ticket, event)
 
     __DEV__ && console.log("Fingerprint: ", fingerprintHash)
 
@@ -35,7 +34,7 @@ export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, priva
 
     __DEV__ && console.log("Encrypted hash: ", signature)
 
-    return {signature, expirationDateMillis}
+    return {signature, expirationDateSeconds}
 }
 
 // Returns a SHA256 hash of the ticket fingerprint (event address + token ID + TOTP token)
@@ -43,18 +42,17 @@ const getTicketFingerprint = async (ticket: ApiTicket, event: ApiEvent) => {
 
     __DEV__ && console.log("Generating TOTP token using:", totpSecret)
     
-    const periodSeconds = 10 * 60
-    const now = DateTime.now().toMillis() 
-    const expirationDateMillis = DateTime.now().plus({seconds: periodSeconds}).toMillis()
+    const periodSeconds = 60
+    const expirationDateSeconds = Math.floor(DateTime.now().toUnixInteger() / periodSeconds) * 60 + periodSeconds
+
+    __DEV__ && console.log("Expiration date: ", expirationDateSeconds)
 
     const totpToken = await (async () => totp(totpSecret, {
         digits: 8,
         algorithm: "SHA-512",
-        timestamp: now,
-        // 10 minutes
         period: periodSeconds,
+        timestamp: Date.now(),
     }))()
-    
 
     __DEV__ && console.log("TOTP token: ", totpToken)
     
@@ -67,5 +65,5 @@ const getTicketFingerprint = async (ticket: ApiTicket, event: ApiEvent) => {
 
     const fingerprintHash = await crypto.digestStringAsync(crypto.CryptoDigestAlgorithm.SHA256, fingerprint)
 
-    return {fingerprintHash, expirationDateMillis}
+    return {fingerprintHash, expirationDateSeconds}
 }

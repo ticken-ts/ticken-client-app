@@ -49,4 +49,5 @@ export const en = {
   expiresIn: 'Expires in',
   refreshCode: 'Refresh Code',
   expired: 'Expired',
+  noTickets: 'You have no tickets yet!',
 }
