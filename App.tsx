@@ -7,6 +7,7 @@ import {useLocalization} from '@app/locale/useLocalization';
 import SplashLoader from '@app/components/SplashLoader';
 import {AuthContextProvider} from '@app/context/AuthContext';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,9 @@ export default function App() {
           <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
               <NavigationContainer>
-                <MainApp/>
+                <RootSiblingParent>
+                  <MainApp/>
+                </RootSiblingParent>
               </NavigationContainer>
             </AuthContextProvider>
           </QueryClientProvider>

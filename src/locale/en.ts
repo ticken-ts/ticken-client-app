@@ -32,6 +32,7 @@ export const en = {
   firstName: 'First Name',
   lastName: 'Last Name',
   walletAddress: 'Wallet Address',
+  clipboard: 'Copied to clipboard!',
 
   // Purchase Confirmation
   purchaseConfirmation: 'Purchase Confirmation',

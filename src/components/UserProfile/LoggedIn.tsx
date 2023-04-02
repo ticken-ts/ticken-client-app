@@ -36,10 +36,10 @@ const LoggedInProfile = ({style, onLogout, user}: PropsWithStyle) => {
         </View>
         <Logo width={squares(25)} height={squares(25)} />
         <View style={styles.profile}>
-          <Field.Field style={styles.profileField} content={user.email} label={t("profileEmail")} />
+          <Field.Field copiable style={styles.profileField} content={user.email} label={t("profileEmail")} />
           <Field.Field style={styles.profileField} content={user.firstName} label={t("firstName")} />
           <Field.Field style={styles.profileField} content={user.lastName} label={t("lastName")} />
-          <Field.HiddenField style={styles.profileField} content={user.walletAddress} label={t("walletAddress")} />
+          <Field.Field copiable style={styles.profileField} content={user.walletAddress} label={t("walletAddress")} />
         </View>
       </View>
       <Button
@@ -54,7 +54,6 @@ const LoggedInProfile = ({style, onLogout, user}: PropsWithStyle) => {
       />
       <View style={{height: insets.bottom || squares(2)}} />
     </View>
-
   );
 };
 
