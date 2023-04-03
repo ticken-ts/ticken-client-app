@@ -31,7 +31,14 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
   };
 
   const goToMyTickets = () => {
-    navigation.navigate(ScreenId.MyTickets)
+    navigation.reset({
+      index: 1,
+      routes: [
+        {name: ScreenId.Home},
+        {name: ScreenId.UserProfile},
+        {name: ScreenId.MyTickets}
+      ]
+    })
   };
 
   if (isSuccess) {

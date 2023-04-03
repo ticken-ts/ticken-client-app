@@ -44,7 +44,15 @@ const Section: React.FC<SectionProps> = ({section, event}) => {
   const navigation = useNavigation<NavigationTyping>();
 
   const navigateToPurchaseConfirmation = () => {
-    navigation.navigate(ScreenId.PurchaseConfirmation, {section, event});
+
+    navigation.reset({
+      index: 2,
+      routes: [
+        {name: ScreenId.Home},
+        {name: ScreenId.EventDetails, params: {event}},
+        {name: ScreenId.PurchaseConfirmation, params: {event, section}}
+      ]
+    })
   };
 
   return (

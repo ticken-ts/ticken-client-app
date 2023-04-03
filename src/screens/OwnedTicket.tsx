@@ -63,6 +63,7 @@ export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicke
   })
 
   const onPressResell = () => {
+    
   }
 
   if (!event) return (<></>);
