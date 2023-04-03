@@ -6,6 +6,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { setStringAsync } from 'expo-clipboard';
 import Toast from 'react-native-root-toast';
 import { t } from '@app/locale/useLocalization';
+import { AntDesign } from '@expo/vector-icons';
+import { squares } from '@app/styles/grid';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -32,7 +34,7 @@ const Field = ({style, content, label, copiable}: Props) => {
       activeOpacity={copiable ? 0.7 : 1}
       style={style} 
       onPress={copyContent}>
-      <H1>{content}</H1>
+      <H1>{content} {copiable && <AntDesign name="copy1" size={squares(2)} color="black" />}</H1>
       <Typography>{label}</Typography>
     </TouchableOpacity>
   );

@@ -1,3 +1,4 @@
+import { ApiTicket } from '@app/api/models';
 import {EventModel, SectionModel} from '@app/model/Event';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -8,6 +9,7 @@ export enum ScreenId {
   BuyTickets = "BuyTickets",
   PurchaseConfirmation = "PurchaseConfirmation",
   MyTickets = "MyTickets",
+  OwnedTicket = "OwnedTicket",
 }
 
 export type RootStackParamList = {
@@ -26,6 +28,9 @@ export type RootStackParamList = {
     section: SectionModel,
   },
   [ScreenId.MyTickets]: undefined,
+  [ScreenId.OwnedTicket]: {
+    ticket: ApiTicket,
+  },
 }
 
 export type NavigationTyping = StackNavigationProp<RootStackParamList>

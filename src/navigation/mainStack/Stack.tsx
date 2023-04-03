@@ -7,6 +7,7 @@ import UserProfile from '@app/screens/UserProfile';
 import BuyTickets from '@app/screens/BuyTickets';
 import PurchaseConfirmation from '@app/screens/PurchaseConfirmation';
 import MyTickets from '@app/screens/MyTickets';
+import OwnedTicket from '@app/screens/OwnedTicket';
 
 const {Navigator, Screen} = createSharedElementStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,10 @@ const Stack = () => {
       <Screen
         name={ScreenId.MyTickets}
         {...MyTickets}
+      />
+      <Screen
+        name={ScreenId.OwnedTicket}
+        {...OwnedTicket}
       />
     </Navigator>
   );

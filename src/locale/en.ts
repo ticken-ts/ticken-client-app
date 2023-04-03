@@ -51,4 +51,6 @@ export const en = {
   refreshCode: 'Refresh Code',
   expired: 'Expired',
   noTickets: 'You have no tickets yet!',
+  ownedTicket: 'My Ticket',
+  resell: 'Resell',
 }

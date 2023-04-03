@@ -9,60 +9,24 @@ import {colors} from '@app/styles/colors';
 import {squares} from '@app/styles/grid';
 import EventPoster from '@app/components/EventPoster';
 import {getPosterUri} from '@app/api/api';
-import Button from '@app/components/Button';
-import { useLoading } from '@app/hooks/useLoading';
-import { QRCode } from '@app/components/QRCode';
-import { t } from '@app/locale/useLocalization';
-import { usePrivateKeyQuery } from '@app/api/usePrivateKeyQuery';
-import { createTicketHash } from '@app/crypto/createTicketHash';
-import { useSelector } from 'react-redux';
-import { selectQRCode } from '@app/redux/selectors/qrCodes';
-import useAppDispatch from '@app/hooks/useDispatch';
-import { addQRCode } from '@app/redux/reducers/qrCodes';
-import { useTime } from '@app/hooks/useTime';
+import { NavigationTyping, ScreenId } from '@app/navigation/mainStack/ScreenIDs';
+import { useNavigation } from '@react-navigation/native';
 
 type TicketProps = {
   ticket: ApiTicket;
 }
 export const OwnedTicket = ({ticket}: TicketProps) => {
-
   const {data: event} = useEventQuery(ticket.event_id);
-  const {data: myPrivateKey} = usePrivateKeyQuery();
-  const [showing, toggleShowing] = useToggle();
-  const {load, loading} = useLoading()
+  const navigation = useNavigation<NavigationTyping>();
 
-  const qrData = useSelector(selectQRCode(ticket.ticket_id))
-  const dispatch = useAppDispatch();
-
-  const setCode = (code: string, expirationDateMillis: number) => {
-    dispatch(addQRCode({
-      data: code,
-      id: ticket.ticket_id,
-      expiresAtMillis: expirationDateMillis,
-    }))
-  }
-
-  const onRefreshCode = load(async () => {
-    if (!event) return;
-    if (!myPrivateKey) return;
-    
-    const {signature, expirationDateSeconds} = await createTicketHash(ticket, event, myPrivateKey);
-    
-    setCode(signature, expirationDateSeconds * 1000);
-  })
-
-  const now = useTime(1000);
-
-  const expiresIn = qrData?.expiresAtMillis 
-    ? DateTime.fromMillis(qrData.expiresAtMillis).diff(DateTime.fromMillis(now)).toFormat('mm:ss')
-    : '00:00';
-
-  const expired = qrData?.expiresAtMillis && now > qrData.expiresAtMillis;
+  const goToTicket = () => {
+    navigation.navigate(ScreenId.OwnedTicket, {ticket});
+  };
 
   if (!event) return (<></>);
 
   return (
-    <TouchableOpacity onPress={toggleShowing} style={styles.ticket}>
+    <TouchableOpacity onPress={goToTicket} style={styles.ticket}>
       <EventPoster 
         resizeMode={"cover"} 
         style={styles.poster} 
@@ -72,30 +36,6 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
       <Typography>{DateTime.fromISO(event.date).toFormat('DD')}</Typography>
       <Typography>{DateTime.fromISO(event.date).toFormat('HH:mm')}</Typography>
       <Typography>{ticket.section}</Typography>
-      <Modal animationType={"slide"} style={styles.modal} visible={showing} transparent>
-        <View style={styles.modalBackground}>
-          <TouchableOpacity onPress={toggleShowing} style={styles.modalBackgroundFill} />
-          <View style={styles.modalContent}>
-            <H2 style={styles.QRTitle}>{t('qrTitle')}</H2>
-            <QRCode code={qrData?.data || ""} loading={loading} />
-            <View style={styles.expiresInContainer}>
-              {expired ? (
-                <H3 style={styles.expired}>{t('expired')}</H3>
-              ) : (
-                <>
-                  <H3 style={styles.expiresIn}>
-                    {t('expiresIn')}:
-                  </H3>
-                  <View style={styles.expiresInNumber}>
-                    <Typography>{expiresIn}</Typography>
-                  </View>
-                </>
-              )}
-            </View>  
-            <Button style={styles.codeButton} title={t("refreshCode")} onPress={onRefreshCode} />
-          </View>
-        </View>
-      </Modal>
     </TouchableOpacity>
   );
 };
