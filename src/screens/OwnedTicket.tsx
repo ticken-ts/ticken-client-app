@@ -1,7 +1,7 @@
 import {ApiTicket, EventStatus} from '@app/api/models';
 import {useEventQuery} from '@app/api/useEventQuery';
 import {useToggle} from '@app/hooks/useToggle';
-import {Modal, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {FlatList, Modal, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Typography, {H1, H2, H3, Title} from '@app/components/Typography';
 import {DateTime} from 'luxon';
 import React, {useState} from 'react';
@@ -28,6 +28,7 @@ import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import { ContextMenu } from '@app/components/ContextMenu';
 import Field from '@app/components/UserProfile/Field';
 import { useResellTicketMutation } from '@app/api/useResellTicketMutation';
+import Spacing from '@app/components/Spacing';
 
 export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicket>) => {
 
@@ -100,10 +101,15 @@ export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicke
       }
 
       {isReselling && event.status === EventStatus.ON_SALE && (
-        <View style={styles.ticketInfo}>
+        <View style={styles.resellingInfo}>
           <H1>{t('resellingTicket')}</H1>
-          <Field.Field style={styles.dataTitle} label={"Price"} content={'$' + ticket.resells[0].price.toString()} />
-          <Field.Field style={styles.dataTitle} label={"Currency"} content={ticket.resells[0].currency} />
+          {ticket.resells.map(item => (
+            <View key={item.currency} style={styles.resellItem}>
+              <Field.Field style={styles.resellDataTitle} label={"Price"} content={'$' + ticket.resells[0].price.toString()} />
+              <Spacing v={squares(1)} />
+              <Field.Field style={styles.resellDataTitle} label={"Currency"} content={ticket.resells[0].currency} />
+            </View>
+          ))}
         </View>
       )}
 
@@ -205,6 +211,22 @@ const styles = StyleSheet.create({
   },
   poster: {
     aspectRatio: 21/9
-  }
+  },
+  resellingInfo: {
+    backgroundColor: colors.white,
+    marginHorizontal: squares(2),
+    marginVertical: squares(1),
+    padding: squares(2),
+  },
+  resellItem: {
+    marginVertical: squares(1),
+    borderRadius: squares(1),
+    padding: squares(1),
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  resellDataTitle: {
+
+  },
 });
 
