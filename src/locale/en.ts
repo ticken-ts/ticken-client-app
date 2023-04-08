@@ -66,4 +66,6 @@ export const en = {
   no: 'No',
   inResell: 'In Resell',
   resellingTicket: 'Reselling Ticket',
+  resellSuccess: 'Success',
+  resellSuccessText: 'Your ticket has been put to resell successfully!',
 }
