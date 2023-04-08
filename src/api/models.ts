@@ -49,5 +49,16 @@ export interface ApiTicket {
   pubbc_tx_id: string;
   pvtbc_tx_id: string;
   token_id:    string;
+  resells:     ApiResell[];
+}
+
+export interface ApiResell {
+  price:    number;
+  currency: ResellCurrency;
+}
+
+export enum ResellCurrency {
+  ARS = "AR$",
+  ETH = "ETH",
 }
 

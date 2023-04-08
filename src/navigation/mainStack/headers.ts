@@ -13,7 +13,8 @@ type HeaderOptions = {
   left?: StackNavigationOptions['headerLeft'],
   mid?: StackNavigationOptions['headerTitle'],
   right?: StackNavigationOptions['headerRight'],
-  backgroundColor?: string
+  backgroundColor?: string,
+  shadow?: boolean,
 }
 
 export function getCustomHeader(options: HeaderOptions): StackNavigationOptions {
@@ -27,7 +28,8 @@ export function getCustomHeader(options: HeaderOptions): StackNavigationOptions 
     headerBackTitleVisible: false,
     // headerTintColor: options.backgroundColor,
     headerStyle: {
-      backgroundColor: options.backgroundColor
+      backgroundColor: options.backgroundColor,
+      ...options.shadow ? {} : {shadowColor: colors.transparent}
     }
   })
 }

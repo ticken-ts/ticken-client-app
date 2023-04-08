@@ -10,6 +10,8 @@ export enum ScreenId {
   PurchaseConfirmation = "PurchaseConfirmation",
   MyTickets = "MyTickets",
   OwnedTicket = "OwnedTicket",
+  ResellTicket = "ResellTicket",
+  ResellConfirmation = "ResellConfirmation",
 }
 
 export type RootStackParamList = {
@@ -30,6 +32,14 @@ export type RootStackParamList = {
   [ScreenId.MyTickets]: undefined,
   [ScreenId.OwnedTicket]: {
     ticket: ApiTicket,
+  },
+  [ScreenId.ResellTicket]: {
+    ticket: ApiTicket,
+  },
+  [ScreenId.ResellConfirmation]: {
+    ticket: ApiTicket,
+    price: number,
+    currency: string,
   },
 }
 

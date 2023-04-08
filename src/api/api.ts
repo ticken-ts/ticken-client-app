@@ -2,7 +2,7 @@ import {EventModel} from '@app/model/Event';
 import axios, {isAxiosError} from 'axios';
 import {env} from '@app/config/loadEnvironment';
 import {toEventList, toUser} from '@app/api/mappers';
-import {ApiEvent, ApiResponse, ApiTicket, ApiUser} from '@app/api/models';
+import {ApiEvent, ApiResponse, ApiTicket, ApiUser, ResellCurrency} from '@app/api/models';
 import {CreateAccountData, User} from '@app/model/User';
 import {useCallback, useContext} from 'react';
 import {AuthContext} from '@app/context/AuthContext';
@@ -105,4 +105,19 @@ export const getMyPrivateKey = async (token: string | null) => {
     }
   });
   return privateKey.data.data;
+}
+
+export const resellTicket = async (eventID: string, ticketID: string, price: number, token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  const ticket = await ticketsApi.put<ApiResponse<ApiTicket>>(`/events/${eventID}/tickets/${ticketID}/resells`, {
+    price,
+    currency: ResellCurrency.ARS,
+  }, {
+    headers: {
+      Authorization: token
+    }
+  });
+  return ticket.data.data;
 }

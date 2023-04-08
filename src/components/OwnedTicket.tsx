@@ -11,6 +11,7 @@ import EventPoster from '@app/components/EventPoster';
 import {getPosterUri} from '@app/api/api';
 import { NavigationTyping, ScreenId } from '@app/navigation/mainStack/ScreenIDs';
 import { useNavigation } from '@react-navigation/native';
+import { t } from '@app/locale/useLocalization';
 
 type TicketProps = {
   ticket: ApiTicket;
@@ -31,11 +32,16 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
         resizeMode={"cover"} 
         style={styles.poster} 
         source={{uri: getPosterUri(event.poster)}}
-      />
+        />
       <H1>{event.name}</H1>
       <Typography>{DateTime.fromISO(event.date).toFormat('DD')}</Typography>
       <Typography>{DateTime.fromISO(event.date).toFormat('HH:mm')}</Typography>
       <Typography>{ticket.section}</Typography>
+        {ticket.resells.length > 0 && (
+          <View style={{position: 'absolute', top: 0, right: 0, backgroundColor: colors.primary, padding: squares(1)}}>
+            <Typography style={{color: colors.white}}>{t('inResell')}</Typography>
+          </View>
+        )}
     </TouchableOpacity>
   );
 };

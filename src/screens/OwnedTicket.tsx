@@ -27,6 +27,7 @@ import BackButton from '@app/components/BackButton';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import { ContextMenu } from '@app/components/ContextMenu';
 import Field from '@app/components/UserProfile/Field';
+import { useResellTicketMutation } from '@app/api/useResellTicketMutation';
 
 export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicket>) => {
 
@@ -35,7 +36,9 @@ export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicke
   const dispatch = useAppDispatch();
   const {data: event} = useEventQuery(ticket.event_id);
   const {data: myPrivateKey} = usePrivateKeyQuery();
-  const {load, loading} = useLoading()
+  const {load, loading} = useLoading();
+
+  const isReselling = ticket.resells.length > 0;
 
   const now = useTime(1000);
 
@@ -63,7 +66,7 @@ export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicke
   })
 
   const onPressResell = () => {
-    
+    navigation.navigate(ScreenId.ResellTicket, {ticket});
   }
 
   if (!event) return (<></>);
@@ -96,6 +99,14 @@ export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicke
         </View>
       }
 
+      {isReselling && event.status === EventStatus.ON_SALE && (
+        <View style={styles.ticketInfo}>
+          <H1>{t('resellingTicket')}</H1>
+          <Field.Field style={styles.dataTitle} label={"Price"} content={'$' + ticket.resells[0].price.toString()} />
+          <Field.Field style={styles.dataTitle} label={"Currency"} content={ticket.resells[0].currency} />
+        </View>
+      )}
+
       <View style={styles.ticketInfo}>
         <EventPoster
           source={{uri: getPosterUri(event.poster)}}
@@ -110,7 +121,7 @@ export const OwnedTicket = ({navigation, route}: ScreenProps<ScreenId.OwnedTicke
         <Field.Field copiable style={styles.dataTitle} label={"Token ID"} content={ticket.token_id} />
 
       </View>
-      {event.status === EventStatus.ON_SALE &&
+      {event.status === EventStatus.ON_SALE && !isReselling &&
         <Button style={styles.resellButton} title={t("resell")} onPress={onPressResell} />
       }
     </ScrollView>

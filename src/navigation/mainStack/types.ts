@@ -13,3 +13,5 @@ export type StackScreenProps = {
 }
 
 export type ScreenProps<T extends ScreenId> = ScrnProps<RootStackParamList, T>
+
+export const createScreen = (options: ScreenComponent) => options;

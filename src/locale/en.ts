@@ -52,5 +52,18 @@ export const en = {
   expired: 'Expired',
   noTickets: 'You have no tickets yet!',
   ownedTicket: 'My Ticket',
+  
+  // Resell Ticket
   resell: 'Resell',
+  ticketPrice: 'Ticket Price',
+  ars: 'ARS',
+  eth: 'ETH',
+  priceRequired: 'Price is required',
+  priceInvalid: 'Price is invalid',
+  resellTicketDescription: 'You are about to resell your ticket for the event',
+  areYouSureResell: 'Are you sure you want to resell your ticket?',
+  yes: 'Yes',
+  no: 'No',
+  inResell: 'In Resell',
+  resellingTicket: 'Reselling Ticket',
 }
