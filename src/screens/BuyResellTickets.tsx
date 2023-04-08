@@ -4,7 +4,7 @@ import { useSectionResells } from "@app/api/useSectionResells"
 import BackButton from "@app/components/BackButton"
 import { H1 } from "@app/components/Typography"
 import { t } from "@app/locale/useLocalization"
-import { ScreenId } from "@app/navigation/mainStack/ScreenIDs"
+import { NavigationTyping, ScreenId } from "@app/navigation/mainStack/ScreenIDs"
 import { getCustomHeader } from "@app/navigation/mainStack/headers"
 import { ScreenProps, createScreen } from "@app/navigation/mainStack/types"
 import { colors } from "@app/styles/colors"
@@ -14,6 +14,8 @@ import Field from "@app/components/UserProfile/Field"
 import { squares } from "@app/styles/grid"
 import {FontAwesome} from "@expo/vector-icons"
 import Spacing from "@app/components/Spacing"
+import { useNavigation } from "@react-navigation/native"
+import { EventModel, SectionModel } from "@app/model/Event"
 
 const BuyResellTickets = ({route, navigation}: ScreenProps<ScreenId.BuyResellTickets>) => {
 
@@ -37,18 +39,31 @@ const BuyResellTickets = ({route, navigation}: ScreenProps<ScreenId.BuyResellTic
       <Spacing v={squares(2)} />
       <H1>{t("resellTickets")}</H1>
       <Spacing v={squares(1)} />
-      <FlatList refreshing={isRefetching} onRefresh={refetch} data={resellTickets} renderItem={({item}) => <ResellTicket ticket={item} />} />
+      <FlatList refreshing={isRefetching} onRefresh={refetch} data={resellTickets} renderItem={({item}) => <ResellTicket event={event} section={section} ticket={item} />} />
     </View>
   )
 }
 
 type TicketProps = {
-  ticket: ApiTicket
+  ticket: ApiTicket,
+  event: EventModel,
+  section: SectionModel,
 }
 
-const ResellTicket = ({ticket}: TicketProps) => {
+const ResellTicket = ({ticket, event, section}: TicketProps) => {
+
+  const navigation = useNavigation<NavigationTyping>();
 
   const onChooseResell = (resell: ApiResell) => {
+    navigation.navigate(ScreenId.PurchaseResellConfirmation, {
+      event: event,
+      section: {
+        name: section.name,
+        price: resell.price,
+      },
+      ticket,
+      resell,
+    }) 
   }
 
   return (

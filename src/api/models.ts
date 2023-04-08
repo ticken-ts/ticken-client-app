@@ -55,6 +55,7 @@ export interface ApiTicket {
 export interface ApiResell {
   price:    number;
   currency: ResellCurrency;
+  resell_id: string;
 }
 
 export enum ResellCurrency {

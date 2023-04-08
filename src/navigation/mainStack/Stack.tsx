@@ -11,6 +11,7 @@ import OwnedTicket from '@app/screens/OwnedTicket';
 import ResellTicket from '@app/screens/ResellTicket';
 import ConfirmationScreen from '@app/screens/ConfirmationScreen';
 import BuyResellTickets from '@app/screens/BuyResellTickets';
+import PurchaseResellConfirmation from '@app/screens/PurchaseResellConfirmation';
 
 const {Navigator, Screen} = createSharedElementStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,10 @@ const Stack = () => {
       <Screen
         name={ScreenId.PurchaseConfirmation}
         {...PurchaseConfirmation}
+      />
+      <Screen
+        name={ScreenId.PurchaseResellConfirmation}
+        {...PurchaseResellConfirmation}
       />
       <Screen
         name={ScreenId.MyTickets}

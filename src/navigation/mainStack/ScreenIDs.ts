@@ -1,4 +1,4 @@
-import { ApiEvent, ApiTicket } from '@app/api/models';
+import { ApiEvent, ApiResell, ApiTicket } from '@app/api/models';
 import {EventModel, SectionModel} from '@app/model/Event';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -8,6 +8,7 @@ export enum ScreenId {
   UserProfile = "UserProfile",
   BuyTickets = "BuyTickets",
   PurchaseConfirmation = "PurchaseConfirmation",
+  PurchaseResellConfirmation = "PurchaseResellConfirmation",
   MyTickets = "MyTickets",
   OwnedTicket = "OwnedTicket",
   ResellTicket = "ResellTicket",
@@ -28,7 +29,19 @@ export type RootStackParamList = {
   },
   [ScreenId.PurchaseConfirmation]: {
     event: EventModel,
-    section: SectionModel,
+    section: {
+      price: number,
+      name: string,
+    },
+  },
+  [ScreenId.PurchaseResellConfirmation]: {
+    event: EventModel,
+    section: {
+      price: number,
+      name: string,
+    },
+    ticket: ApiTicket,
+    resell: ApiResell,
   },
   [ScreenId.MyTickets]: undefined,
   [ScreenId.OwnedTicket]: {

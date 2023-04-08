@@ -15,18 +15,17 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {usePurchaseTicketMutation} from '@app/api/usePurchaseTicketMutation';
 import PurchaseDetails from '@app/components/PurchaseDetails';
 
-const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.PurchaseConfirmation>) => {
+const PurchaseResellConfirmation = ({route, navigation}: ScreenProps<ScreenId.PurchaseResellConfirmation>) => {
 
-  const {event, section} = route.params
+  const {event, section, ticket, resell} = route.params
 
   const {purchaseTicket, isLoading} = usePurchaseTicketMutation();
 
   const confirmPurchase = async () => {
-    const res = await purchaseTicket({
-      event: event,
-      section: section.name,
-    })
-    if (res) {
+    
+    // TODO: Call buy resell ticket mutation
+
+    if (false) {
       navigation.reset({
         index: 1,
         routes: [
@@ -51,7 +50,7 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
 };
 
 export default {
-  component: PurchaseConfirmation,
+  component: PurchaseResellConfirmation,
   options: getCustomHeader({
     left: () => <BackButton />,
     mid: () => <H1>{t("purchaseConfirmation")}</H1>,
