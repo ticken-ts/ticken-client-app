@@ -136,3 +136,15 @@ export const getSectionResells = async (eventID: string, section: string, token:
   });
   return resells.data.data;
 }
+
+export const purchaseResellTicket = async (eventID: string, ticketID: string, resellID: string, token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  const ticket = await ticketsApi.post<ApiResponse<ApiTicket>>(`/events/${eventID}/tickets/${ticketID}/resells/${resellID}`, {}, {
+    headers: {
+      Authorization: token
+    }
+  });
+  return ticket.data.data;
+}

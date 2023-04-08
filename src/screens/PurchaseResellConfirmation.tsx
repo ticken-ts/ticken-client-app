@@ -14,18 +14,26 @@ import Button from '@app/components/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {usePurchaseTicketMutation} from '@app/api/usePurchaseTicketMutation';
 import PurchaseDetails from '@app/components/PurchaseDetails';
+import { usePurchaseResellTicketMutation } from '@app/api/useBuyResellTicketMutation';
 
 const PurchaseResellConfirmation = ({route, navigation}: ScreenProps<ScreenId.PurchaseResellConfirmation>) => {
 
   const {event, section, ticket, resell} = route.params
 
-  const {purchaseTicket, isLoading} = usePurchaseTicketMutation();
+  const {purchaseTicket, isLoading} = usePurchaseResellTicketMutation();
 
   const confirmPurchase = async () => {
     
     // TODO: Call buy resell ticket mutation
 
-    if (false) {
+    const res = await purchaseTicket({
+      event: event,
+      section: section.name,
+      ticketID: ticket.ticket_id,
+      resellID: resell.resell_id,
+    })
+
+    if (res) {
       navigation.reset({
         index: 1,
         routes: [

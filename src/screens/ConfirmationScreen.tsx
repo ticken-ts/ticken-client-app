@@ -15,7 +15,9 @@ import { squares } from '@app/styles/grid';
 import { ScreenId } from '@app/navigation/mainStack/ScreenIDs';
 
 
-function ConfirmationScreen({navigation}: ScreenProps<ScreenId.Confirmation>) {
+function ConfirmationScreen({navigation, route}: ScreenProps<ScreenId.Confirmation>) {
+
+  const {buttonText, successText, goToScreen} = route.params
 
   const {bottom} = useSafeAreaInsets();
 
@@ -25,7 +27,7 @@ function ConfirmationScreen({navigation}: ScreenProps<ScreenId.Confirmation>) {
       routes: [
         {name: ScreenId.Home},
         {name: ScreenId.UserProfile},
-        {name: ScreenId.MyTickets}
+        {name: goToScreen}
       ]
     })
   };
@@ -39,9 +41,9 @@ function ConfirmationScreen({navigation}: ScreenProps<ScreenId.Confirmation>) {
           <View style={{flex: 1}}/>
           <FontAwesome name="check-circle" size={squares(10)} color={colors.secondary} />
           <Spacing v={squares(2)} />
-          <H1>{t("resellSuccessText")}</H1>
+          <H1>{successText}</H1>
           <View style={{flex: 1}}/>
-          <Button style={{alignSelf: 'stretch'}} title={t('viewMyTickets')} onPress={goToMyTickets} />
+          <Button style={{alignSelf: 'stretch'}} title={buttonText} onPress={goToMyTickets} />
           <Spacing v={bottom || squares(2)} />
         </View>
       </View>
