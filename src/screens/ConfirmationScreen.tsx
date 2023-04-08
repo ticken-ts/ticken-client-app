@@ -15,7 +15,7 @@ import { squares } from '@app/styles/grid';
 import { ScreenId } from '@app/navigation/mainStack/ScreenIDs';
 
 
-function TicketResellConfirmation({navigation}: ScreenProps<ScreenId.ResellConfirmation>) {
+function ConfirmationScreen({navigation}: ScreenProps<ScreenId.Confirmation>) {
 
   const {bottom} = useSafeAreaInsets();
 
@@ -50,7 +50,7 @@ function TicketResellConfirmation({navigation}: ScreenProps<ScreenId.ResellConfi
 }
 
 export default createScreen({
-    component: TicketResellConfirmation,
+    component: ConfirmationScreen,
     options: getCustomHeader({
         left: () => <BackButton />,
         backgroundColor: colors.transparent,

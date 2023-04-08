@@ -34,6 +34,10 @@ export const en = {
   walletAddress: 'Wallet Address',
   clipboard: 'Copied to clipboard!',
 
+  // Buy Ticket
+  newTicket: 'New Ticket',
+  resellTickets: 'Resell Tickets',
+
   // Purchase Confirmation
   purchaseConfirmation: 'Purchase Confirmation',
   purchaseConfirmationText: 'You are about to purchase a ticket for the event',
@@ -68,4 +72,7 @@ export const en = {
   resellingTicket: 'Reselling Ticket',
   resellSuccess: 'Success',
   resellSuccessText: 'Your ticket has been put to resell successfully!',
+
+  // Buy Resell Ticket
+  chooseSectionTicket: 'Choose ticket',
 }

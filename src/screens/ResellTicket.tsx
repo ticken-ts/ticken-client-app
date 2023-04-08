@@ -57,7 +57,11 @@ function ResellTicket({ route, navigation }: ScreenProps<ScreenId.ResellTicket>)
             {name: ScreenId.Home},
             {name: ScreenId.UserProfile},
             {name: ScreenId.MyTickets},
-            {name: ScreenId.ResellConfirmation, params: {ticket: route.params.ticket}}
+            {name: ScreenId.Confirmation, params: {
+              successText: t("resellSuccessText"),
+              buttonText: t("viewMyTickets"),
+              goToScreen: ScreenId.MyTickets,
+            }}
           ]
         })
           }).finally(() => {

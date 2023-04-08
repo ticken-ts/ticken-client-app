@@ -13,6 +13,7 @@ import Icon from '@expo/vector-icons/FontAwesome';
 import LoginWall from '@app/components/LoginWall';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import {useNavigation} from '@react-navigation/native';
+import { useSectionResells } from '@app/api/useSectionResells';
 
 const BuyTickets = ({route, navigation}: ScreenProps<ScreenId.BuyTickets> ) => {
 
@@ -43,16 +44,15 @@ const Section: React.FC<SectionProps> = ({section, event}) => {
 
   const navigation = useNavigation<NavigationTyping>();
 
-  const navigateToPurchaseConfirmation = () => {
+  const {data: resellTickets} = useSectionResells(event.id, section.name);
 
-    navigation.reset({
-      index: 2,
-      routes: [
-        {name: ScreenId.Home},
-        {name: ScreenId.EventDetails, params: {event}},
-        {name: ScreenId.PurchaseConfirmation, params: {event, section}}
-      ]
-    })
+  const navigateToPurchaseConfirmation = () => {
+    console.log(resellTickets)
+    if (resellTickets && resellTickets.length > 0) {
+      return navigation.navigate(ScreenId.BuyResellTickets, {event, section});
+    }
+
+    navigation.navigate(ScreenId.PurchaseConfirmation, {event, section});
   };
 
   return (

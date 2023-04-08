@@ -1,4 +1,4 @@
-import { ApiTicket } from '@app/api/models';
+import { ApiEvent, ApiTicket } from '@app/api/models';
 import {EventModel, SectionModel} from '@app/model/Event';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -11,7 +11,8 @@ export enum ScreenId {
   MyTickets = "MyTickets",
   OwnedTicket = "OwnedTicket",
   ResellTicket = "ResellTicket",
-  ResellConfirmation = "ResellConfirmation",
+  Confirmation = "Confirmation",
+  BuyResellTickets = "BuyResellTickets",
 }
 
 export type RootStackParamList = {
@@ -36,11 +37,15 @@ export type RootStackParamList = {
   [ScreenId.ResellTicket]: {
     ticket: ApiTicket,
   },
-  [ScreenId.ResellConfirmation]: {
-    ticket: ApiTicket,
-    price: number,
-    currency: string,
+  [ScreenId.Confirmation]: {
+    successText: string,
+    buttonText: string,
+    goToScreen: ScreenId,
   },
+  [ScreenId.BuyResellTickets]: {
+    event: EventModel,
+    section: SectionModel,
+  }
 }
 
 export type NavigationTyping = StackNavigationProp<RootStackParamList>

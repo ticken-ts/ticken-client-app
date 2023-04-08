@@ -121,3 +121,18 @@ export const resellTicket = async (eventID: string, ticketID: string, price: num
   });
   return ticket.data.data;
 }
+
+export const getSectionResells = async (eventID: string, section: string, token: string | null) => {
+  if (!token) {
+    return undefined;
+  }
+  const resells = await ticketsApi.get<ApiResponse<ApiTicket[]>>(`/events/${eventID}/tickets/resells`, {
+    headers: {
+      Authorization: token
+    },
+    params: {
+      section,
+    }
+  });
+  return resells.data.data;
+}

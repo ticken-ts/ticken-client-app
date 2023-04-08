@@ -28,35 +28,21 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
       event: event,
       section: section.name,
     })
+    if (res) {
+      navigation.reset({
+        index: 1,
+        routes: [
+          {name: ScreenId.Home},
+          {name: ScreenId.EventDetails, params: {event: event}},
+          {name: ScreenId.Confirmation, params: {
+            successText: t('successText'),
+            buttonText: t('viewMyTickets'),
+            goToScreen: ScreenId.MyTickets,
+          }},
+        ]
+      })
+    }
   };
-
-  const goToMyTickets = () => {
-    navigation.reset({
-      index: 1,
-      routes: [
-        {name: ScreenId.Home},
-        {name: ScreenId.UserProfile},
-        {name: ScreenId.MyTickets}
-      ]
-    })
-  };
-
-  if (isSuccess) {
-    return (
-      <View style={styles.container}>
-        <FocusAwareStatusBar style="dark" />
-        <View style={styles.successContainer}>
-          <View style={{flex: 1}}/>
-          <FontAwesome name="check-circle" size={squares(10)} color={colors.secondary} />
-          <Spacing v={squares(2)} />
-          <H1>{t("successText")}</H1>
-          <View style={{flex: 1}}/>
-          <Button style={{alignSelf: 'stretch'}} title={t('viewMyTickets')} onPress={goToMyTickets} />
-          <Spacing v={bottom || squares(2)} />
-        </View>
-      </View>
-    )
-  }
 
   return (
     <View style={styles.container}>
