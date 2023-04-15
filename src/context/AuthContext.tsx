@@ -57,7 +57,6 @@ export const AuthContextProvider = ({children}: any) => {
     clientId: env.KEYCLOAK_CLIENT_ID,
     usePKCE: false,
     redirectUri,
-    clientSecret: env.KEYCLOAK_CLIENT_SECRET,
     scopes: ['openid', 'profile', 'email', 'offline_access'],
   }, discovery);
 
