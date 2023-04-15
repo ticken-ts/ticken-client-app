@@ -12,6 +12,7 @@ import {t} from 'i18n-js';
 import FocusAwareStatusBar from '@app/components/FocusAwareStatusBar';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BackButton from '@app/components/BackButton';
+import WebView from 'react-native-webview';
 
 const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) => {
 
@@ -30,9 +31,16 @@ const EventDetails = ({route, navigation}: ScreenProps<ScreenId.EventDetails>) =
         <Image source={{uri: event.cover}} style={[styles.image]} resizeMode={'cover'} />
       </SharedElement>
       <View style={styles.descriptionContainer}>
-        <ScrollView>
-          <Typography>{event.description}</Typography>
-        </ScrollView>
+        <View style={{flex: 1}}>
+          <WebView 
+            style={{flex: 1, backgroundColor: "transparent"}} 
+            containerStyle={{}} 
+            originWhitelist={['*']} 
+            source={{
+              html: '<meta name="viewport" content="width=device-width, initial-scale=1">' + event.description
+            }} 
+          />
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <Button title={t('buyTickets')} onPress={buyTickets} />
