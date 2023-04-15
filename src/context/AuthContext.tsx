@@ -96,7 +96,6 @@ export const AuthContextProvider = ({children}: any) => {
             {
               refreshToken,
               clientId: env.KEYCLOAK_CLIENT_ID,
-              clientSecret: env.KEYCLOAK_CLIENT_SECRET,
               scopes: ['openid', 'profile', 'email', 'offline_access'],
             },
             discovery
@@ -136,7 +135,6 @@ export const AuthContextProvider = ({children}: any) => {
         code: result.params['code'],
         redirectUri,
         clientId: env.KEYCLOAK_CLIENT_ID,
-        clientSecret: env.KEYCLOAK_CLIENT_SECRET,
         scopes: ['openid', 'profile', 'email', 'offline_access'],
       }, discovery).then(res => {
         console.log("Exchanged code:", res)
