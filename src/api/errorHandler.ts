@@ -3,6 +3,12 @@ import { isAxiosError } from "axios"
 export const apiErrorHandler = (error: any) => {
     if (isAxiosError(error)) {
       if (error.response) {
+        if (!error.response.data) {
+            throw {
+                code: -1,
+                message: "Unknown error"
+            }
+        }
         throw {
           code: error.response.data.code,
           message: error.response.data.message
