@@ -2,18 +2,22 @@ import {EventModel} from '@app/model/Event';
 import axios, {isAxiosError} from 'axios';
 import {env} from '@app/config/loadEnvironment';
 import {toEventList, toUser} from '@app/api/mappers';
-import {ApiEvent, ApiResponse, ApiTicket, ApiUser, ResellCurrency} from '@app/api/models';
+import {ApiError, ApiEvent, ApiResponse, ApiTicket, ApiUser, ResellCurrency} from '@app/api/models';
 import {CreateAccountData, User} from '@app/model/User';
 import {useCallback, useContext} from 'react';
 import {AuthContext} from '@app/context/AuthContext';
+import { apiErrorHandler } from './errorHandler';
 
 const eventsApi = axios.create({
   baseURL: env.EVENTS_URL
 })
 
 const ticketsApi = axios.create({
-  baseURL: env.TICKETS_URL
+  baseURL: env.TICKETS_URL,
 });
+
+eventsApi.interceptors.response.use((response) => response, apiErrorHandler);
+ticketsApi.interceptors.response.use((response) => response, apiErrorHandler);
 
 export const getPosterUri = (poster?: string): string | undefined => {
   if (poster) {
@@ -31,22 +35,13 @@ export const fetchMyUser = async (token: string | null) => {
   if (!token) {
     return undefined;
   }
-  try {
-    console.log("Getting user with token: ", token);
-    const user = await ticketsApi.get<ApiResponse<ApiUser>>('/users/myUser', {
-      headers: {
-        Authorization: token
-      }
-    });
-    return toUser(user.data.data);
-  } catch (e) {
-    if (isAxiosError(e)) {
-      if (e.response?.status === 404) {
-        return undefined;
-      }
+  console.log("Getting user with token: ", token);
+  const user = await ticketsApi.get<ApiResponse<ApiUser>>('/users/myUser', {
+    headers: {
+      Authorization: token
     }
-    throw e;
-  }
+  });
+  return toUser(user.data.data);
 }
 
 export const createAccount = async (data: CreateAccountData, token: string|null) => {
@@ -75,7 +70,7 @@ export const purchaseTicket = async (event: EventModel, section: string, token: 
       Authorization: token
     }
   });
-  return ticket.data.data;
+  return ticket.data?.data;
 }
 
 export const getMyTickets = async (token: string | null) => {

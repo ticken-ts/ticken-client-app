@@ -14,6 +14,8 @@ import Button from '@app/components/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {usePurchaseTicketMutation} from '@app/api/usePurchaseTicketMutation';
 import PurchaseDetails from '@app/components/PurchaseDetails';
+import Toast from 'react-native-root-toast';
+import { ApiError } from '@app/api/models';
 
 const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.PurchaseConfirmation>) => {
 
@@ -22,23 +24,28 @@ const PurchaseConfirmation = ({route, navigation}: ScreenProps<ScreenId.Purchase
   const {purchaseTicket, isLoading} = usePurchaseTicketMutation();
 
   const confirmPurchase = async () => {
-    const res = await purchaseTicket({
-      event: event,
-      section: section.name,
-    })
-    if (res) {
-      navigation.reset({
-        index: 1,
-        routes: [
-          {name: ScreenId.Home},
-          {name: ScreenId.EventDetails, params: {event: event}},
-          {name: ScreenId.Confirmation, params: {
-            successText: t('successText'),
-            buttonText: t('viewMyTickets'),
-            goToScreen: ScreenId.MyTickets,
-          }},
-        ]
+    try {
+      const res = await purchaseTicket({
+        event: event,
+        section: section.name,
       })
+      if (res) {
+        navigation.reset({
+          index: 1,
+          routes: [
+            {name: ScreenId.Home},
+            {name: ScreenId.EventDetails, params: {event: event}},
+            {name: ScreenId.Confirmation, params: {
+              successText: t('successText'),
+              buttonText: t('viewMyTickets'),
+              goToScreen: ScreenId.MyTickets,
+            }},
+          ]
+        })
+      }
+    } catch (e) {
+      const error = e as ApiError
+      Toast.show(error.message);
     }
   };
 
