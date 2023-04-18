@@ -25,7 +25,7 @@ export const en = {
   // User profile
   logOut: "Sign Out",
   addressPK: 'Address PK',
-  enterEthAddress: 'If you want to import your own ethereum address, please entre the private key below.',
+  enterEthAddress: 'If you want to import your own ethereum address, please entre the private key below (PEM format).',
   leaveBlank: 'Leave blank if you want us to create one for you!',
   completeRegistration: 'Complete Registration',
   profileEmail: 'Email',

@@ -30,6 +30,8 @@ export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, priva
     const signature = JSON.stringify({
         r: encrypted.r.toString("hex"),
         s: encrypted.s.toString("hex"),
+        eventID: event.event_id,
+        ticketID: ticket.ticket_id,
     })
 
     __DEV__ && console.log("Encrypted hash: ", signature)

@@ -97,6 +97,9 @@ export const getMyPrivateKey = async (token: string | null) => {
   const privateKey = await ticketsApi.get<ApiResponse<string>>('/users/myUser/privKey', {
     headers: {
       Authorization: token
+    },
+    params: {
+      format: "hex"
     }
   });
   return privateKey.data.data;
