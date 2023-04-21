@@ -1,6 +1,6 @@
 import { View, StyleSheet, StyleProp, ViewStyle, ActivityIndicator } from 'react-native';
 import React from 'react';
-import QRCodeStyled from 'react-native-qrcode-styled';
+import QRCodeStyled from 'react-native-qrcode-svg';
 import { squares } from '@app/styles/grid';
 import { Svg } from 'react-native-svg';
 import QRSample from '@app/assets/qr-sample.svg';
@@ -18,8 +18,8 @@ export function QRCode({code, style, loading}: Props) {
     <View style={[styles.qrCode, style]}>
       {code ? (
         <QRCodeStyled
-          pieceBorderRadius={squares(0)}
-          data={code}
+          value={code}
+          size={squares(30)}
         />
       ) : (
         <View style={styles.qrSample}>

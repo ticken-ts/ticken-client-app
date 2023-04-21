@@ -20,6 +20,6 @@ export const env = (() => {
     EVENTS_URL,
     TOTP_SECRET,
   }
-})()
+})();
 
 __DEV__ && console.log('env', env)
