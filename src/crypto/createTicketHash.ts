@@ -11,20 +11,20 @@ const totpSecret = env.TOTP_SECRET;
 export const createTicketHash = async (ticket: ApiTicket, event: ApiEvent, privateKey: string) => {
   const { fingerprintHash, expirationDateSeconds } = await getTicketFingerprint(ticket, event);
 
-  __DEV__ && console.log("Fingerprint: ", fingerprintHash);
+  __DEV__ && console.log("Fingerprint:", fingerprintHash);
 
-  __DEV__ && console.log("Private key: ", privateKey);
+  __DEV__ && console.log("Private key:", privateKey);
 
   const encrypted = await (async () => {
     const curve = new ec("secp256k1");
     const key = curve.keyFromPrivate(privateKey, "hex");
-    const encrypted = key.sign(fingerprintHash, "hex");
+    const encrypted = curve.sign(fingerprintHash, key, { canonical: true });
     return encrypted;
   })();
 
   const signature = JSON.stringify({
-    r: encrypted.r.toString("hex"),
-    s: encrypted.s.toString("hex"),
+    r: encrypted.r.toString(10),
+    s: encrypted.s.toString(10),
     eventID: event.event_id,
     ticketID: ticket.ticket_id,
   });
