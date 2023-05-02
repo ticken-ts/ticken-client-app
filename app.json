@@ -1,7 +1,7 @@
 {
   "expo": {
     "jsEngine": "hermes",
-    "name": "Client",
+    "name": "Ticken",
     "slug": "Client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -30,6 +30,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "ticken-app"
+    "scheme": "ticken-app",
+    "extra": {
+      "eas": {
+        "projectId": "6b2df6f9-90b3-4b4b-8c57-eabeb38c8631"
+      }
+    }
   }
 }
