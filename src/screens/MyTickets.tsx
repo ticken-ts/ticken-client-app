@@ -18,6 +18,10 @@ const MyTickets = ({navigation}: ScreenProps<ScreenId.MyTickets>) => {
   const myTickets = useGetMyTicketsQuery();
   const events = useEventListQuery();
 
+  const refreshAll = () => {
+    myTickets.refetch();
+  }
+
   return (
     <View style={styles.container}>
       <FocusAwareStatusBar
@@ -30,7 +34,7 @@ const MyTickets = ({navigation}: ScreenProps<ScreenId.MyTickets>) => {
         </View>
       }
       {myTickets.data &&
-        <FlatList data={myTickets.data} renderItem={({item}) =>
+        <FlatList onRefresh={refreshAll} data={myTickets.data} renderItem={({item}) =>
           <OwnedTicket ticket={item} />
         }/>
       }

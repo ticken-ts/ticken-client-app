@@ -1,4 +1,4 @@
-import {ApiTicket} from '@app/api/models';
+import {ApiTicket, EventStatus} from '@app/api/models';
 import {useEventQuery} from '@app/api/useEventQuery';
 import {useToggle} from '@app/hooks/useToggle';
 import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native';
@@ -24,7 +24,8 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
     navigation.navigate(ScreenId.OwnedTicket, {ticket});
   };
 
-  if (!event) return (<></>);
+  if (!event) return (<></>
+  );
 
   return (
     <TouchableOpacity onPress={goToTicket} style={styles.ticket}>
@@ -41,6 +42,11 @@ export const OwnedTicket = ({ticket}: TicketProps) => {
           <View style={{position: 'absolute', top: 0, right: 0, backgroundColor: colors.primary, padding: squares(1)}}>
             <Typography style={{color: colors.white}}>{t('inResell')}</Typography>
           </View>
+        )}
+        {event.status === EventStatus.FINISHED && (
+          <View style={{position: 'absolute', top: 0, right: 0, backgroundColor: colors.primary, padding: squares(1)}}>
+            <Typography style={{color: colors.white}}>{t('finished')}</Typography>
+          </View>          
         )}
     </TouchableOpacity>
   );
