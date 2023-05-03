@@ -8,8 +8,10 @@ import SplashLoader from '@app/components/SplashLoader';
 import {AuthContextProvider} from '@app/context/AuthContext';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { LogBox } from 'react-native';
 
 const queryClient = new QueryClient();
+LogBox.ignoreAllLogs(true);
 
 export default function App() {
   return (
